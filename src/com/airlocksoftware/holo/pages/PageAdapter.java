@@ -1,7 +1,8 @@
 package com.airlocksoftware.holo.pages;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Map;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +12,8 @@ import android.view.View;
 public class PageAdapter extends FragmentStatePagerAdapter {
 
 	private ArrayList<Page> mPages = new ArrayList<Page>();
-	private ArrayList<String> mIds = new ArrayList<String>();
+	Map<Integer, Page> mIdMap = new HashMap<Integer, Page>();
+
 
 	public PageAdapter(FragmentManager fm) {
 		super(fm);
@@ -45,15 +47,16 @@ public class PageAdapter extends FragmentStatePagerAdapter {
 		return POSITION_NONE;
 	}
 
-	public void addItem(Page fragment) {
-		mPages.add(fragment);
-		mIds.add(fragment.getStringId());
+	public void addItem(Page page) {
+		mPages.add(page);
+		mIdMap.put(page.getPageId(), page);
 	}
 
 	@Override
 	protected int getFragmentPosition(Fragment fragment) {
 		if (fragment instanceof PageFragment) {
-			return mIds.indexOf(((PageFragment) fragment).getStringId());
+			Page page = mIdMap.get(((PageFragment) fragment).getPageId());
+			return mPages.indexOf(page);
 		} else {
 			return -1;
 		}
@@ -62,9 +65,12 @@ public class PageAdapter extends FragmentStatePagerAdapter {
 	@Override
 	protected void handleGetItemInvalidated(View container, Fragment oldFragment, Fragment newFragment) {
 		if (oldFragment instanceof PageFragment && newFragment instanceof PageFragment) {
-			int oldFragmentIndex = mIds.indexOf(((PageFragment) oldFragment).getStringId());
-			if (oldFragmentIndex != -1) {
-				mIds.set(oldFragmentIndex, ((PageFragment) newFragment).getStringId());
+			int oldId = ((PageFragment) oldFragment).getPageId();
+			Page page = mIdMap.get(oldId);
+			int oldIndex = mPages.indexOf(page);
+			if(oldIndex != -1) {
+				mIdMap.remove(oldId);
+				mIdMap.put(((PageFragment) newFragment).getPageId(), page);
 			}
 		}
 	}

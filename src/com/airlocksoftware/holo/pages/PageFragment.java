@@ -13,11 +13,13 @@ public abstract class PageFragment extends Fragment implements ActionBarInterfac
 
 	protected Context mContext;
 	protected View mFrame;
+	protected Page mParent;
 	
-	public abstract String getStringId();
+	public abstract int getPageId();
 
-	public PageFragment(Context context) {
-		this.mContext = context;
+	public PageFragment(Context context, Page parent) {
+		mContext = context;
+		mParent = parent;
 	}
 
 	@Override

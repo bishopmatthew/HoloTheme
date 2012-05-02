@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.airlocksoftware.holo.tabs.TabButtonPager xmlns:android="http://schemas.android.com/apk/res/android"
+<com.airlocksoftware.holo.tab.TabPager xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:airlock="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tab_pager"
     android:layout_width="fill_parent"

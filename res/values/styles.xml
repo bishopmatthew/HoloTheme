@@ -106,7 +106,7 @@
     <!-- FONT BUTTON -->
     <style name="FontButton">
         <item name="android:button">@null</item>
-        <item name="android:background">@null</item>
+        <item name="android:background">@drawable/btn_default_holo_dark</item>
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:textSize">18sp</item>
     </style>

@@ -7,8 +7,8 @@ import android.view.View;
 import com.airlocksoftware.holo.actionbar.ActionBar;
 import com.airlocksoftware.holo.activities.TabActivity;
 import com.airlocksoftware.holo.interfaces.ActionBarInterface;
-import com.airlocksoftware.holo.tabs.BackPressedListener;
-import com.airlocksoftware.holo.tabs.TabButtonPager;
+import com.airlocksoftware.holo.interfaces.BackPressedListener;
+import com.airlocksoftware.holo.tab.TabPager;
 
 /**
  * Represents a tab in the TabPager. Implements a BackStack for TabFragments, handles 
@@ -56,7 +56,7 @@ public abstract class Page implements BackPressedListener, ActionBarInterface {
 		if (mVisibleFragment != null) {
 			if (!isBackStack) mStack.add(mVisibleFragment);
 
-			TabButtonPager tabPager = mContext.getPager();
+			TabPager tabPager = mContext.getPager();
 			tabPager.getAdapter().replaceFragments(tabPager.getViewPager(), mVisibleFragment, fragment);
 			
 			mVisibleFragment.cleanupActionBar(mContext.getAB());
@@ -74,8 +74,8 @@ public abstract class Page implements BackPressedListener, ActionBarInterface {
 		return mVisibleFragment;
 	}
 
-	public String getStringId() {
-		return getVisibleFragment().getStringId();
+	public int getPageId() {
+		return getVisibleFragment().getPageId();
 	}
 
 	@Override

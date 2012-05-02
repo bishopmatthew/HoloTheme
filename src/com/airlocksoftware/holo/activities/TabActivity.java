@@ -7,36 +7,34 @@ import android.view.ViewGroup;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.interfaces.OnActivityResultListener;
 import com.airlocksoftware.holo.pages.Page;
-import com.airlocksoftware.holo.tabs.TabButtonPager;
-import com.airlocksoftware.holo.tabs.TabButtonPager.OnTabChangeListener;
+import com.airlocksoftware.holo.tab.TabPager;
+import com.airlocksoftware.holo.tab.TabPager.OnTabChangeListener;
 
 public class TabActivity extends MapActivity {
 
-	protected TabButtonPager mPager;
+	protected TabPager mPager;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.tab_map_fragment_activity);
+		setContentView(R.layout.tab_activity);
 
-		mPager = (TabButtonPager) findViewById(R.id.tab_pager);
+		mPager = (TabPager) findViewById(R.id.tab_pager);
 
 		setupActionBar();
 	}
-
 
 	private void setupActionBar() {
 		// TODO
 	}
 
-
 	public void onDestroy() {
 		ViewGroup parentView = (ViewGroup) this.mMapView.getParent();
-		parentView.removeView(this.mMapView);
+		if (parentView != null) parentView.removeView(this.mMapView);
 		super.onDestroy();
 	}
 
-	public TabButtonPager getPager() {
+	public TabPager getPager() {
 		return mPager;
 	}
 

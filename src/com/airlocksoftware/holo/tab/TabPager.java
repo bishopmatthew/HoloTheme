@@ -1,4 +1,5 @@
-package com.airlocksoftware.holo.tabs;
+package com.airlocksoftware.holo.tab;
+
 
 import java.util.ArrayList;
 
@@ -8,13 +9,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.activities.MapActivity;
+import com.airlocksoftware.holo.checkable.CheckableViewGroup;
+import com.airlocksoftware.holo.checkable.CheckableViewGroup.OnCheckedViewChangedListener;
 import com.airlocksoftware.holo.pages.Page;
 import com.airlocksoftware.holo.pages.PageAdapter;
 
@@ -34,19 +34,23 @@ public class TabPager extends RelativeLayout implements ViewPager.OnPageChangeLi
 
 	// VIEWS
 	ViewPager mPager;
-	RadioGroup mTabGroup;
+	TabButtonGroup mTabGroup;
 
 	// DATA
 	private PageAdapter mAdapter;
 
 	// TABS
-	ArrayList<RadioButton> mTabs = new ArrayList<RadioButton>();
+	ArrayList<TabButton> mTabs = new ArrayList<TabButton>();
 	int visibleTabIndex;
 	int checkedTabIndex;
 
 	// TAB CHANGE LISTENER
 	private OnTabChangeListener tabChangeListener;
 
+	// CONSTANTS
+	private static final int DEFAULT_LAYOUT = R.layout.tab_pager;
+
+	// CONSTRUCTORS
 	public TabPager(Context context) {
 		this(context, null);
 	}
@@ -57,7 +61,7 @@ public class TabPager extends RelativeLayout implements ViewPager.OnPageChangeLi
 		this.mActivity = (MapActivity) context;
 		this.mFm = mActivity.getSupportFragmentManager();
 
-		inflateLayout();
+		inflateLayout(DEFAULT_LAYOUT);
 
 		mAdapter = new PageAdapter(mFm);
 
@@ -65,35 +69,55 @@ public class TabPager extends RelativeLayout implements ViewPager.OnPageChangeLi
 		mPager.setAdapter(mAdapter);
 		mPager.setOnPageChangeListener(this);
 
-		mTabGroup = (RadioGroup) findViewById(R.id.tab_group);
+		mTabGroup = (TabButtonGroup) findViewById(R.id.tab_group);
 	}
 
-	private void inflateLayout() {
+	private void inflateLayout(int layoutResId) {
 		LayoutInflater inflater = LayoutInflater.from(mContext);
-		inflater.inflate(R.layout.tab_pager, this);
+		inflater.inflate(layoutResId, this);
 	}
 
-	public void addTab(Page tab, int backgroundResourceId) {
+	public void addTab(Page tab, int iconResId) {
 		if (mAdapter.getCount() < 1) tab.setupActionBar(mActivity.getAB());
 		mAdapter.addItem(tab);
-		addImageButton(backgroundResourceId);
+		addTabButton(iconResId);
 	}
 
-	private void addImageButton(int backgroundResourceId) {
-		LayoutInflater inflater = LayoutInflater.from(mContext);
-		RadioButton button = (RadioButton) inflater.inflate(R.layout.tab_portrait_image, mTabGroup, false);
-		button.setBackgroundResource(backgroundResourceId);
+	public void addTab(Page tab, String tabName) {
+		if (mAdapter.getCount() < 1) tab.setupActionBar(mActivity.getAB());
+		mAdapter.addItem(tab);
+		addTabButton(tabName);
+	}
+
+	private void addTabButton(String tabName) {
+		TabButton button = new TabButton(mContext);
+		button.setTabText(tabName);
 		if (mTabs.size() < 1) {
-			// the first tab, so we set the button to be checked.
-			mTabGroup.addView(button);
-			button.setChecked(true);
-			checkedTabIndex = 0;
-			visibleTabIndex = 0;
-			mTabGroup.setOnCheckedChangeListener(tabListener);
+			initialTabSetup(button);
 		} else {
-			mTabGroup.addView(button);
+			mTabGroup.addTabButton(button);
 		}
 		mTabs.add(button);
+	}
+
+	private void addTabButton(int iconResId) {
+		TabButton button = new TabButton(mContext);
+		button.setTabIcon(iconResId);
+		if (mTabs.size() < 1) {
+			initialTabSetup(button);
+		} else {
+			mTabGroup.addTabButton(button);
+		}
+		mTabs.add(button);
+	}
+	
+	/** The first tab, so we set the button to be checked. **/
+	private void initialTabSetup(TabButton button) {
+		mTabGroup.addTabButton(button);
+		button.setChecked(true);
+		checkedTabIndex = 0;
+		visibleTabIndex = 0;
+		mTabGroup.setOnCheckedChangedListener(tabListener);
 	}
 
 	private void onTabChange(int oldTab, int newTab) {
@@ -102,10 +126,10 @@ public class TabPager extends RelativeLayout implements ViewPager.OnPageChangeLi
 		}
 	}
 
-	public Fragment getCurrentItem() {
+	public Fragment getCurrentFragment() {
 		return mAdapter.getItem(visibleTabIndex);
 	}
-	
+
 	public Page getCurrentTab() {
 		return mAdapter.getPages().get(visibleTabIndex);
 	}
@@ -140,33 +164,13 @@ public class TabPager extends RelativeLayout implements ViewPager.OnPageChangeLi
 		return mPager;
 	}
 
-	// public boolean getKeepTouchEvents() {
-	// return mPager.getKeepTouchEvents();
-	// }
-	//
-	// public void setKeepTouchEvents(boolean keepTouchEvents) {
-	// mPager.setKeepTouchEvents(keepTouchEvents);
-	// }
+	private OnCheckedViewChangedListener tabListener = new OnCheckedViewChangedListener() {
 
-	// @Override
-	// public boolean onBackPressed() {
-	// return mAdapter.popBackImmediate(mPager);
-	// }
-
-	private OnCheckedChangeListener tabListener = new OnCheckedChangeListener() {
-
-		public void onCheckedChanged(RadioGroup group, int checkedId) {
-			RadioButton checkedTab = null;
-			for (RadioButton tab : mTabs) {
-				if (tab.getId() == checkedId) {
-					checkedTab = tab;
-					checkedTabIndex = mTabs.indexOf(checkedTab);
-				}
-			}
+		public void onCheckedViewChanged(CheckableViewGroup group, int newPosition, int oldPosition) {
+			checkedTabIndex = newPosition;
 			if (checkedTabIndex != visibleTabIndex) {
 				mPager.setCurrentItem(checkedTabIndex);
 			}
-
 		}
 
 	};
