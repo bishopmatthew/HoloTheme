@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:airlock="http://schemas.android.com/apk/res/com.airlocksoftware.holo"
+    android:id="@+id/list_dialog_container"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/title_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_weight="0" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/title_text"
+            style="@style/FontText.DialogTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:layout_below="@+id/title_text"
+            android:background="@color/bright_accent" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/dialog_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_20" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/grey_40" />
+
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal" />
+
+</LinearLayout>

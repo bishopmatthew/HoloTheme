@@ -1,0 +1,23 @@
+# Dropdown
+	- When the dropdown is visible and the user clicks outside of the view, close the dropdown
+	- How to work with it?
+		- in setupActionBar() / cleanupActionBar()
+			- actionBar.getDropdownFrame().addView() to add
+			- actionBar.getDropdownFrame().removeViewById() to remove
+		- in click listeners
+			- keep reference to dropdown frame
+			- call toggleViewById(int id)
+		- what if a view wants to specify a custom animation to be used for itself?
+			- toggleViewById(int id, int inAnim, int outAnim)
+
+
+## Overflow menu
+	- All items inside need to support default / focused / clicked (and potentially disabled) states
+	- Part of an ActionBar activity
+	- The ActionBar is how you interface with it.
+	- Animation should be customizable (but default should look like it does in Hacker News)
+	- Setup should be simple - addOverflowItem
+	- Ideally (eventually) this should happen automatically when you add an ActionBarButton & there isn't room
+
+## Other (timer, hn post selector, etc)
+	

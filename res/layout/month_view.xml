@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:holo="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/month_view_container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/month_view_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_weight="0"
+        android:background="?monthViewNavBackground" >
+
+        <ImageButton
+            android:id="@+id/nav_left_button"
+            android:layout_width="50dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:background="?monthViewNavButton"
+            android:scaleType="center"
+            android:src="?monthViewNavDrawableLeft" />
+
+        <com.airlocksoftware.holo.type.FontButton
+            android:id="@+id/nav_title_button"
+            style="?monthViewNavTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_toLeftOf="@+id/nav_right_button"
+            android:layout_toRightOf="@+id/nav_left_button"
+            android:background="?monthViewNavButton" />
+
+        <ImageButton
+            android:id="@+id/nav_right_button"
+            android:layout_width="50dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:background="?monthViewNavButton"
+            android:scaleType="center"
+            android:src="?monthViewNavDrawableRight" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/month_view_header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="?monthViewCalBackground"
+        android:orientation="horizontal" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/sun"
+            style="?monthViewCalHeaderText" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/mon"
+            style="?monthViewCalHeaderText" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/tue"
+            style="?monthViewCalHeaderText" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/wed"
+            style="?monthViewCalHeaderText" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/thu"
+            style="?monthViewCalHeaderText" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/fri"
+            style="?monthViewCalHeaderText" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/sat"
+            style="?monthViewCalHeaderText" />
+    </LinearLayout>
+
+    <com.airlocksoftware.holo.grid.FixedGridView
+        android:id="@+id/month_view_grid"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="?monthViewCalBackground"
+        holo:grid_cols="7"
+        holo:grid_rows="6" />
+
+</LinearLayout>

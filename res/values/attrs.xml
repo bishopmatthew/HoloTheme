@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="FontText">
+        <attr name="font">
+            <enum name="roboto_rg" value="0" />
+            <enum name="roboto_bd_cd" value="1" />
+            <enum name="roboto_cd" value="2" />
+            <enum name="roboto_bd" value="3" />
+        </attr>
+        <attr name="allCaps" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="FixedGridView">
+        <attr name="grid_cols" format="integer" />
+        <attr name="grid_rows" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="AnimatedView">
+        <attr name="inAnim" format="reference" />
+        <attr name="outAnim" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="ViewSwiper">
+        <attr name="attachLongClickListener" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="TouchListView">
+        <attr name="normal_height" format="dimension" />
+        <attr name="expanded_height" format="dimension" />
+        <attr name="grabber" format="reference" />
+        <attr name="dragndrop_background" format="color" />
+        <attr name="remove_mode">
+            <enum name="none" value="-1" />
+            <enum name="fling" value="0" />
+            <enum name="slide" value="1" />
+            <enum name="slideRight" value="1" />
+            <enum name="slideLeft" value="2" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="ListSpinner">
+        <attr name="spinner_prompt" format="string" />
+        <attr name="spinner_title" format="string" />
+    </declare-styleable>
+    <declare-styleable name="Subtitle">
+        <attr name="subtitle_text" format="string" />
+        <attr name="subtitle_allCaps" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="OnOffSwitch">
+        <attr name="switch_onText" format="string" />
+        <attr name="switch_offText" format="string" />
+        <attr name="switch_isOn" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="ClearableFontEdit">
+        <attr name="clearable_icon" format="reference" />
+        <attr name="clearable_iconBackground" format="reference" />
+        <attr name="clearable_editBackground" format="reference" />
+        <attr name="clearable_hint" format="string|reference" />
+    </declare-styleable>
+    <declare-styleable name="SlideoutListItem">
+        <attr name="page_classname" format="string" />
+        <attr name="android:text" />
+        <attr name="android:src" />
+        <!-- <attr name="slideout_header" format="reference" /> -->
+    </declare-styleable>
+    <!--
+    <declare-styleable name="Flip3dView">
+        <attr name="flip3d_frontSide" format="boolean" />
+        <attr name="flip3d_backSide" format="boolean" />
+    </declare-styleable>
+    -->
+
+
+    <!-- NUMBER PICKER -->
+    <declare-styleable name="numberpicker">
+        <attr name="startRange" format="integer" />
+        <attr name="endRange" format="integer" />
+        <attr name="defaultValue" format="integer" />
+        <attr name="maxValue" format="integer" />
+        <attr name="wrap" format="boolean" />
+    </declare-styleable>
+
+    <!-- NumberPicker style. -->
+    <attr name="numberPickerStyle" format="reference" />
+    <!-- NumberPicker up button style. -->
+    <attr name="numberPickerUpButtonStyle" format="reference" />
+    <!-- NumberPicker down button style. -->
+    <attr name="numberPickerDownButtonStyle" format="reference" />
+    <!-- NumberPicker input text style. -->
+    <attr name="numberPickerInputTextStyle" format="reference" />
+
+    <!-- END NUMBER PICKER -->
+
+
+    <!-- DATE PICKER STYLE -->
+    <declare-styleable name="DatePicker">
+
+        <!-- The first year (inclusive), for example "1940". -->
+        <attr name="startYear" format="integer" />
+        <!-- The last year (inclusive), for example "2010". -->
+        <attr name="endYear" format="integer" />
+        <!-- Whether the spinners are shown. -->
+        <attr name="spinnersShown" format="boolean" />
+        <!-- Whether the calendar view is shown. -->
+        <attr name="calendarViewShown" format="boolean" />
+        <!-- The minimal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="minDate" format="string" />
+        <!-- The minimal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="maxDate" format="string" />
+        <!-- @hide The layout of the time picker. -->
+        <attr name="layout" format="reference" />
+    </declare-styleable>
+    <!-- END DATE PICKER -->
+
+
+    <!-- TABS -->
+
+    <declare-styleable name="TabButton">
+        <attr name="tab_icon" format="reference" />
+        <attr name="tab_background" format="reference" />
+        <attr name="tab_text" format="string" />
+        <attr name="tab_textAllCaps" format="boolean" />
+        <attr name="tab_checked" format="boolean" />
+        <attr name="tab_isTopTab" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="TabButtonGroup">
+        <attr name="tabgroup_checkButton" format="reference" />
+    </declare-styleable>
+    
+    <declare-styleable name="CheckableViewGroup">
+        <attr name="android:checkedButton" />
+    </declare-styleable>
+    
+    <declare-styleable name="CheckableView">
+        <attr name="android:checked" />
+    </declare-styleable>
+
+    <!-- END TABs -->
+
+
+    <!-- HOLO THEME -->
+    <declare-styleable name="HoloTheme">
+
+        <!-- MONTH VIEW -->
+        <!-- NAVIGATION -->
+        <!-- Default button used by the MonthView as part of it's navigation. -->
+        <attr name="monthViewNavButton" format="reference" />
+        <!-- Default background used by the MonthView as part of it's navigation. -->
+        <attr name="monthViewNavBackground" format="reference|color" />
+        <!-- Default drawable used by the MonthView for the right arrow. -->
+        <attr name="monthViewNavDrawableRight" format="reference" />
+        <!-- Default drawable used by the MonthView for the left arrow. -->
+        <attr name="monthViewNavDrawableLeft" format="reference" />
+        <!-- MonthView navigation hearder text style. -->
+        <attr name="monthViewNavTextStyle" format="reference" />
+        <!-- CALENDAR HEADER -->
+        <!-- MonthView calendar hearder text style -->
+        <attr name="monthViewCalHeaderText" format="reference" />
+        <!-- CALENDAR -->
+        <!-- Default background used by the MonthView for the calendr. -->
+        <attr name="monthViewCalBackground" format="reference|color" />
+
+        <!-- CLEARABLE FONT EDIT -->
+        <attr name="clearableEditBackground" format="reference" />
+        <attr name="clearableClearIcon" format="reference" />
+        <attr name="clearableClearIconSize" format="dimension" />
+        <!-- <attr name="clearableClearIconBackground" format="reference" /> -->
+
+
+        <!-- FONT EDIT -->
+        <attr name="fontEditStyle" format="reference" />
+        <attr name="fontEditBackground" format="reference" />
+
+        <!-- ACTION BAR -->
+        <attr name="actionBarOverflowIcon" format="reference" />
+        <attr name="actionBarButtonBg" format="reference" />
+        <attr name="actionBarTitleTextStyle" format="reference" />
+        <attr name="actionBarNavBackIcon" format="reference" />
+        <attr name="actionBarNavListIcon" format="reference" />
+
+        <!-- OVERFLOW MENU -->
+        <attr name="overflowMenuTextResId" format="reference" />
+        <attr name="overflowMenuTextStyle" format="reference" />
+        <attr name="overflowMenuImageResId" format="reference" />
+        <attr name="overflowMenuLayoutResId" format="reference" />
+        <attr name="overflowMenuLayoutBackground" format="reference" />
+
+        
+        <!-- SUBTITLE -->
+		<attr name="subtitleTextStyle" format="reference" />
+        
+    </declare-styleable>
+
+</resources>

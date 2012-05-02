@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.airlocksoftware.holo.type.FontText xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:airlock="http://schemas.android.com/apk/res/com.airlocksoftware.holo"
+    android:id="@+id/question"
+    style="@style/FontText"
+    android:layout_margin="10dp"
+    android:layout_gravity="center"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" />

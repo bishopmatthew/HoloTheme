@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:airlock="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/action_bar_height"
+    android:background="@drawable/grad_ab" >
+
+    <RelativeLayout
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/btn_ab"
+        android:clickable="false"
+        android:paddingLeft="8dp"
+        android:paddingRight="4dp" >
+
+        <ImageView
+            android:id="@+id/nav_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="center"
+            android:src="?actionBarNavBackIcon"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/nav_icon"
+            android:scaleType="center"
+            android:src="@drawable/ic_logo_ab" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/title_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/button_container"
+        android:layout_toRightOf="@+id/back_button" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/action_bar_title"
+            style="?actionBarTitleTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- LISTVIEW WILL BE REMOVED AND MOVED TO THE ANIMATION OVERLAY -->
+
+        <ListView
+            android:id="@+id/overflow_list"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:background="@color/grey_40"
+            android:cacheColorHint="@color/transparent" />
+        
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toLeftOf="@+id/overflow_button"
+        android:gravity="right" />
+
+    <ImageButton
+        android:id="@+id/overflow_button"
+        android:layout_width="@dimen/action_bar_height"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="?actionBarButtonBg"
+        android:src="?actionBarOverflowIcon"
+        android:visibility="gone" />
+
+</RelativeLayout>

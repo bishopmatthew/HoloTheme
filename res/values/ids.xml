@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="divider" type="id"/>
+    <item name="progress_inner_list" type="id"/>
+
+    <!-- FLIP 3d -->
+    <item name="flip_3d_front" type="id"/>
+    <item name="flip_3d_back" type="id"/>
+
+    <!-- OVERFLOW MENU -->
+    <item name="overflow_menu_text" type="id"/>
+    <item name="overflow_menu_icon" type="id"/>
+
+    <!-- SLIDEOUT MENU -->
+    <item name="slideout_frame" type="id"/>
+
+</resources>

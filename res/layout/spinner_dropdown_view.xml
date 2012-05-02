@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:airlock="http://schemas.android.com/apk/res/com.airlocksoftware.holo"
+    android:id="@+id/popup_list_item"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:background="@drawable/btn_ab"
+    android:padding="8dp" >
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/text"
+        style="@style/FontText.Spinner.Dropdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/radio_button"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true" />
+
+    <RadioButton
+        android:id="@+id/radio_button"
+        style="@style/RadioButton.ICS"
+        android:clickable="false"
+        android:duplicateParentState="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+
+</RelativeLayout>

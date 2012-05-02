@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:airlock="http://schemas.android.com/apk/res/com.airlocksoftware.holo"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tab_group"
+        android:layout_alignParentTop="true" >
+    </android.support.v4.view.ViewPager>
+
+    <com.airlocksoftware.holo.tabs.TabButtonGroup
+        android:id="@+id/tab_group"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" />
+
+</merge>

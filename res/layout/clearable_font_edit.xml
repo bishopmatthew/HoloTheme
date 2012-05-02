@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:holo="http://schemas.android.com/apk/res/com.airlocksoftware.holo" >
+
+    <com.airlocksoftware.holo.type.FontEdit
+        android:id="@+id/edit"
+        style="?fontEditStyle"
+        android:background="?clearableEditBackground"
+        android:layout_width="fill_parent"
+        android:paddingRight="50dp"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/icon"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:layout_width="?clearableClearIconSize"
+        android:layout_height="?clearableClearIconSize"
+        android:src="?clearableClearIcon"
+        android:layout_alignRight="@+id/edit"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="8dp"
+        android:layout_centerVertical="true"
+        android:scaleType="center" />
+
+</merge>

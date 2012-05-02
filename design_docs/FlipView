@@ -1,0 +1,5 @@
+# FlipView
+	- I want this to be like ViewPager, except perhaps with a custom animation (like the Flip3D anim) 
+	- Should be able to be swiped or clicked with a button
+		- Can initally use Gestures (like the current view), but eventually I want it to be more responsive
+	- Primarily used for displaying additional controls / settings on the back side of an object

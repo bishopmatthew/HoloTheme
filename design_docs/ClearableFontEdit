@@ -1,0 +1,6 @@
+ClearableFontEdit (extends LinearLayout)
+	- Purpose: an FontEdit that has an "x" on the right side that clears the field
+		- "x" isn't visible when there is no text in the box
+		- I'd like to add support for showing icons in the text box (like in the google music app)
+	- How to build:
+		Ext

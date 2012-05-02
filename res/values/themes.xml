@@ -1,0 +1,56 @@
+<resources>
+
+<!-- Unused -->
+    <style name="Theme" parent="android:Theme.NoTitleBar"></style>
+
+<!-- The base theme for Holo.Light, Holo.Dark, or any subclasses -->
+    <style name="Theme.Holo"></style>
+
+<!-- Tries to mimick the android.Holo.Light them -->
+    <style name="Theme.Holo.Light"></style>
+<!-- Tries to mimick the android.Holo.Dark them -->
+    <style name="Theme.Holo.Dark">
+        <!-- DEFAULT WIDGETS -->
+        
+        
+        <!-- MONTH VIEW -->
+        <!-- NAV -->
+        <item name="monthViewNavButton">@drawable/btn_default_holo_dark</item>
+        <item name="monthViewNavBackground">@color/background_default</item>
+        <item name="monthViewNavDrawableRight">@drawable/ic_arrow_right_white</item>
+        <item name="monthViewNavDrawableLeft">@drawable/ic_arrow_left_white</item>
+        <item name="monthViewNavTextStyle">@style/FontText</item>
+        <!-- CALENDAR HEADER -->
+        <item name="monthViewCalHeaderText">@style/FontText.CalHeader</item>
+        <!-- CALENDAR -->
+        <item name="monthViewCalBackground">@color/background_default</item>
+        
+        <!-- CLEARABLE FONT EDIT -->
+        <item name="clearableEditBackground">?fontEditBackground</item>        
+        <item name="clearableClearIcon">@drawable/btn_x_holo_dark</item>        
+        <item name="clearableClearIconSize">@dimen/clearIconSize</item>     
+           
+        <!-- FONT EDIT -->
+        <item name="fontEditStyle">@style/FontEdit</item>
+        <item name="fontEditBackground">@drawable/edit_text_holo_dark</item>
+        
+        <!-- ACTION BAR -->
+        <item name="actionBarOverflowIcon">@drawable/ic_overflow_holo_dark</item>
+        <item name="actionBarButtonBg">@drawable/btn_ab</item>
+        <item name="actionBarTitleTextStyle">@style/FontText.ActionBarTitle</item>
+        <item name="actionBarNavBackIcon">@drawable/ic_back_arrow</item>
+        <item name="actionBarNavListIcon">@drawable/ic_ab_list</item>
+        
+        <!-- OVERFLOW MENU -->
+        <item name="overflowMenuTextResId">@id/overflow_menu_text</item>
+        <item name="overflowMenuImageResId">@id/overflow_menu_icon</item>
+        <item name="overflowMenuLayoutResId">@layout/overflow_menu_item</item>
+        <item name="overflowMenuTextStyle">@style/FontText.OverflowMenu</item>
+        <item name="overflowMenuLayoutBackground">@drawable/btn_overflow_item_holo_dark</item>
+
+		<!-- SUBTITLE -->
+        <item name="subtitleTextStyle">@style/FontText.Subtitle</item>
+
+    </style>
+
+</resources>
