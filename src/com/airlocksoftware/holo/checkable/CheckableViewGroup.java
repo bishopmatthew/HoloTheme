@@ -81,7 +81,16 @@ public class CheckableViewGroup extends LinearLayout {
 			throw new IllegalArgumentException("Can't add something that isn't a CheckableView to CheckableViewGroup");
 		}
 	}
-
+	
+	public CheckableView getCheckedView() {
+		View child = getChildAt(indexOfChildById(mCheckedId));
+		if(child instanceof CheckableView) {
+			return (CheckableView) child;
+		} else {
+			return null;
+		}
+	}
+	
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
@@ -249,10 +258,10 @@ public class CheckableViewGroup extends LinearLayout {
 		 * is cleared, newId is -1.
 		 * 
 		 * @param group the group in which the checked radio button has changed
-		 * @param checkedId the unique identifier of the newly checked radio
-		 *            button
+		 * @param newIndex the position of the newly selected CheckableView within this group
+		 * @param oldIndex the position of the previously selected CheckableView within this group
 		 */
-		public void onCheckedViewChanged(CheckableViewGroup group, int newPosition, int oldPosition);
+		public void onCheckedViewChanged(CheckableViewGroup group, int newIndex, int oldIndex);
 	}
 
 	// INNER CLASSES

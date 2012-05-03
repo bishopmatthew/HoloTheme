@@ -1,8 +1,11 @@
 package com.airlocksoftware.holo.pages;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.airlocksoftware.holo.slideout.SlideoutListItem;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -77,5 +80,13 @@ public class PageAdapter extends FragmentStatePagerAdapter {
 
 	public ArrayList<Page> getPages() {
 		return mPages;
+	}
+
+	public void addPages(ArrayList<Page> pages) {
+		if(mPages == null) {
+			mPages = pages;
+		} else {
+			mPages.addAll(pages);
+		}
 	}
 }

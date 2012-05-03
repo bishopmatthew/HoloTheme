@@ -55,7 +55,7 @@ public class SlideoutList extends RelativeLayout {
 		inflater.inflate(headerLayoutResId, mHeader);
 	}
 	
-	public void setOnSelectedListener(OnCheckedViewChangedListener listener) {
+	public void setOnItemSelectedListener(OnCheckedViewChangedListener listener) {
 		mCheckableGroup.setOnCheckedChangedListener(listener);
 	}
 
@@ -71,6 +71,10 @@ public class SlideoutList extends RelativeLayout {
 	private void retrieveAttrs(AttributeSet attrs) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public ArrayList<SlideoutListItem> getListItems() {
+		return mItems;
 	}
 
 	
