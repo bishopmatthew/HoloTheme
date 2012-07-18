@@ -1,14 +1,11 @@
 package com.airlocksoftware.holo.activities;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.airlocksoftware.holo.R;
-import com.airlocksoftware.holo.anim.AnimationOverlayView;
 import com.airlocksoftware.holo.slideout.SlideoutFrame;
-import com.korovyansk.android.slideout.utils.Screenshot;
 
 public class SlideoutActivity extends ActionBarActivity {
 

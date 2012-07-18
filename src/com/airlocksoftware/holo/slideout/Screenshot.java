@@ -1,4 +1,4 @@
-package com.korovyansk.android.slideout.utils;
+package com.airlocksoftware.holo.slideout;
 
 import android.app.Activity;
 import android.graphics.Bitmap;

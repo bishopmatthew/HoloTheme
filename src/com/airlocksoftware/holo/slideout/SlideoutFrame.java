@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.anim.AnimationOverlayView;
 import com.airlocksoftware.holo.interfaces.AnimationOverlay;
-import com.korovyansk.android.slideout.utils.Screenshot;
 
 public class SlideoutFrame extends FrameLayout {
 

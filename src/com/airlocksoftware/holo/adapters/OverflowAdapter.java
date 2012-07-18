@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.adapters.OverflowAdapter.OverflowItem;
 
+/** An adapter for an overflow menu in the ActionBar **/
 public class OverflowAdapter extends ArrayAdapter<OverflowItem> {
 
 	// CONTEXT

@@ -3,9 +3,6 @@ package com.airlocksoftware.holo.activities;
 import java.util.ArrayList;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.checkable.CheckableViewGroup;
@@ -52,7 +49,8 @@ public abstract class SlideoutNavActivity extends SlideoutActivity {
 	private OnCheckedViewChangedListener navListener = new OnCheckedViewChangedListener() {
 
 		public void onCheckedViewChanged(CheckableViewGroup group, int newPosition, int oldPosition) {
-			mHolder.setCurrentItem(group.getChildAt(newPosition).getPageId(), oldPosition);
+			mHolder.setCurrentItem(((Page) group.getChildAt(newPosition)).getPageId(), oldPosition);
+			mSlideoutFrame.closeSlideout();
 		}
 
 	};
