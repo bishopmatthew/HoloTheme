@@ -78,14 +78,14 @@ public class TabPager extends RelativeLayout implements ViewPager.OnPageChangeLi
 	}
 
 	public void addTab(Page tab, int iconResId) {
-		if (mAdapter.getCount() < 1) tab.setupActionBar(mActivity.getAB());
-		mAdapter.addItem(tab);
+		if (mAdapter.getCount() < 1) tab.setupActionBar(mActivity.actionBar());
+		mAdapter.addPage(tab);
 		addTabButton(iconResId);
 	}
 
 	public void addTab(Page tab, String tabName) {
-		if (mAdapter.getCount() < 1) tab.setupActionBar(mActivity.getAB());
-		mAdapter.addItem(tab);
+		if (mAdapter.getCount() < 1) tab.setupActionBar(mActivity.actionBar());
+		mAdapter.addPage(tab);
 		addTabButton(tabName);
 	}
 

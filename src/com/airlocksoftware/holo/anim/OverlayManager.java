@@ -1,0 +1,310 @@
+package com.airlocksoftware.holo.anim;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import android.content.Context;
+import android.graphics.Rect;
+import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
+
+import com.airlocksoftware.holo.R;
+import com.airlocksoftware.holo.anim.AnimationParams.Exclusivity;
+import com.airlocksoftware.holo.anim.AnimationParams.FillType;
+
+public class OverlayManager {
+
+	// STATE
+	Map<AnimationParams.FillType, FrameLayout> mFrames = new HashMap<AnimationParams.FillType, FrameLayout>();
+	Map<View, AnimationParams> mAnimationParams = new HashMap<View, AnimationParams>();
+	List<View> mChildren = new ArrayList<View>();
+
+	private Context mContext;
+	private Window mWindow;
+	FrameLayout mRoot;
+
+	// these might be unnecessary
+	private boolean mVisible = false;
+	View mCurrentView;
+
+	// animations
+	private int mInAnimResId;
+	private int mOutAnimResId;
+	private Animation mInAnim;
+	private Animation mOutAnim;
+
+	// CONSTANTS
+	private static final int DEF_IN_ANIM = R.anim.scale_in;
+	private static final int DEF_OUT_ANIM = R.anim.scale_out;
+
+	// CONSTRUCTOR
+	public OverlayManager(Context context, Window window) {
+		mContext = context;
+		mWindow = window;
+		mRoot = new FrameLayout(context, null);
+		mRoot.setId(R.id.overlay_root);
+		mWindow.addContentView(mRoot, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		mRoot.setVisibility(View.GONE);
+		
+		// TODO this is temporary
+		setDefaultInAnimation(DEF_IN_ANIM);
+		setDefaultOutAnimation(DEF_OUT_ANIM);
+	}
+
+	// PUBLIC METHODS
+
+	// Adding and removing
+	/** Adds the view, and initializes a new AnimationParams object **/
+	public void addView(View v) {
+		addView(v, new AnimationParams());
+	}
+
+	public void addView(View v, AnimationParams params) {
+		mChildren.add(v);
+		mAnimationParams.put(v, params);
+		FrameLayout frame = mFrames.get(params.fillType());
+		if (frame == null) {
+			frame = createFrame(params.fillType());
+			mFrames.put(params.fillType(), frame);
+		}
+
+		frame.addView(v);
+		v.setVisibility(View.GONE);
+	}
+
+	public void removeView(View v) {
+		if (mChildren.remove(v)) {
+			AnimationParams params = mAnimationParams.remove(v);
+			FrameLayout frame = mFrames.get(params.fillType());
+			frame.removeView(v);
+		}
+
+	}
+
+	public View findViewById(int id) {
+		// for (View v : mChildren) {
+		// if (v.getId() == id) return v;
+		// }
+		// return null;
+		return mRoot.findViewById(id);
+	}
+
+	// showing and hiding
+	/** Show view using the default Animations **/
+	public void showViewById(int id) {
+		showViewById(id, mInAnim);
+	}
+
+	/** Show view using an animation loaded from resource id **/
+	public void showViewById(int id, int animResId) {
+		showViewById(id, AnimationUtils.loadAnimation(mContext, animResId), null);
+	}
+
+	/**
+	 * Show view using an animation loaded from resource id with an AnimationFinishedListener called at the end of the
+	 * animation
+	 **/
+	public void showViewById(int id, int animResId, AnimationFinishedListener listener) {
+		showViewById(id, AnimationUtils.loadAnimation(mContext, animResId), listener);
+	}
+
+	/** Show view using the provided animation **/
+	public void showViewById(int id, Animation inAnim) {
+		showViewById(id, inAnim, null);
+	}
+
+	/** Show view using the provided animation and AnimationFinishedListener. This is where all the work is done **/
+	public void showViewById(int id, Animation inAnim, AnimationFinishedListener listener) {
+		final View toShow = findViewById(id);
+		if (toShow == null) return;
+		AnimationParams params = mAnimationParams.get(toShow);
+		FrameLayout frame = mFrames.get(params.fillType());
+		mRoot.setVisibility(View.VISIBLE);
+		frame.setVisibility(View.VISIBLE);
+
+		if (params.exclusivity() == Exclusivity.EXCLUDE_ALL) {
+			hideAllViews();
+		}
+
+		final AnimationFinishedListener showListener = listener;
+
+		inAnim.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				if (showListener != null) showListener.onFinished(toShow);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+		});
+
+		toShow.setAnimation(inAnim);
+		toShow.getAnimation().start();
+		toShow.setVisibility(View.VISIBLE);
+
+		mCurrentView = toShow;
+		mVisible = true;
+	}
+
+	/** Hide view using the default Animations **/
+	public void hideViewById(int id) {
+		hideViewById(id, mOutAnim);
+	}
+
+	/** Hide view using animation loaded by resource id **/
+	public void hideViewById(int id, int outAnim) {
+		hideViewById(id, AnimationUtils.loadAnimation(mContext, outAnim));
+	}
+
+	/** Hide view using animation loaded by resource id with AnimationFinishedListener **/
+	public void hideViewById(int id, int outAnim, AnimationFinishedListener listener) {
+		hideViewById(id, AnimationUtils.loadAnimation(mContext, outAnim), listener);
+	}
+
+	/** Hide view using the provided animation **/
+	public void hideViewById(int id, Animation outAnim) {
+		hideViewById(id, outAnim, null);
+	}
+
+	/** Hide view using the provided animation with AnimationFinishedListener **/
+	public void hideViewById(int id, Animation outAnim, AnimationFinishedListener listener) {
+		final View toHide = findViewById(id);
+		if (toHide == null) return;
+
+		final AnimationFinishedListener hideListener = listener;
+
+		outAnim.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				toHide.setVisibility(View.GONE);
+				mCurrentView = null;
+				mVisible = false;
+				if (hideListener != null) hideListener.onFinished(toHide);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+		});
+
+		toHide.setAnimation(outAnim);
+
+		toHide.getAnimation().start();
+	}
+
+	public void toggleViewById(int id) {
+		toggleViewById(id, mInAnim, mOutAnim);
+	}
+
+	public void toggleViewById(int id, int inAnim, int outAnim) {
+		if (mVisible) {
+			hideViewById(id, outAnim);
+		} else {
+			showViewById(id, inAnim);
+		}
+	}
+
+	public void toggleViewById(int id, Animation inAnim, Animation outAnim) {
+		if (mVisible) {
+			hideViewById(id, outAnim);
+		} else {
+			showViewById(id, inAnim);
+			// mTempOutAnim = outAnim;
+		}
+	}
+
+	public void hideAllViews() {
+		for (int i = 0; i < mRoot.getChildCount(); i++) {
+			FrameLayout frame = (FrameLayout) mRoot.getChildAt(i);
+			for (int j = 0; j < frame.getChildCount(); j++) {
+				View child = frame.getChildAt(j);
+				if (child.getVisibility() == View.VISIBLE) {
+//					if (mTempOutAnim != null) {
+//						hideViewById(child.getId(), mTempOutAnim);
+//					} else {
+//						hideViewById(child.getId());
+//					}
+					hideViewById(child.getId());
+				}
+			}
+		}
+		
+	}
+
+	// setting animations
+	public void setDefaultInAnimation(Animation inAnim) {
+		mInAnim = inAnim;
+		mInAnim = AnimationUtils.loadAnimation(mContext, mInAnimResId);
+	}
+
+	public void setDefaultInAnimation(int inAnim) {
+		mInAnimResId = inAnim;
+		mInAnim = AnimationUtils.loadAnimation(mContext, mInAnimResId);
+	}
+
+	public void setDefaultOutAnimation(Animation outAnim) {
+		mOutAnim = outAnim;
+		mOutAnim = AnimationUtils.loadAnimation(mContext, mOutAnimResId);
+	}
+
+	public void setDefaultOutAnimation(int outAnim) {
+		mOutAnimResId = outAnim;
+		mOutAnim = AnimationUtils.loadAnimation(mContext, mOutAnimResId);
+	}
+
+	// PRIVATE METHODS
+
+	private FrameLayout createFrame(FillType fillType) {
+		FrameLayout frame = new FrameLayout(mContext, null);
+		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		
+		Display display = mWindow.getWindowManager().getDefaultDisplay(); 
+		int statusBarHeight = (int) Math.ceil(25 * mContext.getResources().getDisplayMetrics().density);
+		int screenHeight = display.getHeight();  // deprecated
+		
+		int abHeight = (int) mContext.getResources().getDimension(R.dimen.action_bar_height);
+		int contentHeight = screenHeight - statusBarHeight;
+
+		switch (fillType) {
+		case FILL_SCREEN:
+			break;
+		case CLIP_ACTION_BAR:
+			lp.height = abHeight;
+			lp.gravity = Gravity.TOP;
+			break;
+		case CLIP_CONTENT:
+			lp.height = contentHeight - abHeight;
+			lp.gravity = Gravity.BOTTOM;
+			break;
+		}
+		
+		frame.setLayoutParams(lp);
+		mRoot.addView(frame);
+		frame.setVisibility(View.GONE);
+		return frame;
+	}
+
+	// INNER CLASSES
+	public interface AnimationFinishedListener {
+		public void onFinished(View overlay);
+	}
+}

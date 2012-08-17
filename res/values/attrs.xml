@@ -54,7 +54,8 @@
         <attr name="clearable_hint" format="string|reference" />
     </declare-styleable>
     <declare-styleable name="SlideoutListItem">
-        <attr name="page_classname" format="string" />
+        <!-- <attr name="page_classname" format="string" />
+        <attr name="page_fragmentId" format="integer" /> -->
         <attr name="android:text" />
         <attr name="android:src" />
         <!-- <attr name="slideout_header" format="reference" /> -->
@@ -171,8 +172,8 @@
         <attr name="actionBarOverflowIcon" format="reference" />
         <attr name="actionBarButtonBg" format="reference" />
         <attr name="actionBarTitleTextStyle" format="reference" />
-        <attr name="actionBarNavBackIcon" format="reference" />
-        <attr name="actionBarNavListIcon" format="reference" />
+        <attr name="actionBarNavUpIcon" format="reference" />
+        <attr name="actionBarNavTopIcon" format="reference" />
 
         <!-- OVERFLOW MENU -->
         <attr name="overflowMenuTextResId" format="reference" />

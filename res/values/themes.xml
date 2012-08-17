@@ -38,8 +38,8 @@
         <item name="actionBarOverflowIcon">@drawable/ic_overflow_holo_dark</item>
         <item name="actionBarButtonBg">@drawable/btn_ab</item>
         <item name="actionBarTitleTextStyle">@style/FontText.ActionBarTitle</item>
-        <item name="actionBarNavBackIcon">@drawable/ic_back_arrow</item>
-        <item name="actionBarNavListIcon">@drawable/ic_ab_list</item>
+        <item name="actionBarNavUpIcon">@drawable/ic_back_arrow</item>
+        <item name="actionBarNavTopIcon">@drawable/ic_ab_list</item>
         
         <!-- OVERFLOW MENU -->
         <item name="overflowMenuTextResId">@id/overflow_menu_text</item>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item name="divider" type="id"/>
     <item name="progress_inner_list" type="id"/>
@@ -14,5 +14,11 @@
 
     <!-- SLIDEOUT MENU -->
     <item name="slideout_frame" type="id"/>
-
+    
+    <!-- STATIC FRAGMENT HOLDER -->
+    <item name="static_fragment_holder_container" type="id" />
+    
+    <!-- ANIMATION OVERLAY VIEW -->
+	<item name="overlay_root" type="id" />
+	
 </resources>

@@ -29,6 +29,7 @@ public class SlideoutList extends RelativeLayout {
 	// CONSTANTS
 	
 	private static final int DEFAULT_LAYOUT = R.layout.default_slideout_list;
+	private static final int DEFAULT_HEADER = R.layout.default_slideout_header;
 
 	// CONSTRUCTORS
 	

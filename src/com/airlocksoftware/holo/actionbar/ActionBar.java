@@ -1,5 +1,9 @@
 package com.airlocksoftware.holo.actionbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,54 +26,57 @@ import android.widget.RelativeLayout;
 
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.activities.ActionBarActivity;
-import com.airlocksoftware.holo.activities.SlideoutNavActivity;
 import com.airlocksoftware.holo.adapters.OverflowAdapter;
 import com.airlocksoftware.holo.adapters.OverflowAdapter.OverflowItem;
+import com.airlocksoftware.holo.anim.AnimationOverlayView.AnimationFillType;
 import com.airlocksoftware.holo.type.FontText;
 
 public class ActionBar extends Fragment {
 
 	// CONTEXT
-	ActionBarActivity mContext;
+	ActionBarActivity mActivity;
+	Context mContext;
 
 	// VIEWS
 	RelativeLayout mFrame;
 	ListView mOverflowList;
 	OverflowAdapter mAdapter;
 	ImageButton mOverflowButton;
-	ImageView mNavIcon;
-	
-	// RESOURCE IDS
-	int mNavBackIconResId;
-	int mNavListIconResId;
-	
-	// LISTENERS
-	private View.OnClickListener mListListener;
-	private View.OnClickListener mBackListener;
+	ImageView mAppButtonNavIcon;
 
+	// RESOURCE IDS
+	int mAppUpIconResId;
+	int mAppTopIconResId;
+
+	// LISTENERS
+	private View.OnClickListener mTopListener;
+	private View.OnClickListener mUpListener;
+	
+	// QUEUE of stuff done before onCreateView() is called
+	private List<OverflowItem> mOverflowQueue;
 
 	// CONSTANTS
 	private static final String TITLE_REPLACEMENT_TAG = "title_replacement";
 	private static final int TITLE_TEXT_ID = R.id.action_bar_title;
 	private static final int DEFAULT_LAYOUT_RES_ID = R.layout.action_bar;
-	
+
 	// PUBLIC METHODS
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Context context = inflater.getContext();
-		
+		mContext = inflater.getContext();
+
 		mFrame = (RelativeLayout) inflater.inflate(DEFAULT_LAYOUT_RES_ID, container, false);
 		mOverflowButton = (ImageButton) findViewById(R.id.overflow_button);
 		mOverflowList = (ListView) findViewById(R.id.overflow_list);
-		mNavIcon = (ImageView) findViewById(R.id.nav_icon);
-		
+		mAppButtonNavIcon = (ImageView) findViewById(R.id.app_nav_icon);
+
 		TypedValue tv = new TypedValue();
-	    context.getTheme().resolveAttribute(R.attr.actionBarNavBackIcon, tv, true);
-	    mNavBackIconResId = tv.resourceId;
-	    		
-	    tv = new TypedValue();
-	    context.getTheme().resolveAttribute(R.attr.actionBarNavListIcon, tv, true);
-	    mNavListIconResId = tv.resourceId;
+		mContext.getTheme().resolveAttribute(R.attr.actionBarNavUpIcon, tv, true);
+		mAppUpIconResId = tv.resourceId;
+
+		tv = new TypedValue();
+		mContext.getTheme().resolveAttribute(R.attr.actionBarNavTopIcon, tv, true);
+		mAppTopIconResId = tv.resourceId;
 		
 		return mFrame;
 	}
@@ -78,12 +85,17 @@ public class ActionBar extends Fragment {
 	public void onActivityCreated(Bundle savedState) {
 		super.onActivityCreated(savedState);
 		// GET CONTEXT
-		mContext = (ActionBarActivity) getActivity();
-		
+		Activity activity = getActivity();
+		if(activity instanceof ActionBarActivity) {
+			mActivity = (ActionBarActivity) activity;
+		} else {
+			throw new RuntimeException("Can't use an ActionBar outside of an ActionBarActivity");
+		}
+
 		// SETUP OVERFLOW LIST
 		((FrameLayout) mOverflowList.getParent()).removeView(mOverflowList);
-		mContext.getAnimationOverlayView().addView(mOverflowList);
-		mAdapter = new OverflowAdapter(mContext);
+		mActivity.clipActionBarAnimation().addView(mOverflowList);
+		mAdapter = new OverflowAdapter(mActivity);
 		mOverflowList.setAdapter(mAdapter);
 		mOverflowList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -92,15 +104,24 @@ public class ActionBar extends Fragment {
 				if (item != null && item.mListener != null) item.mListener.onClick(view);
 			}
 		});
-		
+
 		// SETUP OVERFLOW BUTTON
 		mOverflowButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mContext.getAnimationOverlayView().toggleViewById(mOverflowList.getId());
+				mActivity.fillScreenAnimation().toggleViewById(mOverflowList.getId());
 			}
 		});
 		
+		// DEAL WITH STUFF FROM QUEUE
+		// OverflowItems
+		if(mOverflowQueue != null) {
+			for(OverflowItem item : mOverflowQueue) {
+				mAdapter.add(item);
+			}
+			showOverflowButton();
+		}
+
 	}
 
 	// TITLE
@@ -155,8 +176,9 @@ public class ActionBar extends Fragment {
 		buttonContainer.addView(actionBarButton);
 	}
 
+	/** Adds a button to the right side of the ActionBar with a specified icon, text, and callback **/
 	public void addActionBarButton(int iconResourceId, String text, OnClickListener clickListener) {
-		LayoutInflater inflater = LayoutInflater.from(mContext);
+		LayoutInflater inflater = LayoutInflater.from(mActivity);
 		LinearLayout buttonContainer = (LinearLayout) mFrame.findViewById(R.id.button_container);
 		RelativeLayout button = (RelativeLayout) inflater.inflate(R.layout.button_ab_text_plus_icon, buttonContainer,
 				false);
@@ -182,19 +204,25 @@ public class ActionBar extends Fragment {
 
 	// OVERFLOW MENU
 	public void addOverflowItem(OverflowItem item) {
-		mAdapter.add(item);
-		showOverflowButton();
+		if(mAdapter == null) {
+			// add it to a queue
+			if(mOverflowQueue == null) mOverflowQueue = new ArrayList<OverflowItem>();
+			mOverflowQueue.add(item);
+		} else {
+			mAdapter.add(item);
+			showOverflowButton();
+		}
 	}
-	
-	public void removeOverflowItemIcon(OverflowItem item) {
+
+	public void removeOverflowItem(OverflowItem item) {
 		mAdapter.remove(item);
-		if(mAdapter.getCount() < 1) hideOverflowButton();
+		if (mAdapter.getCount() < 1) hideOverflowButton();
 	}
-	
+
 	public void showOverflowButton() {
 		findViewById(R.id.overflow_button).setVisibility(View.VISIBLE);
 	}
-	
+
 	public void hideOverflowButton() {
 		findViewById(R.id.overflow_button).setVisibility(View.GONE);
 	}
@@ -213,35 +241,40 @@ public class ActionBar extends Fragment {
 	}
 
 	// UP / LIST / BACK BUTTON
+
+	private void refreshAppButton() {
+		View appButton = appButton();
+
+		if (mUpListener != null) {
+			appButton.setClickable(true);
+			appButton.setOnClickListener(mUpListener);
+			mAppButtonNavIcon.setImageResource(mAppUpIconResId);
+			mAppButtonNavIcon.setVisibility(View.VISIBLE);
+		} else if (mTopListener != null) {
+			appButton.setClickable(false);
+			appButton.setOnClickListener(mTopListener);
+			mAppButtonNavIcon.setImageResource(mAppTopIconResId);
+			mAppButtonNavIcon.setVisibility(View.VISIBLE);
+		} else {
+			appButton.setClickable(false);
+			appButton.setOnClickListener(null);
+			mAppButtonNavIcon.setVisibility(View.GONE);
+		}
+	}
 	
-		private void refreshBackButton() {
-			View backButton = mFrame.findViewById(R.id.back_button);
-			
-			if (mBackListener != null) {
-				backButton.setClickable(true);
-				backButton.setOnClickListener(mBackListener);
-				mNavIcon.setImageResource(mNavBackIconResId);
-				mNavIcon.setVisibility(View.VISIBLE);
-			} else if(mListListener != null){
-				backButton.setClickable(false);
-				backButton.setOnClickListener(mListListener);
-				mNavIcon.setImageResource(mNavListIconResId);
-				mNavIcon.setVisibility(View.VISIBLE);
-			} else {
-				backButton.setClickable(false);
-				backButton.setOnClickListener(null);
-				mNavIcon.setVisibility(View.GONE);
-			}
-		}
-		
-		public void setBackListener(OnClickListener listener) {
-			mBackListener = listener;
-			refreshBackButton();
-		}
-		
-		public void setListListener(OnClickListener listener) {
-			mListListener = listener;
-			refreshBackButton();
-		}
+	/** Get the view that contains the app button (up / list) **/
+	public View appButton() {
+		return mFrame.findViewById(R.id.app_button);
+	}
+
+	public void setUpListener(OnClickListener listener) {
+		mUpListener = listener;
+		refreshAppButton();
+	}
+
+	public void setTopListener(OnClickListener listener) {
+		mTopListener = listener;
+		refreshAppButton();
+	}
 
 }

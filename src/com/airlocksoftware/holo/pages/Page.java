@@ -2,13 +2,13 @@ package com.airlocksoftware.holo.pages;
 
 import java.util.Stack;
 
+import android.content.Context;
 import android.view.View;
 
 import com.airlocksoftware.holo.actionbar.ActionBar;
-import com.airlocksoftware.holo.activities.TabActivity;
+import com.airlocksoftware.holo.activities.ActionBarActivity;
 import com.airlocksoftware.holo.interfaces.ActionBarInterface;
 import com.airlocksoftware.holo.interfaces.BackPressedListener;
-import com.airlocksoftware.holo.tab.TabPager;
 
 /**
  * Represents a tab in the TabPager. Implements a BackStack for TabFragments, handles 
@@ -19,8 +19,12 @@ import com.airlocksoftware.holo.tab.TabPager;
  */
 public abstract class Page implements BackPressedListener, ActionBarInterface {
 
+	private Context mContext;
+	private ActionBarActivity mActivity;
+	
+	private StaticPageHolder mHolder;
 	private PageFragment mVisibleFragment;
-	protected TabActivity mContext;
+	
 	private Stack<PageFragment> mStack = new Stack<PageFragment>();
 	private int mId;
 	
@@ -28,17 +32,26 @@ public abstract class Page implements BackPressedListener, ActionBarInterface {
 	private static final int DEFAULT_ID = 1;
 
 	// CONSTRUCTORS
-	
-	public Page(TabActivity context) {
-		this(context, DEFAULT_ID);
+	public Page(ActionBarActivity context, StaticPageHolder holder) {
+		this(context, holder, DEFAULT_ID);
 	}
-	
-	public Page(TabActivity context, int id) {
+
+	public Page(ActionBarActivity context, StaticPageHolder holder, int id) {
 		mContext = context;
+		mActivity = context;
+		mHolder = holder;
 		setId(id);
 	}
 	
 	// PUBLIC METHODS
+	
+	public Context context() {
+		return mContext;
+	}
+	
+	public ActionBarActivity activity() {
+		return mActivity;
+	}
 
 	public int getId() {
 		return mId;
@@ -56,12 +69,14 @@ public abstract class Page implements BackPressedListener, ActionBarInterface {
 		if (mVisibleFragment != null) {
 			if (!isBackStack) mStack.add(mVisibleFragment);
 
-			TabPager tabPager = mContext.getPager();
-			tabPager.getAdapter().replaceFragments(tabPager.getViewPager(), mVisibleFragment, fragment);
+//			TabPager tabPager = mContext.getPager();
+//			tabPager.getAdapter().replaceFragments(tabPager.getViewPager(), mVisibleFragment, fragment);
 			
-			mVisibleFragment.cleanupActionBar(mContext.getAB());
+			mHolder.showFragment(mVisibleFragment);
+			
+			mVisibleFragment.cleanupActionBar(mActivity.actionBar());
 			mVisibleFragment = fragment;
-			setupActionBar(mContext.getAB());
+			setupActionBar(mActivity.actionBar());
 		} else {
 			mVisibleFragment = fragment;
 		}
@@ -75,7 +90,7 @@ public abstract class Page implements BackPressedListener, ActionBarInterface {
 	}
 
 	public int getPageId() {
-		return getVisibleFragment().getPageId();
+		return getVisibleFragment().fragmentId();
 	}
 
 	@Override
@@ -98,20 +113,20 @@ public abstract class Page implements BackPressedListener, ActionBarInterface {
 	@Override
 	public void setupActionBar(ActionBar actionBar) {
 		if (!mStack.empty()) {
-			actionBar.setBackListener(backListener);
+			actionBar.setUpListener(mBackListener);
 		} else {
-			actionBar.setBackListener(null);
+			actionBar.setUpListener(null);
 		}
 		getVisibleFragment().setupActionBar(actionBar);
 	}
 
 	@Override
 	public void cleanupActionBar(ActionBar actionBar) {
-		actionBar.setBackListener(null);
+		actionBar.setUpListener(null);
 		getVisibleFragment().cleanupActionBar(actionBar);
 	}
 
-	private View.OnClickListener backListener = new View.OnClickListener() {
+	private View.OnClickListener mBackListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			onBackPressed();

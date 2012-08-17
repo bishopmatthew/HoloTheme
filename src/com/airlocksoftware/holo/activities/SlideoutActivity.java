@@ -1,51 +1,63 @@
 package com.airlocksoftware.holo.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.airlocksoftware.holo.R;
+import com.airlocksoftware.holo.interfaces.OnActivityResultListener;
+import com.airlocksoftware.holo.pages.StaticPageHolder;
 import com.airlocksoftware.holo.slideout.SlideoutFrame;
 
 public class SlideoutActivity extends ActionBarActivity {
 
-	protected SlideoutFrame mSlideoutFrame;
+	private SlideoutFrame mSlideoutFrame;
+
+	private StaticPageHolder mHolder;
 
 	@Override
 	public void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
 
-		getAB().setListListener(new View.OnClickListener() {
+		actionBar().setTopListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				SlideoutActivity.this.toggleSlideout();
 			}
 		});
 
-		// GET WIDTH OF BUTTON
-		View backButton = findViewById(R.id.back_button);
-		int buttonWidth = backButton.getWidth();
-		mSlideoutFrame = new SlideoutFrame(this, this, this, buttonWidth);
+		mSlideoutFrame = new SlideoutFrame(this, this, this.mTest, actionBar().appButton().getWidth());
+
+		setContentView(R.layout.slideout_list_activity);
+		mHolder = (StaticPageHolder) findViewById(R.id.page_holder);
 	}
 
 	protected void toggleSlideout() {
-		View backButton = findViewById(R.id.back_button);
-		int buttonWidth = backButton.getWidth();
-		mSlideoutFrame.setSlideWidth(buttonWidth);
-		mSlideoutFrame.showSlideout();
+		mSlideoutFrame.setSlideWidth(actionBar().appButton().getWidth());
+		mSlideoutFrame.toggle();
 	}
-	
-	public SlideoutFrame getSlideoutFrame() {
+
+	public SlideoutFrame slideoutFrame() {
 		return mSlideoutFrame;
 	}
-	
+
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_BACK && mSlideoutFrame.isOpen()){
-			mSlideoutFrame.closeSlideout();
-			return true;
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if (mHolder.page().getVisibleFragment() instanceof OnActivityResultListener) {
+			((OnActivityResultListener) mHolder.page().getVisibleFragment()).onActivityResult(requestCode, resultCode,
+					intent);
 		}
-		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (mSlideoutFrame.isOpen()) mSlideoutFrame.close();
+		else if (!mHolder.page().onBackPressed()) super.onBackPressed();
+	}
+
+	public StaticPageHolder holder() {
+		return mHolder;
 	}
 
 }

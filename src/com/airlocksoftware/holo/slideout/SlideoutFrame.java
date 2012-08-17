@@ -1,6 +1,5 @@
 package com.airlocksoftware.holo.slideout;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.Display;
@@ -15,9 +14,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.airlocksoftware.holo.R;
+import com.airlocksoftware.holo.activities.ActionBarActivity;
+import com.airlocksoftware.holo.anim.AnimationOverlay;
 import com.airlocksoftware.holo.anim.AnimationOverlayView;
-import com.airlocksoftware.holo.interfaces.AnimationOverlay;
+import com.airlocksoftware.holo.anim.AnimationOverlayView.CloseListener;
 
+/** The frame the SlideoutView lives in. Consists of the ImageView that holds a screenshot of the 
+ * screen we're sliding over, and a FrameLayout to hold the content.
+ **/
 public class SlideoutFrame extends FrameLayout {
 
 	private Bitmap mBitmap;
@@ -27,7 +31,7 @@ public class SlideoutFrame extends FrameLayout {
 	AnimationOverlayView mOverlayView;
 	AnimationOverlay mOverlay;
 	private Context mContext;
-	Activity mActivity;
+	ActionBarActivity mActivity;
 	int mSlideWidth;
 
 	private Animation mInAnimation;
@@ -42,11 +46,11 @@ public class SlideoutFrame extends FrameLayout {
 	private static final int DURATION_MS = 150;
 
 	// CONSTRUCTOR
-	public SlideoutFrame(Context context, Activity activity, AnimationOverlay overlay, int slideWidth) {
+	public SlideoutFrame(Context context, ActionBarActivity activity, AnimationOverlay overlay, int slideWidth) {
 		super(context, null);
 		mContext = context;
 		mOverlay = overlay;
-		mOverlayView = mOverlay.getAnimationOverlayView();
+		mOverlayView = mActivity.fillScreenAnimation();
 		mActivity = activity;
 		mSlideWidth = slideWidth;
 
@@ -60,8 +64,11 @@ public class SlideoutFrame extends FrameLayout {
 
 	// PUBLIC METHODS
 	
-	public void showSlideout() {
+	public void open() {
 		mOpen = true;
+		mIsAnimating = true;
+//		mOverlayView.animationFillType(AnimationFillType.FILL_SCREEN);
+
 
 		int screenWidth = getScreenWidth();
 		int frameWidth = (2 * screenWidth) - mSlideWidth;
@@ -103,22 +110,12 @@ public class SlideoutFrame extends FrameLayout {
 			}
 		});
 
-		mOverlayView.setFillParent(true);
-		mIsAnimating = true;
 		mOverlayView.showViewById(R.id.slideout_frame, mInAnimation);
 	}
 
-	public void setSlideWidth(int slideWidth) {
-		mSlideWidth = slideWidth;
-	}
-
-	public void toggle() {
-		if (mOpen) closeSlideout();
-		else showSlideout();
-	}
-
-	public void closeSlideout() {
+	public void close() {
 		mOpen = false;
+		mIsAnimating = true;
 
 		int screenWidth = getScreenWidth();
 
@@ -129,27 +126,25 @@ public class SlideoutFrame extends FrameLayout {
 				TranslateAnimation.ABSOLUTE, 0);
 		mOutAnimation.setDuration(DURATION_MS);
 		mOutAnimation.setInterpolator(mContext, android.R.anim.accelerate_interpolator);
-		mOutAnimation.setAnimationListener(new AnimationListener() {
-
+		
+		mOverlayView.hideViewById(R.id.slideout_frame, mOutAnimation, new CloseListener() {
 			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				mOverlayView.setFillParent(false);
+			public void onCloseFinished(AnimationOverlayView overlay) {
+//				overlay.animationFillType(AnimationFillType.CLIP_ACTION_BAR);
 				mIsAnimating = false;
 			}
 		});
-
-		mIsAnimating = true;
-		mOverlayView.hideViewById(R.id.slideout_frame, mOutAnimation);
 	}
 	
+	public void toggle() {
+		if (isOpen()) close();
+		else open();
+	}
+	
+	public void setSlideWidth(int slideWidth) {
+		mSlideWidth = slideWidth;
+	}
+
 	// PRIVATE METHODS
 	
 	private void inflateLayout() {
@@ -160,7 +155,7 @@ public class SlideoutFrame extends FrameLayout {
 		mScreenshotView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (!mIsAnimating) closeSlideout();
+				if (!mIsAnimating) close();
 			}
 		});
 	}
@@ -174,7 +169,7 @@ public class SlideoutFrame extends FrameLayout {
 		return display.getWidth();
 	}
 
-	public void setSlideoutContent(View child) {
+	public void setContent(View child) {
 		mSlideoutContent.addView(child);
 	}
 

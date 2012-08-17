@@ -1,22 +1,24 @@
 package com.airlocksoftware.holo.pages;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import com.airlocksoftware.holo.slideout.SlideoutListItem;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.SparseArray;
 import android.view.View;
 
+/** Extends FragmentStatePagerAdapter and allows you to add multiple Pages, whose data will be saved 
+ * when you switch between them. **/
 public class PageAdapter extends FragmentStatePagerAdapter {
 
-	private ArrayList<Page> mPages = new ArrayList<Page>();
-	Map<Integer, Page> mIdMap = new HashMap<Integer, Page>();
-
+	private List<Page> mPages = new ArrayList<Page>();
+	private Map<Integer, Integer> mIdToPosition = new HashMap<Integer, Integer>();
+	
+	SparseArray<Page> mIdMap = new SparseArray<Page>();
 
 	public PageAdapter(FragmentManager fm) {
 		super(fm);
@@ -37,56 +39,67 @@ public class PageAdapter extends FragmentStatePagerAdapter {
 	}
 
 	/**
-	 * If the object isn't one of the visible fragments in the array, return
-	 * POSITION_NONE
+	 * If the object isn't one of the visible fragments in the array, return POSITION_NONE
+	 * Required for being able to replace the Fragments inside a Pager
 	 **/
 	@Override
 	public int getItemPosition(Object object) {
-		for (Page tab : mPages) {
-			if (tab.getVisibleFragment().equals(object)) {
+		for (Page page : mPages) {
+			if (page.getVisibleFragment().equals(object)) {
 				return POSITION_UNCHANGED;
 			}
 		}
 		return POSITION_NONE;
 	}
 
-	public void addItem(Page page) {
-		mPages.add(page);
-		mIdMap.put(page.getPageId(), page);
-	}
-
+	/** Required for being able to replace the Fragments inside a Pager **/
 	@Override
 	protected int getFragmentPosition(Fragment fragment) {
 		if (fragment instanceof PageFragment) {
-			Page page = mIdMap.get(((PageFragment) fragment).getPageId());
+			Page page = mIdMap.get(((PageFragment) fragment).fragmentId());
 			return mPages.indexOf(page);
 		} else {
 			return -1;
 		}
 	}
-
+	
+	/** Required for being able to replace the Fragments inside a Pager **/
 	@Override
-	protected void handleGetItemInvalidated(View container, Fragment oldFragment, Fragment newFragment) {
-		if (oldFragment instanceof PageFragment && newFragment instanceof PageFragment) {
-			int oldId = ((PageFragment) oldFragment).getPageId();
+	protected void handleGetItemInvalidated(View container, Fragment old, Fragment replacement) {
+		if (old instanceof PageFragment && replacement instanceof PageFragment) {
+			int oldId = ((PageFragment) old).fragmentId();
 			Page page = mIdMap.get(oldId);
 			int oldIndex = mPages.indexOf(page);
-			if(oldIndex != -1) {
+			if (oldIndex != -1) {
 				mIdMap.remove(oldId);
-				mIdMap.put(((PageFragment) newFragment).getPageId(), page);
+				mIdMap.put(((PageFragment) replacement).fragmentId(), page);
 			}
 		}
 	}
 
-	public ArrayList<Page> getPages() {
+	public void getItemByPageId(int id) {
+		
+	}
+
+	public void addPage(Page page) {
+		mPages.add(page);
+		mIdMap.put(page.getPageId(), page);
+	}
+
+	public List<Page> getPages() {
 		return mPages;
 	}
 
 	public void addPages(ArrayList<Page> pages) {
-		if(mPages == null) {
+		if (mPages == null) {
 			mPages = pages;
 		} else {
 			mPages.addAll(pages);
+		}
+		
+		// add ids to mIdMap
+		for(Page page : mPages) {
+			mIdMap.put(page.getId(), page);
 		}
 	}
 }

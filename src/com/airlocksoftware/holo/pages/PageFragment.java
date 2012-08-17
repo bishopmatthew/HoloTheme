@@ -7,18 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.airlocksoftware.holo.activities.ActionBarActivity;
 import com.airlocksoftware.holo.interfaces.ActionBarInterface;
 
+/** A fragment that is meant to be held inside of a Page. **/
 public abstract class PageFragment extends Fragment implements ActionBarInterface {
 
-	protected Context mContext;
+	private Context mContext;
+	private ActionBarActivity mActivity;
 	protected View mFrame;
 	protected Page mParent;
 	
-	public abstract int getPageId();
+	private int mFragmentId;
 
-	public PageFragment(Context context, Page parent) {
-		mContext = context;
+	// CONSTRUCTOR
+	public PageFragment(ActionBarActivity activity, Page parent) {
+		mContext = activity;
+		mActivity = activity;
 		mParent = parent;
 	}
 
@@ -33,6 +38,26 @@ public abstract class PageFragment extends Fragment implements ActionBarInterfac
 
 	public View findViewById(int resourceId) {
 		return (mFrame != null) ? mFrame.findViewById(resourceId) : null;
+	}
+	
+	/** Getter for fragmentId**/
+	public int fragmentId(){
+		return mFragmentId;
+	}
+	
+	/** Setter for fragmentId **/
+	public void fragmentId(int id) {
+		mFragmentId = id;
+	}
+	
+	/** Getter for mContext**/
+	public Context context() {
+		return mContext;
+	}
+	
+	/** Getter for mActivity**/
+	public ActionBarActivity activity() {
+		return mActivity;
 	}
 
 }

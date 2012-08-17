@@ -5,7 +5,9 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -20,9 +22,10 @@ public class AnimationOverlayView extends FrameLayout {
 
 	// CONTEXT
 	Context mContext;
-	RelativeLayout.LayoutParams mDefaultParams;
-	RelativeLayout.LayoutParams mFillParams;
-	boolean mIsFillParent = false;
+	
+	private AnimationFillType mFillType;
+	RelativeLayout.LayoutParams mClipActionBarParams;
+	RelativeLayout.LayoutParams mFillScreenParams;
 
 	// STATE
 	private boolean mVisible = false;
@@ -46,29 +49,55 @@ public class AnimationOverlayView extends FrameLayout {
 		super(context, attrs);
 		mContext = context;
 		getAttributes(attrs);
-		setupLayoutParams();
+		
+		animationFillType(AnimationFillType.CLIP_ACTION_BAR); // default
 	}
 
 	// PUBLIC METHODS
 	
-	public void setFillParent(boolean fill) {
-		if(mDefaultParams == null || mFillParams == null) {
-			setupLayoutParams();
+	/** Set animation fill type**/
+	public void animationFillType(AnimationFillType fill) {
+		if(true) return;
+		mFillType = fill;
+		
+		if(mClipActionBarParams != null && mFillScreenParams != null) {
+			switch(fill) {
+			case CLIP_ACTION_BAR:
+				setLayoutParams(mClipActionBarParams);
+				break;
+			case FILL_SCREEN:
+				setLayoutParams(mFillScreenParams);
+				break;
+			default:
+				throw new RuntimeException("Couldn't find a matching AnimationFillType for " + fill.name());
+			} 
+			ViewParent parent = getParent();
+			parent.requestLayout();
 		}
-		this.setLayoutParams((fill) ? mFillParams : mDefaultParams);
 	}
 	
 	public void showViewById(int id) {
 		showViewById(id, mInAnim);
 	}
-
+	
 	public void showViewById(int id, int inAnim) {
-		showViewById(id, AnimationUtils.loadAnimation(mContext, inAnim));
+		showViewById(id, AnimationUtils.loadAnimation(mContext, inAnim), null);
 	}
 
+
+	public void showViewById(int id, int inAnim, OpenListener listener) {
+		showViewById(id, AnimationUtils.loadAnimation(mContext, inAnim), listener);
+	}
+	
 	public void showViewById(int id, Animation inAnim) {
+		showViewById(id, inAnim, null);
+	}
+
+	public void showViewById(int id, Animation inAnim, OpenListener listener) {
 		View toShow = findViewById(id);
 		if(toShow == null) return;
+		
+		hideAll();
 		
 		toShow.setAnimation(inAnim);
 		toShow.getAnimation().start();
@@ -85,17 +114,39 @@ public class AnimationOverlayView extends FrameLayout {
 	public void hideViewById(int id, int outAnim) {
 		hideViewById(id, AnimationUtils.loadAnimation(mContext, outAnim));
 	}
+	
+	public void hideViewById(int id, int outAnim, CloseListener listener) {
+		hideViewById(id, AnimationUtils.loadAnimation(mContext, outAnim), listener);
+
+	}
 
 	public void hideViewById(int id, Animation outAnim) {
-		View toHide = findViewById(id);
+		hideViewById(id, outAnim, null);
+	}
+	
+	public void hideViewById(int id, Animation outAnim, CloseListener listener) {
+		final View toHide = findViewById(id);
 		if (toHide == null) return;
 
-		toHide.setAnimation(outAnim);
-		toHide.getAnimation().start();
-		toHide.setVisibility(GONE);
+		final CloseListener hideListener = listener;
+		
+		outAnim.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				toHide.setVisibility(GONE);
+				mCurrentView = null;
+				mVisible = false;
+				if(hideListener != null) hideListener.onCloseFinished(AnimationOverlayView.this);
+			}
+			@Override
+			public void onAnimationRepeat(Animation animation) {}
+			@Override
+			public void onAnimationStart(Animation animation) {}
+		});
 
-		mCurrentView = null;
-		mVisible = false;
+		toHide.setAnimation(outAnim);
+		
+		toHide.getAnimation().start();		
 	}
 
 	public void toggleViewById(int id) {
@@ -186,11 +237,21 @@ public class AnimationOverlayView extends FrameLayout {
 		child.setVisibility(GONE);
 		super.addView(child, index, params);
 	}
-	
-//	@Override
-	
+
+	@Override
+	public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
+		setupLayoutParams();
+	}
 
 	// PRIVATE METHODS
+
+	private void setupLayoutParams() {
+		mClipActionBarParams = (RelativeLayout.LayoutParams) getLayoutParams();
+		mFillScreenParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		this.animationFillType(mFillType);
+	}
+
 	private void getAttributes(AttributeSet attrs) {
 		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.AnimatedView);
 
@@ -200,9 +261,18 @@ public class AnimationOverlayView extends FrameLayout {
 		a.recycle();
 	}
 	
-	private void setupLayoutParams() {
-		mDefaultParams = (RelativeLayout.LayoutParams) getLayoutParams();
-		mFillParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+	// ENUMS
+	public enum AnimationFillType {
+		FILL_SCREEN, CLIP_ACTION_BAR;
+	}
+	
+	// INNER CLASSES
+	public interface CloseListener {
+		public void onCloseFinished(AnimationOverlayView overlay);
+	}
+	
+	public interface OpenListener {
+		public void onOpenFinished(AnimationOverlayView overlay);
 	}
 
 	
