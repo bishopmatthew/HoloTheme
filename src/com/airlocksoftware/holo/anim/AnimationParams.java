@@ -1,13 +1,17 @@
 package com.airlocksoftware.holo.anim;
 
+import android.view.animation.Animation;
 
 public class AnimationParams {
-	
+
 	// STATE
 	private FillType mFillType = FillType.FILL_SCREEN;
 	private int mZIndex = 0;
 	private Exclusivity mExclusivity = Exclusivity.EXCLUDE_ALL;
-	
+	private boolean mIsVisible = false;
+	private Animation mInAnim;
+	private Animation mOutAnim;
+
 	// CONSTRUCTORS
 	public AnimationParams() {
 		this(FillType.FILL_SCREEN);
@@ -29,16 +33,57 @@ public class AnimationParams {
 
 	public enum Exclusivity {
 		// hide all other views
-		EXCLUDE_ALL, 
+		EXCLUDE_ALL,
 		// don't hide any other views
 		EXCLUDE_NONE;
 	}
-	
+
+	/** Getter for mFillType **/
+	public FillType fillType() {
+		return mFillType;
+	}
+
+	/** Setter for mFillType **/
+	public AnimationParams fillType(FillType type) {
+		mFillType = type;
+		return this;
+	}
+
+	/** Getter for mExclusivity **/
 	public Exclusivity exclusivity() {
 		return mExclusivity;
 	}
 
-	public FillType fillType() {
-		return mFillType;
+	/** Setter for mExclusivity **/
+	public AnimationParams exclusivity(Exclusivity exclusivity) {
+		mExclusivity = exclusivity;
+		return this;
+	}
+
+	public boolean visible() {
+		return mIsVisible;
+	}
+
+	public AnimationParams visible(boolean isVisible) {
+		mIsVisible = isVisible;
+		return this;
+	}
+
+	public Animation inAnimation() {
+		return mInAnim;
+	}
+	
+	public AnimationParams inAnimation(Animation in) {
+		mInAnim = in;
+		return this;
+	}
+	
+	public Animation outAnimation() {
+		return mOutAnim;
+	}
+	
+	public AnimationParams outAnimation(Animation out) {
+		mOutAnim = out;
+		return this;
 	}
 }

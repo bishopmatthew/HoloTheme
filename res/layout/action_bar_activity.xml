@@ -19,19 +19,4 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@id/action_bar" />
 
-    <!-- MUST BE BELOW ACTIVITY_FRAME SO THAT IT'S ON TOP -->
-
-    <com.airlocksoftware.holo.anim.AnimationOverlayView
-        android:id="@+id/action_bar_clip_anim_frame"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/action_bar"
-        android:visibility="visible" />
-    
-    <com.airlocksoftware.holo.anim.AnimationOverlayView
-        android:id="@+id/action_bar_fill_screen_anim_frame"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="visible" />
-
 </RelativeLayout>

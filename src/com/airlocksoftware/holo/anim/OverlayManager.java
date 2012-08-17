@@ -27,15 +27,10 @@ public class OverlayManager {
 	// STATE
 	Map<AnimationParams.FillType, FrameLayout> mFrames = new HashMap<AnimationParams.FillType, FrameLayout>();
 	Map<View, AnimationParams> mAnimationParams = new HashMap<View, AnimationParams>();
-	List<View> mChildren = new ArrayList<View>();
 
 	private Context mContext;
 	private Window mWindow;
 	FrameLayout mRoot;
-
-	// these might be unnecessary
-	private boolean mVisible = false;
-	View mCurrentView;
 
 	// animations
 	private int mInAnimResId;
@@ -53,9 +48,10 @@ public class OverlayManager {
 		mWindow = window;
 		mRoot = new FrameLayout(context, null);
 		mRoot.setId(R.id.overlay_root);
-		mWindow.addContentView(mRoot, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		mWindow.addContentView(mRoot, new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT));
 		mRoot.setVisibility(View.GONE);
-		
+
 		// TODO this is temporary
 		setDefaultInAnimation(DEF_IN_ANIM);
 		setDefaultOutAnimation(DEF_OUT_ANIM);
@@ -70,7 +66,6 @@ public class OverlayManager {
 	}
 
 	public void addView(View v, AnimationParams params) {
-		mChildren.add(v);
 		mAnimationParams.put(v, params);
 		FrameLayout frame = mFrames.get(params.fillType());
 		if (frame == null) {
@@ -83,19 +78,13 @@ public class OverlayManager {
 	}
 
 	public void removeView(View v) {
-		if (mChildren.remove(v)) {
-			AnimationParams params = mAnimationParams.remove(v);
-			FrameLayout frame = mFrames.get(params.fillType());
-			frame.removeView(v);
-		}
+		AnimationParams params = mAnimationParams.remove(v);
+		FrameLayout frame = mFrames.get(params.fillType());
+		frame.removeView(v);
 
 	}
 
 	public View findViewById(int id) {
-		// for (View v : mChildren) {
-		// if (v.getId() == id) return v;
-		// }
-		// return null;
 		return mRoot.findViewById(id);
 	}
 
@@ -125,9 +114,16 @@ public class OverlayManager {
 
 	/** Show view using the provided animation and AnimationFinishedListener. This is where all the work is done **/
 	public void showViewById(int id, Animation inAnim, AnimationFinishedListener listener) {
-		final View toShow = findViewById(id);
-		if (toShow == null) return;
+		showView(findViewById(id), inAnim, listener);
+	}
+
+	private void showView(View view, Animation inAnim, AnimationFinishedListener listener) {
+		final View toShow = view;
 		AnimationParams params = mAnimationParams.get(toShow);
+		if (toShow == null || params == null) return;
+		if (params.inAnimation() != null) {
+			inAnim = params.inAnimation();
+		}
 		FrameLayout frame = mFrames.get(params.fillType());
 		mRoot.setVisibility(View.VISIBLE);
 		frame.setVisibility(View.VISIBLE);
@@ -153,12 +149,9 @@ public class OverlayManager {
 			}
 		});
 
-		toShow.setAnimation(inAnim);
-		toShow.getAnimation().start();
 		toShow.setVisibility(View.VISIBLE);
-
-		mCurrentView = toShow;
-		mVisible = true;
+		toShow.startAnimation(inAnim);
+		params.visible(true);
 	}
 
 	/** Hide view using the default Animations **/
@@ -183,17 +176,24 @@ public class OverlayManager {
 
 	/** Hide view using the provided animation with AnimationFinishedListener **/
 	public void hideViewById(int id, Animation outAnim, AnimationFinishedListener listener) {
-		final View toHide = findViewById(id);
-		if (toHide == null) return;
+		hideView(findViewById(id), outAnim, listener);
+	}
 
+	private void hideView(View view, Animation outAnim, AnimationFinishedListener listener) {
+		final View toHide = view;
+		AnimationParams params = mAnimationParams.get(toHide);
+		if (toHide == null || params == null) return;
+		
 		final AnimationFinishedListener hideListener = listener;
+		if (params.inAnimation() != null) {
+			outAnim = params.inAnimation();
+		}
 
 		outAnim.setAnimationListener(new AnimationListener() {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				toHide.setVisibility(View.GONE);
-				mCurrentView = null;
-				mVisible = false;
+				mAnimationParams.get(toHide).visible(false);
 				if (hideListener != null) hideListener.onFinished(toHide);
 			}
 
@@ -206,9 +206,7 @@ public class OverlayManager {
 			}
 		});
 
-		toHide.setAnimation(outAnim);
-
-		toHide.getAnimation().start();
+		toHide.startAnimation(outAnim);
 	}
 
 	public void toggleViewById(int id) {
@@ -216,19 +214,18 @@ public class OverlayManager {
 	}
 
 	public void toggleViewById(int id, int inAnim, int outAnim) {
-		if (mVisible) {
-			hideViewById(id, outAnim);
-		} else {
-			showViewById(id, inAnim);
-		}
+		toggleViewById(id, AnimationUtils.loadAnimation(mContext, inAnim),
+				AnimationUtils.loadAnimation(mContext, outAnim));
 	}
 
 	public void toggleViewById(int id, Animation inAnim, Animation outAnim) {
-		if (mVisible) {
+		View toToggle = findViewById(id);
+		AnimationParams params = mAnimationParams.get(toToggle);
+
+		if (params.visible()) {
 			hideViewById(id, outAnim);
 		} else {
 			showViewById(id, inAnim);
-			// mTempOutAnim = outAnim;
 		}
 	}
 
@@ -238,16 +235,11 @@ public class OverlayManager {
 			for (int j = 0; j < frame.getChildCount(); j++) {
 				View child = frame.getChildAt(j);
 				if (child.getVisibility() == View.VISIBLE) {
-//					if (mTempOutAnim != null) {
-//						hideViewById(child.getId(), mTempOutAnim);
-//					} else {
-//						hideViewById(child.getId());
-//					}
 					hideViewById(child.getId());
 				}
 			}
 		}
-		
+
 	}
 
 	// setting animations
@@ -275,12 +267,13 @@ public class OverlayManager {
 
 	private FrameLayout createFrame(FillType fillType) {
 		FrameLayout frame = new FrameLayout(mContext, null);
-		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		
-		Display display = mWindow.getWindowManager().getDefaultDisplay(); 
+		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT);
+
+		Display display = mWindow.getWindowManager().getDefaultDisplay();
 		int statusBarHeight = (int) Math.ceil(25 * mContext.getResources().getDisplayMetrics().density);
-		int screenHeight = display.getHeight();  // deprecated
-		
+		int screenHeight = display.getHeight(); // deprecated
+
 		int abHeight = (int) mContext.getResources().getDimension(R.dimen.action_bar_height);
 		int contentHeight = screenHeight - statusBarHeight;
 
@@ -296,7 +289,7 @@ public class OverlayManager {
 			lp.gravity = Gravity.BOTTOM;
 			break;
 		}
-		
+
 		frame.setLayoutParams(lp);
 		mRoot.addView(frame);
 		frame.setVisibility(View.GONE);

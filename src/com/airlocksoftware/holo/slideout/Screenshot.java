@@ -27,6 +27,8 @@ public class Screenshot {
 	
 	/** Take a snapshot of the view. */
 	public Bitmap snap() {
+		int width = this.view.getWidth();
+		int height = this.view.getHeight();
 		Bitmap bitmap = Bitmap.createBitmap(this.view.getWidth(),
 				this.view.getHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);

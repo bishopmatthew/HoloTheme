@@ -28,7 +28,9 @@ import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.activities.ActionBarActivity;
 import com.airlocksoftware.holo.adapters.OverflowAdapter;
 import com.airlocksoftware.holo.adapters.OverflowAdapter.OverflowItem;
-import com.airlocksoftware.holo.anim.AnimationOverlayView.AnimationFillType;
+import com.airlocksoftware.holo.anim.AnimationParams;
+import com.airlocksoftware.holo.anim.AnimationParams.Exclusivity;
+import com.airlocksoftware.holo.anim.AnimationParams.FillType;
 import com.airlocksoftware.holo.type.FontText;
 
 public class ActionBar extends Fragment {
@@ -51,7 +53,7 @@ public class ActionBar extends Fragment {
 	// LISTENERS
 	private View.OnClickListener mTopListener;
 	private View.OnClickListener mUpListener;
-	
+
 	// QUEUE of stuff done before onCreateView() is called
 	private List<OverflowItem> mOverflowQueue;
 
@@ -77,7 +79,7 @@ public class ActionBar extends Fragment {
 		tv = new TypedValue();
 		mContext.getTheme().resolveAttribute(R.attr.actionBarNavTopIcon, tv, true);
 		mAppTopIconResId = tv.resourceId;
-		
+
 		return mFrame;
 	}
 
@@ -86,7 +88,7 @@ public class ActionBar extends Fragment {
 		super.onActivityCreated(savedState);
 		// GET CONTEXT
 		Activity activity = getActivity();
-		if(activity instanceof ActionBarActivity) {
+		if (activity instanceof ActionBarActivity) {
 			mActivity = (ActionBarActivity) activity;
 		} else {
 			throw new RuntimeException("Can't use an ActionBar outside of an ActionBarActivity");
@@ -94,7 +96,8 @@ public class ActionBar extends Fragment {
 
 		// SETUP OVERFLOW LIST
 		((FrameLayout) mOverflowList.getParent()).removeView(mOverflowList);
-		mActivity.clipActionBarAnimation().addView(mOverflowList);
+		mActivity.overlayManager().addView(mOverflowList,
+				new AnimationParams(FillType.CLIP_CONTENT).exclusivity(Exclusivity.EXCLUDE_ALL));
 		mAdapter = new OverflowAdapter(mActivity);
 		mOverflowList.setAdapter(mAdapter);
 		mOverflowList.setOnItemClickListener(new OnItemClickListener() {
@@ -109,14 +112,14 @@ public class ActionBar extends Fragment {
 		mOverflowButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mActivity.fillScreenAnimation().toggleViewById(mOverflowList.getId());
+				mActivity.overlayManager().toggleViewById(mOverflowList.getId());
 			}
 		});
-		
+
 		// DEAL WITH STUFF FROM QUEUE
 		// OverflowItems
-		if(mOverflowQueue != null) {
-			for(OverflowItem item : mOverflowQueue) {
+		if (mOverflowQueue != null) {
+			for (OverflowItem item : mOverflowQueue) {
 				mAdapter.add(item);
 			}
 			showOverflowButton();
@@ -139,8 +142,8 @@ public class ActionBar extends Fragment {
 		findViewById(R.id.action_bar_title).setVisibility(View.GONE);
 		view.setTag(TITLE_REPLACEMENT_TAG);
 
-		FrameLayout.LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT,
-				Gravity.CENTER);
+		FrameLayout.LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.WRAP_CONTENT, Gravity.CENTER);
 		view.setLayoutParams(params);
 
 		FrameLayout titleContainer = (FrameLayout) findViewById(R.id.title_container);
@@ -166,8 +169,10 @@ public class ActionBar extends Fragment {
 		actionBarButton.setOnClickListener(clickListener);
 		actionBarButton.setTag(iconResourceId);
 
-		int buttonEdgeLength = (int) getActivity().getResources().getDimension(R.dimen.action_bar_height);
-		actionBarButton.setLayoutParams(new LinearLayout.LayoutParams(buttonEdgeLength, buttonEdgeLength));
+		int buttonEdgeLength = (int) getActivity().getResources().getDimension(
+				R.dimen.action_bar_height);
+		actionBarButton.setLayoutParams(new LinearLayout.LayoutParams(buttonEdgeLength,
+				buttonEdgeLength));
 
 		actionBarButton.setScaleType(ScaleType.CENTER);
 		actionBarButton.setBackgroundResource(R.drawable.btn_ab);
@@ -180,8 +185,8 @@ public class ActionBar extends Fragment {
 	public void addActionBarButton(int iconResourceId, String text, OnClickListener clickListener) {
 		LayoutInflater inflater = LayoutInflater.from(mActivity);
 		LinearLayout buttonContainer = (LinearLayout) mFrame.findViewById(R.id.button_container);
-		RelativeLayout button = (RelativeLayout) inflater.inflate(R.layout.button_ab_text_plus_icon, buttonContainer,
-				false);
+		RelativeLayout button = (RelativeLayout) inflater.inflate(R.layout.button_ab_text_plus_icon,
+				buttonContainer, false);
 		button.setOnClickListener(clickListener);
 		button.setTag(iconResourceId);
 		((FontText) button.findViewById(R.id.text)).setText(text);
@@ -204,9 +209,9 @@ public class ActionBar extends Fragment {
 
 	// OVERFLOW MENU
 	public void addOverflowItem(OverflowItem item) {
-		if(mAdapter == null) {
+		if (mAdapter == null) {
 			// add it to a queue
-			if(mOverflowQueue == null) mOverflowQueue = new ArrayList<OverflowItem>();
+			if (mOverflowQueue == null) mOverflowQueue = new ArrayList<OverflowItem>();
 			mOverflowQueue.add(item);
 		} else {
 			mAdapter.add(item);
@@ -261,7 +266,7 @@ public class ActionBar extends Fragment {
 			mAppButtonNavIcon.setVisibility(View.GONE);
 		}
 	}
-	
+
 	/** Get the view that contains the app button (up / list) **/
 	public View appButton() {
 		return mFrame.findViewById(R.id.app_button);

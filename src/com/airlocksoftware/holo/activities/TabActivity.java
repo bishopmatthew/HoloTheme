@@ -45,7 +45,7 @@ public class TabActivity extends MapActivity {
 
 			@Override
 			public void onTabChange(Page oldTab, Page newTab) {
-				fillScreenAnimation().hideAll();
+				overlayManager().hideAllViews();
 				oldTab.cleanupActionBar(mActionBar);
 				newTab.setupActionBar(mActionBar);
 			}

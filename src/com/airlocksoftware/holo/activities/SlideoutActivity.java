@@ -20,6 +20,9 @@ public class SlideoutActivity extends ActionBarActivity {
 	public void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
 
+		setContentView(R.layout.slideout_list_activity);
+		mHolder = (StaticPageHolder) findViewById(R.id.page_holder);
+
 		actionBar().setTopListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -27,10 +30,8 @@ public class SlideoutActivity extends ActionBarActivity {
 			}
 		});
 
-		mSlideoutFrame = new SlideoutFrame(this, this, this.mTest, actionBar().appButton().getWidth());
-
-		setContentView(R.layout.slideout_list_activity);
-		mHolder = (StaticPageHolder) findViewById(R.id.page_holder);
+		mSlideoutFrame = new SlideoutFrame(this, this, overlayManager(), actionBar().appButton()
+				.getWidth(), ROOT_VIEW_ID);
 	}
 
 	protected void toggleSlideout() {
@@ -45,8 +46,8 @@ public class SlideoutActivity extends ActionBarActivity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (mHolder.page().getVisibleFragment() instanceof OnActivityResultListener) {
-			((OnActivityResultListener) mHolder.page().getVisibleFragment()).onActivityResult(requestCode, resultCode,
-					intent);
+			((OnActivityResultListener) mHolder.page().getVisibleFragment()).onActivityResult(
+					requestCode, resultCode, intent);
 		}
 	}
 

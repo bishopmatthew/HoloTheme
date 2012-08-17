@@ -21,10 +21,16 @@ public abstract class PageFragment extends Fragment implements ActionBarInterfac
 	private int mFragmentId;
 
 	// CONSTRUCTOR
-	public PageFragment(ActionBarActivity activity, Page parent) {
+	public PageFragment() { 
+	}
+	
+	// PUBLIC METHODS
+	
+	public PageFragment initialize(ActionBarActivity activity, Page parent) {
 		mContext = activity;
 		mActivity = activity;
 		mParent = parent;
+		return this;
 	}
 
 	@Override

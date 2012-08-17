@@ -8,10 +8,10 @@
 		android:toXScale="1.0"
 		android:fromYScale="1.0"
 		android:toYScale="0.1"
-		android:duration="3000" />
+		android:duration="150" />
 	<alpha
 		android:fromAlpha="1.0"
 		android:toAlpha="0.0"
-		android:duration="3000" />
+		android:duration="150" />
 
 </set>
