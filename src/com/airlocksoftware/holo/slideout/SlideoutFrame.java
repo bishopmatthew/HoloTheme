@@ -3,6 +3,7 @@ package com.airlocksoftware.holo.slideout;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.GradientDrawable;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,12 +30,15 @@ public class SlideoutFrame extends FrameLayout {
 	private Bitmap mBitmap;
 	private FrameLayout mSlideoutContent;
 	private ImageView mScreenshotView;
+	
+	private View mShadowView;
+	GradientDrawable mShadowGradient;
 
 	private Context mContext;
 	Activity mActivity;
 
 	OverlayManager mOverlayManager;
-	int mSlideWidth;
+	int mSlideWidth = 72; // default value
 
 	private Animation mInAnimation;
 	private Animation mOutAnimation;
@@ -47,19 +51,18 @@ public class SlideoutFrame extends FrameLayout {
 	// CONSTANTS
 	private static final int DURATION_MS = 150;
 	private static final int ID = R.id.slideout_frame;
+	private static final int DEFAULT_LAYOUT = R.layout.slideout_frame;
 
 	// CONSTRUCTOR
-	public SlideoutFrame(Context context, Activity activity, OverlayManager overlay, int slideWidth,
-			int rootId) {
+	public SlideoutFrame(Context context, Activity activity, OverlayManager overlay, int rootId) {
 		super(context, null);
 		mContext = context;
 		mOverlayManager = overlay;
 		mActivity = activity;
-		mSlideWidth = slideWidth;
 
 		setId(ID);
 		LayoutInflater inflater = LayoutInflater.from(mContext);
-		inflater.inflate(R.layout.slideout_frame, this);
+		inflater.inflate(DEFAULT_LAYOUT, this);
 		mSlideoutContent = (FrameLayout) findViewById(R.id.slideout_content);
 		mScreenshotView = (ImageView) findViewById(R.id.screenshot);
 		mScreenshotView.setOnClickListener(new View.OnClickListener() {
@@ -97,25 +100,6 @@ public class SlideoutFrame extends FrameLayout {
 		mInAnimation.setDuration(DURATION_MS);
 		mInAnimation.setInterpolator(mContext, android.R.anim.accelerate_interpolator);
 		mInAnimation.setFillAfter(true);
-//		mInAnimation.setAnimationListener(new AnimationFinishedListener() {
-//
-//			@Override
-//			public void onAnimationStart(Animation animation) {
-//			}
-//
-//			@Override
-//			public void onAnimationRepeat(Animation animation) {
-//			}
-//
-//			@Override
-//			public void onAnimationEnd(Animation animation) {
-//				setAnimation(null);
-//				LayoutParams params = (LayoutParams) getLayoutParams();
-//				params.gravity = Gravity.LEFT;
-//				setLayoutParams(params);
-//				mIsAnimating = false;
-//			}
-//		});
 
 		mOverlayManager.showViewById(ID, mInAnimation, new AnimationFinishedListener() {
 
@@ -153,6 +137,15 @@ public class SlideoutFrame extends FrameLayout {
 
 	public void setSlideWidth(int slideWidth) {
 		mSlideWidth = slideWidth;
+	}
+	
+	public void showShadowEdge(int width) {
+		mShadowView = new View(mContext, null);
+		mShadowView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 0));
+	}
+	
+	public void hideShadowEdge() {
+		
 	}
 
 	// PRIVATE METHODS

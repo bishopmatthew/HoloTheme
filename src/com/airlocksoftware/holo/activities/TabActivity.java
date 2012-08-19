@@ -2,13 +2,8 @@ package com.airlocksoftware.holo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ViewGroup;
 
-import com.airlocksoftware.holo.R;
-import com.airlocksoftware.holo.interfaces.OnActivityResultListener;
-import com.airlocksoftware.holo.pages.Page;
 import com.airlocksoftware.holo.tab.TabPager;
-import com.airlocksoftware.holo.tab.TabPager.OnTabChangeListener;
 
 public class TabActivity extends MapActivity {
 

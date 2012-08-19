@@ -1,11 +1,7 @@
 package com.airlocksoftware.holo.type;
 
-import java.io.InputStream;
-
 import android.content.Context;
 import android.graphics.Typeface;
-
-import com.airlocksoftware.holo.R;
 
 public class FontFactory {
 
@@ -13,11 +9,15 @@ public class FontFactory {
 	static Typeface robotoBdCd;
 	static Typeface robotoCd;
 	static Typeface robotoBd;
-	
+	static Typeface robotoTh;
+	static Typeface robotoLt;
+
 	public static final int ROBOTO_RG = 0;
 	public static final int ROBOTO_BD_CD = 1;
 	public static final int ROBOTO_CD = 2;
 	public static final int ROBOTO_BD = 3;
+	public static final int ROBOTO_TH = 4;
+	public static final int ROBOTO_LT = 5;
 
 	/**
 	 * Creates and caches the typefaces used by the application
@@ -28,46 +28,54 @@ public class FontFactory {
 	 */
 	public static Typeface getTypeface(Context context, int fontEnum) {
 		Typeface font;
-		
+
 		switch (fontEnum) {
 		case ROBOTO_RG:
 			if (robotoRg == null) {
-				font = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Regular.ttf");
-			} else {
-				font = robotoRg;
+				robotoRg = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Regular.ttf");
 			}
+			font = robotoRg;
 			break;
 		case ROBOTO_BD_CD:
 			if (robotoBdCd == null) {
-				font = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-BoldCondensed.ttf");
-			} else {
-				font = robotoBdCd;
+				robotoBdCd = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-BoldCondensed.ttf");
 			}
+			font = robotoBdCd;
 			break;
 		case ROBOTO_CD:
 			if (robotoCd == null) {
-				font = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Condensed.ttf");
-			} else {
-				font = robotoCd;
+				robotoCd = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Condensed.ttf");
 			}
+			font = robotoCd;
 			break;
 		case ROBOTO_BD:
 			if (robotoBd == null) {
-				font = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Bold.ttf");
-			} else {
-				font = robotoBd;
+				robotoBd = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Bold.ttf");
 			}
+			font = robotoBd;
+			break;
+		case ROBOTO_TH:
+			if (robotoTh == null) {
+				robotoTh = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
+			}
+			font = robotoTh;
+			break;
+		case ROBOTO_LT:
+			if (robotoLt == null) {
+				robotoLt = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Light.ttf");
+			}
+			font = robotoLt;
 			break;
 		default: // default is roboto-rg
 			if (robotoRg == null) {
-				font = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Regular.ttf");
-			} else {
-				font = robotoRg;
+				robotoRg = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Regular.ttf");
 			}
+			font = robotoRg;
 			break;
-
 		}
-		if(font == null) throw new RuntimeException("Error: you must copy any fonts used to the assets/fonts directory");
+		
+		if (font == null) throw new RuntimeException(
+				"Error: you must copy any fonts used to the assets/fonts directory");
 		return font;
 	}
 

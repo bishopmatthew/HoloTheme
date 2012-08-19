@@ -7,8 +7,13 @@
             <enum name="roboto_bd_cd" value="1" />
             <enum name="roboto_cd" value="2" />
             <enum name="roboto_bd" value="3" />
+            <enum name="roboto_th" value="4" />
+            <enum name="roboto_lt" value="5" />
         </attr>
-        <attr name="allCaps" format="boolean"/>
+        <attr name="shadowColors" format="color|reference"/>
+        <attr name="android:shadowDx"/>
+        <attr name="android:shadowDy"/>
+        <attr name="android:shadowRadius"/>
     </declare-styleable>
     <declare-styleable name="FixedGridView">
         <attr name="grid_cols" format="integer" />
@@ -54,8 +59,11 @@
         <attr name="clearable_hint" format="string|reference" />
     </declare-styleable>
     <declare-styleable name="SlideoutListItem">
-        <!-- <attr name="page_classname" format="string" />
-        <attr name="page_fragmentId" format="integer" /> -->
+
+        <!--
+        <attr name="page_classname" format="string" />
+        <attr name="page_fragmentId" format="integer" />
+        -->
         <attr name="android:text" />
         <attr name="android:src" />
         <!-- <attr name="slideout_header" format="reference" /> -->
@@ -123,11 +131,9 @@
     <declare-styleable name="TabButtonGroup">
         <attr name="tabgroup_checkButton" format="reference" />
     </declare-styleable>
-    
     <declare-styleable name="CheckableViewGroup">
         <attr name="android:checkedButton" />
     </declare-styleable>
-    
     <declare-styleable name="CheckableView">
         <attr name="android:checked" />
     </declare-styleable>
@@ -182,10 +188,8 @@
         <attr name="overflowMenuLayoutResId" format="reference" />
         <attr name="overflowMenuLayoutBackground" format="reference" />
 
-        
         <!-- SUBTITLE -->
-		<attr name="subtitleTextStyle" format="reference" />
-        
+        <attr name="subtitleTextStyle" format="reference" />
     </declare-styleable>
 
 </resources>

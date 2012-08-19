@@ -15,7 +15,6 @@ import com.airlocksoftware.holo.type.FontText;
 public class SlideoutListItem extends CheckableView {
 
 	private Context mContext;
-	private ActionBarActivity mActivity;
 	private String mLabel;
 	private Drawable mIcon;
 
@@ -27,7 +26,6 @@ public class SlideoutListItem extends CheckableView {
 		if (!(context instanceof ActionBarActivity)) throw new RuntimeException(
 				"Can't inflate a SlideoutListItem without an ActionBarActivity as the context.");
 
-		mActivity = (ActionBarActivity) context;
 		mContext = context;
 
 		retrieveAttrs(attrs);

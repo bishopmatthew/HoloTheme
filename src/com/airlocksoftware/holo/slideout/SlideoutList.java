@@ -13,7 +13,7 @@ import com.airlocksoftware.holo.checkable.CheckableViewGroup;
 import com.airlocksoftware.holo.checkable.CheckableViewGroup.OnCheckedViewChangedListener;
 
 /**
- * Displays the list in the Slideout View
+ * Displays a list and header view inside a SlideoutFrame
  * 
  * @author Matthew Bishop
  **/

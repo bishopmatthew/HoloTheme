@@ -4,12 +4,12 @@
     <style name="Theme" parent="android:Theme.NoTitleBar"></style>
 
 <!-- The base theme for Holo.Light, Holo.Dark, or any subclasses -->
-    <style name="Theme.Holo"></style>
+    <style name="Theme.HoloBootstrap"></style>
 
 <!-- Tries to mimick the android.Holo.Light them -->
-    <style name="Theme.Holo.Light"></style>
+    <style name="Theme.HoloBootstrap.Light"></style>
 <!-- Tries to mimick the android.Holo.Dark them -->
-    <style name="Theme.Holo.Dark">
+    <style name="Theme.HoloBootstrap.Dark">
         <!-- DEFAULT WIDGETS -->
         
         

@@ -20,7 +20,6 @@
     
     <style name="FontText.OverflowMenu">
         <item name="android:textSize">22sp</item>
-        <item name="allCaps">true</item>
     </style>
 
     <style name="FontText.ActionBarButton">
@@ -39,7 +38,6 @@
         <item name="android:textColor">@color/grey_40</item>
         <item name="android:textSize">24sp</item>
         <item name="android:background">@drawable/bg_subtitle_underline</item>
-        <item name="allCaps">true</item>
         <item name="font">roboto_bd</item>
     </style>
 
