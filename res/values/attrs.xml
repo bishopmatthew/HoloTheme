@@ -10,18 +10,29 @@
             <enum name="roboto_th" value="4" />
             <enum name="roboto_lt" value="5" />
         </attr>
-        <attr name="shadowColors" format="color|reference"/>
-        <attr name="android:shadowDx"/>
-        <attr name="android:shadowDy"/>
-        <attr name="android:shadowRadius"/>
+        <attr name="shadowColors" format="color|reference" />
+        <attr name="android:shadowDx" />
+        <attr name="android:shadowDy" />
+        <attr name="android:shadowRadius" />
     </declare-styleable>
     <declare-styleable name="FixedGridView">
         <attr name="grid_cols" format="integer" />
         <attr name="grid_rows" format="integer" />
     </declare-styleable>
+    <declare-styleable name="ActionBarButon">
+        <!-- TODO -->
+    </declare-styleable>
     <declare-styleable name="AnimatedView">
         <attr name="inAnim" format="reference" />
         <attr name="outAnim" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="IconView">
+        <attr name="icon_src" format="reference" />
+        <attr name="icon_shadowDx" format="dimension" />
+        <attr name="icon_shadowDy" format="dimension" />
+        <attr name="icon_shadowRadius" format="dimension" />
+        <attr name="icon_shadowColors" format="color|reference" />
+        <attr name="icon_color" format="color|reference" />
     </declare-styleable>
     <declare-styleable name="ViewSwiper">
         <attr name="attachLongClickListener" format="boolean" />

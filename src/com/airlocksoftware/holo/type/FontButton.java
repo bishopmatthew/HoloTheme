@@ -30,7 +30,10 @@ public class FontButton extends Button {
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FontText);
 
 		int font = a.getInt(R.styleable.FontText_font, 0);
-		setFont(font);
+	// fix so that I can use the graphical layout editor
+			if (!isInEditMode()) {
+				setFont(font);
+			}
 
 		a.recycle();
 	}

@@ -29,7 +29,8 @@ public class CheckableView extends FrameLayout implements Checkable {
 
 	// PRIVATE METHODS
 	private void retrieveAttrs(AttributeSet attrs, int defStyle) {
-		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.CheckableViewGroup, defStyle, 0);
+		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.CheckableViewGroup, defStyle,
+				0);
 
 		boolean checked = a.getBoolean(R.styleable.CheckableView_android_checked, false);
 		setChecked(checked);
@@ -105,6 +106,7 @@ public class CheckableView extends FrameLayout implements Checkable {
 
 	// DRAWABLE STATE
 	@Override
+	/** Handles drawables to allow this view to have a Checked state **/
 	protected int[] onCreateDrawableState(int extraSpace) {
 		final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
 		if (mChecked) {

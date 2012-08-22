@@ -1,6 +1,6 @@
 package com.airlocksoftware.holo.interfaces;
 
-public interface BackPressedListener {
+public interface OnBackPressedListener {
 	
 	public boolean onBackPressed();
 

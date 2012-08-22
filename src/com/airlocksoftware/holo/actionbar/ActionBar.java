@@ -3,7 +3,6 @@ package com.airlocksoftware.holo.actionbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,26 +24,28 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.airlocksoftware.holo.R;
-import com.airlocksoftware.holo.activities.ActionBarActivity;
 import com.airlocksoftware.holo.adapters.OverflowAdapter;
 import com.airlocksoftware.holo.adapters.OverflowAdapter.OverflowItem;
 import com.airlocksoftware.holo.anim.AnimationParams;
 import com.airlocksoftware.holo.anim.AnimationParams.Exclusivity;
 import com.airlocksoftware.holo.anim.AnimationParams.FillType;
+import com.airlocksoftware.holo.anim.OverlayManager;
 import com.airlocksoftware.holo.type.FontText;
 
 public class ActionBar extends Fragment {
 
 	// CONTEXT
-	ActionBarActivity mActivity;
+	// ActionBarActivity mActivity;
 	Context mContext;
 
 	// VIEWS
 	RelativeLayout mFrame;
 	ListView mOverflowList;
-	OverflowAdapter mAdapter;
 	ImageButton mOverflowButton;
 	ImageView mAppButtonNavIcon;
+
+	OverflowAdapter mAdapter;
+	OverlayManager mOverlayManager;
 
 	// RESOURCE IDS
 	int mAppUpIconResId;
@@ -58,7 +59,7 @@ public class ActionBar extends Fragment {
 	private List<OverflowItem> mOverflowQueue;
 
 	// CONSTANTS
-	private static final String TITLE_REPLACEMENT_TAG = "title_replacement";
+	private static final String TITLE_REPLACEMENT_TAG = "ActionBar.titleReplacement";
 	private static final int TITLE_TEXT_ID = R.id.action_bar_title;
 	private static final int DEFAULT_LAYOUT_RES_ID = R.layout.action_bar;
 
@@ -87,18 +88,18 @@ public class ActionBar extends Fragment {
 	public void onActivityCreated(Bundle savedState) {
 		super.onActivityCreated(savedState);
 		// GET CONTEXT
-		Activity activity = getActivity();
-		if (activity instanceof ActionBarActivity) {
-			mActivity = (ActionBarActivity) activity;
-		} else {
-			throw new RuntimeException("Can't use an ActionBar outside of an ActionBarActivity");
-		}
+		// Activity activity = getActivity();
+		// if (activity instanceof ActionBarActivity) {
+		// mActivity = (ActionBarActivity) activity;
+		// } else {
+		// throw new RuntimeException("Can't use an ActionBar outside of an ActionBarActivity");
+		// }
+
+		mContext = getActivity();
 
 		// SETUP OVERFLOW LIST
 		((FrameLayout) mOverflowList.getParent()).removeView(mOverflowList);
-		mActivity.overlayManager().addView(mOverflowList,
-				new AnimationParams(FillType.CLIP_CONTENT).exclusivity(Exclusivity.EXCLUDE_ALL));
-		mAdapter = new OverflowAdapter(mActivity);
+		mAdapter = new OverflowAdapter(mContext);
 		mOverflowList.setAdapter(mAdapter);
 		mOverflowList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -112,7 +113,12 @@ public class ActionBar extends Fragment {
 		mOverflowButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mActivity.overlayManager().toggleViewById(mOverflowList.getId());
+				if (mOverlayManager != null) {
+					mOverlayManager.toggleViewById(mOverflowList.getId());
+				} else {
+					throw new NullPointerException(
+							"You have to call ActionBar.overlayManager(OverlayManager manager) if you want to display an Overflow list");
+				}
 			}
 		});
 
@@ -125,6 +131,13 @@ public class ActionBar extends Fragment {
 			showOverflowButton();
 		}
 
+	}
+
+	public ActionBar overlayManager(OverlayManager om) {
+		mOverlayManager = om;
+		om.addView(mOverflowList,
+				new AnimationParams(FillType.CLIP_CONTENT).exclusivity(Exclusivity.EXCLUDE_ALL));
+		return this;
 	}
 
 	// TITLE
@@ -183,7 +196,7 @@ public class ActionBar extends Fragment {
 
 	/** Adds a button to the right side of the ActionBar with a specified icon, text, and callback **/
 	public void addActionBarButton(int iconResourceId, String text, OnClickListener clickListener) {
-		LayoutInflater inflater = LayoutInflater.from(mActivity);
+		LayoutInflater inflater = LayoutInflater.from(mContext);
 		LinearLayout buttonContainer = (LinearLayout) mFrame.findViewById(R.id.button_container);
 		RelativeLayout button = (RelativeLayout) inflater.inflate(R.layout.button_ab_text_plus_icon,
 				buttonContainer, false);

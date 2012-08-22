@@ -45,14 +45,14 @@ public class CheckableViewGroup extends LinearLayout {
 	}
 
 	private void retrieveAttrs(AttributeSet attrs) {
-		TypedArray t = mContext.obtainStyledAttributes(attrs, R.styleable.CheckableViewGroup, 0, 0);
+		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.CheckableViewGroup, 0, 0);
 		
-		int value = t.getResourceId(R.styleable.CheckableViewGroup_android_checkedButton, View.NO_ID);
+		int value = a.getResourceId(R.styleable.CheckableViewGroup_android_checkedButton, View.NO_ID);
 		if (value != View.NO_ID) {
 			mCheckedId = value;
 		}
 
-		t.recycle();
+		a.recycle();
 	}
 
 	public void addCheckableView(CheckableView checkable) {
