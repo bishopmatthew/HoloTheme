@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:holo="http://schemas.android.com/apk/res-auto" >
+
+    <RelativeLayout
+        android:id="@+id/cnt_up"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:background="?actionBarButtonBg"
+        android:clickable="true"
+        android:focusable="true" >
+
+        <com.airlocksoftware.holo.image.IconView
+            android:id="@+id/icv_up_indicator"
+            style="@style/IconView.ActionBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:duplicateParentState="true"
+            android:paddingLeft="5dp"
+            holo:icon_src="@drawable/ic_action_slideout_menu" />
+
+        <ImageView
+            android:id="@+id/img_up_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/icv_up_indicator"
+            android:duplicateParentState="true"
+            android:paddingLeft="5dp"
+            android:paddingRight="8dp"
+            android:src="@drawable/ic_action_placeholder" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cnt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@+id/cnt_up" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_action_bar_title"
+            style="?actionBarTitleTextStyle"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="Action" />
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/cnt_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toLeftOf="@+id/icv_overflow"/>
+
+    <com.airlocksoftware.holo.image.IconView
+        android:id="@+id/icv_overflow"
+        style="@style/IconView.ActionBar"
+        android:layout_width="@dimen/action_bar_height"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_alignParentRight="true"
+        android:layout_weight="0"
+        android:visibility="gone"
+        android:background="?actionBarButtonBg"
+        android:clickable="true"
+        holo:icon_src="@drawable/ic_action_overflow" />
+
+</merge>

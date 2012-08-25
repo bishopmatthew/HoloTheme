@@ -1,8 +1,13 @@
 <resources>
 
+    <!-- ACTION BAR -->
     <dimen name="action_bar_height">48dp</dimen>
+    <dimen name="action_bar_underline_offset">46dp</dimen>
+    <dimen name="action_bar_underline_height">2dp</dimen>
+    <dimen name="overflow_menu_width">220dp</dimen>
+    
+    <!-- OTHER -->
     <dimen name="tab_bar_height">40dp</dimen>
-    <dimen name="action_bar_bottom_edge_offset">47dp</dimen>
     <dimen name="title_text_size">24sp</dimen>
     <dimen name="dragable_category_height">48dp</dimen>
     <dimen name="switch_height">34dp</dimen>

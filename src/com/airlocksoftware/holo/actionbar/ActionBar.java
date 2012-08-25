@@ -139,6 +139,10 @@ public class ActionBar extends Fragment {
 				new AnimationParams(FillType.CLIP_CONTENT).exclusivity(Exclusivity.EXCLUDE_ALL));
 		return this;
 	}
+	
+	public OverlayManager overlayManager() {
+		return mOverlayManager;
+	}
 
 	// TITLE
 	public void setTitle(String text) {

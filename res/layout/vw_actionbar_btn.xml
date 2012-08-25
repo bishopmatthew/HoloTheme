@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.airlocksoftware.holo.image.IconView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:holo="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/icv"
+    style="?actionBarButtonIconStyle"
+    android:layout_width="@dimen/action_bar_height"
+    android:layout_height="@dimen/action_bar_height"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:duplicateParentState="true"
+    android:background="?actionBarButtonBg"
+    holo:icon_src="@drawable/ic_action_placeholder" />

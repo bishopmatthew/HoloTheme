@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 
 import com.airlocksoftware.holo.R;
-import com.airlocksoftware.holo.activities.ActionBarActivity;
 import com.airlocksoftware.holo.checkable.CheckableView;
 import com.airlocksoftware.holo.type.FontText;
 
@@ -22,9 +21,6 @@ public class SlideoutListItem extends CheckableView {
 	/** Context passed must be an ActionBarActivity **/
 	public SlideoutListItem(Context context, AttributeSet attrs) {
 		super(context, attrs);
-
-		if (!(context instanceof ActionBarActivity)) throw new RuntimeException(
-				"Can't inflate a SlideoutListItem without an ActionBarActivity as the context.");
 
 		mContext = context;
 

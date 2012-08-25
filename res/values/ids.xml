@@ -21,4 +21,7 @@
     <!-- ANIMATION OVERLAY VIEW -->
 	<item name="overlay_root" type="id" />
 	
+	<!-- ACTION BAR -->
+	<item name="actionbar_root" type="id"/>
+	
 </resources>

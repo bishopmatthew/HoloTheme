@@ -1,18 +1,19 @@
 <resources>
 
-<!-- Unused -->
+    <!-- Unused -->
     <style name="Theme" parent="android:Theme.NoTitleBar"></style>
 
-<!-- The base theme for Holo.Light, Holo.Dark, or any subclasses -->
+    <!-- The base theme for Holo.Light, Holo.Dark, or any subclasses -->
     <style name="Theme.HoloBootstrap"></style>
 
-<!-- Tries to mimick the android.Holo.Light them -->
+    <!-- Tries to mimick the android.Holo.Light them -->
     <style name="Theme.HoloBootstrap.Light"></style>
-<!-- Tries to mimick the android.Holo.Dark them -->
+    <!-- Tries to mimick the android.Holo.Dark them -->
     <style name="Theme.HoloBootstrap.Dark">
+
         <!-- DEFAULT WIDGETS -->
-        
-        
+
+
         <!-- MONTH VIEW -->
         <!-- NAV -->
         <item name="monthViewNavButton">@drawable/btn_default_holo_dark</item>
@@ -24,23 +25,40 @@
         <item name="monthViewCalHeaderText">@style/FontText.CalHeader</item>
         <!-- CALENDAR -->
         <item name="monthViewCalBackground">@color/background_default</item>
-        
+
         <!-- CLEARABLE FONT EDIT -->
-        <item name="clearableEditBackground">?fontEditBackground</item>        
-        <item name="clearableClearIcon">@drawable/btn_x_holo_dark</item>        
-        <item name="clearableClearIconSize">@dimen/clearIconSize</item>     
-           
+        <item name="clearableEditBackground">?fontEditBackground</item>
+        <item name="clearableClearIcon">@drawable/btn_x_holo_dark</item>
+        <item name="clearableClearIconSize">@dimen/clearIconSize</item>
+
         <!-- FONT EDIT -->
         <item name="fontEditStyle">@style/FontEdit</item>
         <item name="fontEditBackground">@drawable/edit_text_holo_dark</item>
-        
+
         <!-- ACTION BAR -->
         <item name="actionBarOverflowIcon">@drawable/ic_overflow_holo_dark</item>
-        <item name="actionBarButtonBg">@drawable/btn_ab</item>
         <item name="actionBarTitleTextStyle">@style/FontText.ActionBarTitle</item>
         <item name="actionBarNavUpIcon">@drawable/ic_back_arrow</item>
         <item name="actionBarNavTopIcon">@drawable/ic_ab_list</item>
-        
+
+        <!-- ACTIONBAR VIEW (V2) -->
+        <item name="actionBarBg">@drawable/grad_ab</item>
+        <item name="actionBarOverflowBg">@drawable/grad_ab</item>
+        <item name="actionBarOverflowInAnim">@anim/scale_in</item>
+        <item name="actionBarOverflowOutAnim">@anim/scale_out</item>
+        <item name="actionBarUpIcon">@drawable/ic_logo_ab</item>
+
+        <!-- ACTIONBAR BUTTON -->
+        <item name="actionBarButtonBg">@drawable/btn_ab</item>
+        <item name="actionBarButtonIconStyle">@style/IconView.ActionBar</item>
+
+        <!-- ACTIONBAR OVERFLOW -->
+        <item name="overflowMenuWidth">@dimen/overflow_menu_width</item>
+        <item name="overflowMenuBg">@drawable/bg_actionbar_overflow</item>
+        <item name="overflowMenuButtonBg">@drawable/btn_actionbar_overflow</item>
+        <item name="overflowMenuButtonIconStyle">@style/IconView.ActionBar.Overflow</item>
+        <item name="overflowMenuButtonTextStyle">@style/FontText.ActionBarOverflow</item>
+
         <!-- OVERFLOW MENU -->
         <item name="overflowMenuTextResId">@id/overflow_menu_text</item>
         <item name="overflowMenuImageResId">@id/overflow_menu_icon</item>
@@ -48,9 +66,8 @@
         <item name="overflowMenuTextStyle">@style/FontText.OverflowMenu</item>
         <item name="overflowMenuLayoutBackground">@drawable/btn_overflow_item_holo_dark</item>
 
-		<!-- SUBTITLE -->
+        <!-- SUBTITLE -->
         <item name="subtitleTextStyle">@style/FontText.Subtitle</item>
-
     </style>
 
 </resources>

@@ -38,8 +38,8 @@ import com.airlocksoftware.holo.interfaces.OnStopListener;
 public class SlideoutFrame extends FrameLayout implements OnDestroyListener, OnStopListener {
 
 	private FrameLayout mSlideoutContent;
-//	private ImageView mScreenshotView;
-	private FrameLayout mScreenshotView;
+	private ImageView mScreenshotView;
+//	private FrameLayout mScreenshotView;
 
 	private View mShadowView;
 	GradientDrawable mShadowGradient;
@@ -60,7 +60,7 @@ public class SlideoutFrame extends FrameLayout implements OnDestroyListener, OnS
 
 	// CONSTANTS
 	private static final int ID = R.id.slideout_frame;
-	private static final int DEFAULT_LAYOUT = R.layout.slideout_frame_no_image;
+	private static final int DEFAULT_LAYOUT = R.layout.vw_slideoutframe;
 	private static final String TAG = SlideoutFrame.class.getSimpleName();
 
 	// CONSTRUCTOR
@@ -75,8 +75,8 @@ public class SlideoutFrame extends FrameLayout implements OnDestroyListener, OnS
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		inflater.inflate(DEFAULT_LAYOUT, this);
 		mSlideoutContent = (FrameLayout) findViewById(R.id.slideout_content);
-//		mScreenshotView = (ImageView) findViewById(R.id.screenshot);
-		mScreenshotView = (FrameLayout) findViewById(R.id.screenshot);
+		mScreenshotView = (ImageView) findViewById(R.id.screenshot);
+//		mScreenshotView = (FrameLayout) findViewById(R.id.screenshot);
 		mScreenshotView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -107,21 +107,21 @@ public class SlideoutFrame extends FrameLayout implements OnDestroyListener, OnS
 		params.gravity = Gravity.LEFT;
 		this.setLayoutParams(params);
 
-		// mBitmap = mScreenshot.snap();
-		// SlideoutHelper.prepare(mActivity, mRootId);
-		// mScreenshotView.setImageBitmap(SlideoutHelper.screenshot(mActivity, mRootId));
-		// Drawable drawable = mContext.getResources().getDrawable(R.drawable.screenshot);
-		// mScreenshotView.setImageDrawable(drawable);
+//		 mBitmap = mScreenshot.snap();
+//		 SlideoutHelper.prepare(mActivity, mRootId);
+//		 mScreenshotView.setImageBitmap(SlideoutHelper.screenshot(mActivity, mRootId));
+//		 Drawable drawable = mContext.getResources().getDrawable(R.drawable.screenshot);
+//		 mScreenshotView.setImageDrawable(drawable);
 //		SlideoutFrame.screenshot(mActivity, mRootId);
 //		mScreenshotView.setImageBitmap(sBitmap);
-//		mScreenshotView.setImageBitmap(this.loadBitmapFromView(mActivity.findViewById(mRootId)));
-		int width = mActivity.findViewById(mRootId).getWidth();
-		int height = mActivity.findViewById(mRootId).getHeight();
-		RelativeLayout.LayoutParams imageParams = (android.widget.RelativeLayout.LayoutParams) mScreenshotView.getLayoutParams();
-		imageParams.width = width;
-		imageParams.height = height;
-		mScreenshotView.setLayoutParams(imageParams);
-//		mScreenshotView.setImageDrawable(null);
+		mScreenshotView.setImageBitmap(SlideoutFrame.loadBitmapFromView(mActivity.findViewById(mRootId)));
+//		int width = mActivity.findViewById(mRootId).getWidth();
+//		int height = mActivity.findViewById(mRootId).getHeight();
+//		RelativeLayout.LayoutParams imageParams = (android.widget.RelativeLayout.LayoutParams) mScreenshotView.getLayoutParams();
+//		imageParams.width = width;
+//		imageParams.height = height;
+//		mScreenshotView.setLayoutParams(imageParams);
+////		mScreenshotView.setImageDrawable(null);
 
 		mInAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE,
 				-(screenWidth - mSlideWidth), TranslateAnimation.ABSOLUTE, 0, TranslateAnimation.ABSOLUTE,
@@ -215,11 +215,11 @@ public class SlideoutFrame extends FrameLayout implements OnDestroyListener, OnS
 //			sBitmap = null;
 //		}
 		
-//		if(mScreenshotView != null && mScreenshotView.getDrawable() != null) {
-//			((BitmapDrawable) mScreenshotView.getDrawable()).getBitmap().recycle();
-//			mScreenshotView.setImageBitmap(null);
-//			mScreenshotView.setImageDrawable(null);
-//		}
+		if(mScreenshotView != null && mScreenshotView.getDrawable() != null) {
+			((BitmapDrawable) mScreenshotView.getDrawable()).getBitmap().recycle();
+			mScreenshotView.setImageBitmap(null);
+			mScreenshotView.setImageDrawable(null);
+		}
 		
 //		System.gc();
 //		System.runFinalization();

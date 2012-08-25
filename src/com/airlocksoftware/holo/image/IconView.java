@@ -1,11 +1,10 @@
 package com.airlocksoftware.holo.image;
 
-import java.util.Random;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -13,7 +12,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -24,18 +22,15 @@ public class IconView extends ImageView {
 
 	private Context mContext;
 
-	private Drawable mIcons; // will be a state list drawable if supported
-
 	private Bitmap mSourceBitmap;
 	private ColorStateList mColors, mShadowColors;
-	private Color mColor, mShadowColor;
+	private int mColor = Color.TRANSPARENT, mShadowColor = Color.TRANSPARENT;
 	private float mShadowRadius = 0.0f, mShadowDx = 0.0f, mShadowDy = 0.0f;
 
 	private boolean mWaitForBuild = false;
 
 	// CONSTANTS
-	private static final int[][] SUPPORTED_COLOR_STATES = {
-			new int[] {- android.R.attr.state_enabled},
+	private static final int[][] COLOR_STATES = { new int[] { -android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_focused, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_selected, android.R.attr.state_enabled },
@@ -48,60 +43,77 @@ public class IconView extends ImageView {
 	public IconView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		// if (attrs != null) {
 		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.IconView);
 
 		for (int i = 0; i < a.getIndexCount(); i++) {
 			int attr = a.getIndex(i);
 			switch (attr) {
-			case R.styleable.IconView_icon_color:
+			case R.styleable.IconView_icon_colors:
+				mColors = a.getColorStateList(attr);
 				break;
 			case R.styleable.IconView_icon_shadowColors:
+				mShadowColors = a.getColorStateList(attr);
 				break;
 			case R.styleable.IconView_icon_shadowDx:
+				mShadowDx = a.getDimension(attr, 0.0f);
 				break;
 			case R.styleable.IconView_icon_shadowDy:
+				mShadowDy = a.getDimension(attr, 0.0f);
 				break;
 			case R.styleable.IconView_icon_shadowRadius:
+				mShadowRadius = a.getDimension(attr, 0.0f);
 				break;
 			case R.styleable.IconView_icon_src:
+				mSourceBitmap = BitmapFactory.decodeResource(getResources(), a.getResourceId(attr, 0));
 				break;
 			}
 		}
 
 		a.recycle();
-		// }
+		generateDrawables();
 	}
 
-	public IconView shadowColor(Color color) {
+	public IconView shadowColor(int color) {
 		mShadowColor = color;
+		generateDrawables();
 		return this;
 	}
 
 	public IconView shadowColors(ColorStateList colors) {
 		mShadowColors = colors;
+		generateDrawables();
 		return this;
 	}
 
-	public IconView shadow(int radius, int dx, int dy) {
+	public IconView shadow(float radius, float dx, float dy) {
 		mShadowRadius = radius;
 		mShadowDx = dx;
 		mShadowDy = dy;
+		generateDrawables();
 		return this;
 	}
 
-	public IconView iconColor(Color color) {
+	public IconView iconColor(int color) {
 		mColor = color;
+		generateDrawables();
 		return this;
 	}
 
 	public IconView iconColors(ColorStateList colors) {
 		mColors = colors;
+		generateDrawables();
 		return this;
 	}
 
 	public IconView iconSource(Bitmap b) {
 		mSourceBitmap = b;
+		generateDrawables();
+		return this;
+	}
+	
+	public IconView iconSource(int iconResId) {
+		mSourceBitmap = BitmapFactory.decodeResource(getResources(), iconResId);
+		generateDrawables();
 		return this;
 	}
 
@@ -119,17 +131,29 @@ public class IconView extends ImageView {
 	// PRIVATE METHODS
 	private void generateDrawables() {
 		if (mSourceBitmap != null && !mWaitForBuild) {
-			if (mColors != null) {
-				StateListDrawable icons = new StateListDrawable();
+			StateListDrawable icons = new StateListDrawable();
 
-				for (int[] stateSet : SUPPORTED_COLOR_STATES) {
-					int color = mColors.getColorForState(stateSet, mColors.getDefaultColor());
-					icons.addState(stateSet,
-							new BitmapDrawable(getResources(), generateBitmap(mSourceBitmap, color)));
+			for (int[] stateSet : COLOR_STATES) {
+				int color, shadowColor;
+
+				if (mColors != null) {
+					color = mColors.getColorForState(stateSet, mColors.getDefaultColor());
+				} else {
+					color = mColor;
 				}
-				this.setImageDrawable(icons);
-			}
 
+				if (mShadowColors != null) {
+					shadowColor = mShadowColors.getColorForState(stateSet, mShadowColors.getDefaultColor());
+				} else {
+					shadowColor = mShadowColor;
+				}
+
+				Bitmap b = generateBitmap(mSourceBitmap, color, shadowColor, mShadowRadius, mShadowDx,
+						mShadowDy);
+				BitmapDrawable bd = new BitmapDrawable(getResources(), b);
+				icons.addState(stateSet, bd);
+			}
+			this.setImageDrawable(icons);
 		}
 	}
 
@@ -144,8 +168,12 @@ public class IconView extends ImageView {
 
 	public static Bitmap generateBitmap(Bitmap source, int iconColor, int shadowColor, float radius,
 			float dx, float dy) {
+		
+		int paddingX = (int) (radius + dx);
+		int paddingY = (int) (radius + dy);
+		
 
-		Bitmap result = Bitmap.createBitmap(source.getWidth(), source.getHeight(),
+		Bitmap result = Bitmap.createBitmap(source.getWidth() + paddingX, source.getHeight() + paddingY,
 				Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(result);
 

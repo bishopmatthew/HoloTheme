@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:holo="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="?overflowMenuButtonBg"
+    android:duplicateParentState="true"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" >
+
+    <com.airlocksoftware.holo.image.IconView
+        android:id="@+id/icv"
+        style="?overflowMenuButtonIconStyle"
+        android:layout_width="@dimen/action_bar_height"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:duplicateParentState="true"
+        holo:icon_src="@drawable/ic_action_placeholder" />
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/txt"
+        style="?overflowMenuButtonTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:duplicateParentState="true"
+        android:text="ActionBarButton" />
+
+</RelativeLayout>

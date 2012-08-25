@@ -1,23 +1,41 @@
 package com.airlocksoftware.holo.actionbar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 
+import com.airlocksoftware.holo.R;
+import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.type.FontText;
 
-public class ActionBarButton extends View {
+public class ActionBarButton extends FrameLayout {
 
 	// STATE
-	ViewGroup mContentView;
-	FontText mText;
-	ImageView mImage;
+	private Context mContext;
 
-	Context mContext;
+	private String mText;
+	private Bitmap mIcon;
+	private FontText mFontText;
+	private IconView mIconView;
+	private Priority mPriority = Priority.LOW;
+	private DrawMode mDrawMode;
 
-	ButtonMode mButtonMode;
+	private boolean mLayoutFinished = false;
+
+	// CONSTANTS
+	private int ACTIONBAR_HEIGHT;
+	private int ACTIONBAR_WIDTH;
+	private LinearLayout.LayoutParams ACTIONBAR_PARAMS;
+	private LinearLayout.LayoutParams OVERFLOW_PARAMS;
+	private static final int ACTIONBAR_LAYOUT = R.layout.vw_actionbar_btn;
+	private static final int OVERFLOW_LAYOUT = R.layout.vw_actionbar_overflow_btn;
 
 	// CONSTRUCTORS
 	public ActionBarButton(Context context) {
@@ -27,57 +45,112 @@ public class ActionBarButton extends View {
 	public ActionBarButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		// TODO Auto-generated constructor stub
+		ACTIONBAR_HEIGHT = mContext.getResources().getDimensionPixelSize(R.dimen.action_bar_underline_offset);
+		ACTIONBAR_WIDTH = mContext.getResources().getDimensionPixelSize(R.dimen.action_bar_height);
+		ACTIONBAR_PARAMS = new LinearLayout.LayoutParams(ACTIONBAR_HEIGHT, ACTIONBAR_HEIGHT);
+		OVERFLOW_PARAMS = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		
+		this.setClickable(true);
+		// TypedValue tv = new TypedValue();
+		// mContext.getTheme().resolveAttribute(R.attr.overflowMenuButtonBg, tv, true);
+		// int background = tv.resourceId;
+		// setBackgroundResource(background);
+		//
+		// LayoutInflater inflater = LayoutInflater.from(mContext);
+		// inflater.inflate(DEFAULT_LAYOUT, this);
+		// mLayoutFinished = true;
+		//
+		// mFontText = (FontText) findViewById(R.id.txt);
+		// mIconView = (IconView) findViewById(R.id.icv);
+		//
+		// drawMode(DrawMode.ICON_ONLY);
 	}
 
 	// PUBLIC API
 	/** Set the mode of this button. **/
-	public ActionBarButton buttonMode(ButtonMode mode) {
-		mButtonMode = mode;
-		// TODO inflate the right layout, start passing OnMeasure, OnDraw, etc.
+	public ActionBarButton priority(Priority priority) {
+		mPriority = priority;
 		return this;
 	}
 
 	/** Get the mode of this button. **/
-	public ButtonMode buttonMode() {
-		return mButtonMode;
+	public Priority priority() {
+		return mPriority;
 	}
 
-	/** Get the text size in pixels **/
-	public float textSize() {
-		if(mText != null) {
-			return mText.getTextSize();
-		} else {
-			return -1.0f;
+	public DrawMode drawMode() {
+		return mDrawMode;
+	}
+
+	public ActionBarButton drawMode(DrawMode mode) {
+		if (mDrawMode == null || mDrawMode != mode) {
+			mLayoutFinished = false;
+			this.removeAllViews();
+			LayoutInflater inflater = LayoutInflater.from(mContext);
+
+			switch (mode) {
+			case ICON_ONLY:
+				inflater.inflate(ACTIONBAR_LAYOUT, this);
+//				mIconView = (IconView) findViewById(R.id.icv);
+				setLayoutParams(ACTIONBAR_PARAMS);
+				break;
+			case OVERFLOW:
+				inflater.inflate(OVERFLOW_LAYOUT, this);
+				setLayoutParams(OVERFLOW_PARAMS);
+				break;
+			}
+			mIconView = (IconView) findViewById(R.id.icv);
+			mFontText = (FontText) findViewById(R.id.txt);
+			icon(mIcon);
+			text(mText);
+
+			mLayoutFinished = true;
 		}
-	}
-
-	/** Set the text size in SP (scaled pixel) **/
-	public ActionBarButton textSize(float size) {
-		if(mText != null) mText.setTextSize(size);
-		return this;
-	}
-	
-	/** Set the text size with specified unit (see TypedValue for possible units) **/
-	public ActionBarButton textSize(int unit, float size) {
-		if(mText != null) mText.setTextSize(unit, size);
+		mDrawMode = mode;
 		return this;
 	}
 
+	public ActionBarButton text(String text) {
+		mText = text;
+		if (mText != null && mFontText != null) mFontText.setText(text);
+		return this;
+	}
+
+	public String text() {
+		return mText;
+	}
+
+	public ActionBarButton icon(Bitmap bmp) {
+		mIcon = bmp;
+		if (mIcon != null && mIconView != null) mIconView.iconSource(mIcon);
+		return this;
+	}
+
+	public ActionBarButton icon(int iconResId) {
+		icon(BitmapFactory.decodeResource(getResources(), iconResId));
+		return this;
+	}
+
+	public Bitmap icon() {
+		return mIcon;
+	}
+
+	// PRIVATE METHODS
 
 	// ENUMS & INNER CLASSES
-	public enum ButtonMode {
-		ICON_ONLY(0), TEXT_ONLY(1), ICON_AND_LABEL(2), OVERFLOW(3);
+	public enum Priority {
+		HIGH, LOW;
+	}
 
-		private final int mLayoutResId;
+	public enum DrawMode {
+		ICON_ONLY, OVERFLOW;
+	}
 
-		ButtonMode(int layoutResId) {
-			mLayoutResId = layoutResId;
-		}
-
-		public int layoutResId() {
-			return mLayoutResId;
-		}
+	// OVERRIDE THIS addView SINCE ALL OTHERS ARE ROUTED THROUGH IT
+	@Override
+	public void addView(View child, int index, ViewGroup.LayoutParams params) {
+		if (!mLayoutFinished) super.addView(child, index, params);
+		else throw new RuntimeException("Can't add views to an ActionBarButton after initial layout");
 	}
 
 }
