@@ -99,25 +99,22 @@ public class ActionBarViewGroup extends RelativeLayout {
 			}
 		});
 	}
-	
+
 	public ActionBarViewGroup titleText(String text) {
-		if(mTitleText != null) mTitleText.setText(text);
+		if (mTitleText != null) mTitleText.setText(text);
 		return this;
 	}
-	
-//	public ActionBarViewGroup upListener(OnClickListener l) {
-//		if(mUpContainer != null) mUpContainer.setOnClickListener(l);
-//		return this;
-//	}
-	
+
 	public RelativeLayout upButton() {
 		return mUpContainer;
 	}
 
 	public void toggleOverflow() {
-		if (mOverlayManager == null) throw new RuntimeException(
-				"You have to set the OverlayManager to use the ActionBarOverflow");
-		mOverlayManager.toggleViewById(R.id.root_overflow_menu, R.anim.scale_in, R.anim.scale_out);
+		if (mOverlayManager == null) {
+			throw new RuntimeException("You have to set the OverlayManager to use the ActionBarOverflow");
+		} else if (mOverflow.hasCustomViews() || mOverflow.hasActionBarButtons()) {
+			mOverlayManager.toggleViewById(R.id.root_overflow_menu, R.anim.scale_in, R.anim.scale_out);
+		}
 	}
 
 	public ActionBarViewGroup overlayManager(OverlayManager om) {
@@ -146,13 +143,7 @@ public class ActionBarViewGroup extends RelativeLayout {
 			if (v instanceof ActionBarButton) {
 				int index = mButtonContainer.indexOfChild(v);
 				if (index != -1) {
-
 					mButtonContainer.removeViewAt(index);
-					// if(((ActionBarButton) v).priority() == Priority.HIGH) {
-					//
-					// } else {
-					//
-					// }
 				} else mOverflow.removeView(v);
 			}
 		}
@@ -167,14 +158,6 @@ public class ActionBarViewGroup extends RelativeLayout {
 				ActionBarButton btn = (ActionBarButton) child;
 				mButtons.add(btn);
 				mNeedsLayout = true;
-				// switch (btn.priority()) {
-				// case HIGH:
-				// mNewHigh.add((ActionBarButton) child);
-				// break;
-				// case LOW:
-				// mNewLow.add((ActionBarButton) child);
-				// break;
-				// }
 			} else {
 				// custom view
 				mOverflow.addCustomView(child);
@@ -224,12 +207,6 @@ public class ActionBarViewGroup extends RelativeLayout {
 				mOverflowIcon.setVisibility(VISIBLE);
 			} else mOverflowIcon.setVisibility(GONE);
 
-			// if(available - title - hButtons.size() * ACTIONBAR_HEIGHT <= 0) {
-			// RelativeLayout.LayoutParams params = (LayoutParams) mTitleContainer.getLayoutParams();
-			// params.width =
-			//
-			// }
-
 			// high priority
 			for (ActionBarButton h : hButtons) {
 				if (available > ACTIONBAR_HEIGHT) {
@@ -263,86 +240,6 @@ public class ActionBarViewGroup extends RelativeLayout {
 			}
 
 			mNeedsLayout = false;
-
-			// int titleWidth = mTitleContainer.getMeasuredWidth();
-			// int freeSpace = width - upWidth - titleWidth;
-			// int buttonSpaces = freeSpace / buttonWidth;
-			// int extraSpace = freeSpace % buttonWidth;
-			//
-			// int freespace = mSpacer.getMeasuredWidth();
-			// int buttonWidth = ACTIONBAR_HEIGHT;
-			// int numEmptySpaces = freespace / buttonWidth;
-			//
-			// boolean overflowIconMustDisplay = mOverflow.hasCustomViews();
-			// if (overflowIconMustDisplay) {
-			// mOverflowIcon.setVisibility(VISIBLE);
-			// // buttonSpaces--;
-			// }
-			//
-			// for (int i = 0; i < newButtons; i++) {
-			// newHigh = mNewHigh.size();
-			// newLow = mNewLow.size();
-			// newButtons = newHigh + newLow;
-			// ActionBarButton b;
-			// if (numEmptySpaces > 0) {
-			// if (newHigh > 0) {
-			// b = mNewHigh.remove(0);
-			// mHigh.add(b);
-			// } else {
-			// b = mNewLow.remove(0);
-			// mLow.add(b);
-			// }
-			// mButtons.addView(b);
-			// numEmptySpaces--;
-			// } else {
-			// if (newHigh > 0) {
-			// b = mNewHigh.remove(0);
-			// if (mLow.size() > 0) {
-			// View old = mLow.remove(0);
-			// mButtons.removeView(old);
-			//
-			// }
-			// mHigh.add(b);
-			// mButtons.addView(b);
-			// } else {
-			// b = mNewLow.remove(0);
-			// mLow.add(b);
-			// mOverflow.addView(b);
-			// }
-			// }
-			// }
-
-			// if (freespace > buttonWidth) {
-			// if (high > 0) {
-			// ActionBarButton b = mNewHigh.remove(0);
-			// mHigh.add(b);
-			// mButtons.addView(b);
-			// } else {
-			// ActionBarButton b = mNewLow.remove(0);
-			// mLow.add(b);
-			// mButtons.addView(b);
-			// }
-			// }
-
-			// int width = this.getMeasuredWidth();
-			// int upWidth = mUpContainer.getMeasuredWidth();
-			// int titleWidth = mTitleContainer.getMeasuredWidth();
-			// int titleWidth = mTitleContainer.getMeasuredWidth();
-			// int freeSpace = width - upWidth - titleWidth;
-			// int buttonSpaces = freeSpace / buttonWidth;
-			// int extraSpace = freeSpace % buttonWidth;
-			// Log.d(TAG, "Can add " + buttonSpaces + " to the ActionBar with " + extraSpace
-			// + "px left over");
-			// boolean overflowIconMustDisplay = mOverflow.hasCustomViews();
-			// if (overflowIconMustDisplay) {
-			// mOverflowIcon.setVisibility(VISIBLE);
-			// buttonSpaces--;
-			// }
-			// int index = 0;
-			// while (buttonSpaces > 0) {
-			// ActionBarButton b = mButtons.get(index);
-			// // b.getParent
-			// }
 		}
 	}
 }

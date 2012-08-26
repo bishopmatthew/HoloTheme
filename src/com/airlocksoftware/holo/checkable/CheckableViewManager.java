@@ -26,9 +26,7 @@ public class CheckableViewManager {
 	public void register(CheckableView child) {
 		mChildren.add(child);
 		if (getChildCount() == 1) {
-			mProtectFromCheckedChange = true;
-			check(child.getId());
-			mProtectFromCheckedChange = false;
+			protectedCheck(child.getId());
 		}
 		child.setOnCheckedChangeListener(mChildOnCheckedChangeListener);
 	}
@@ -55,6 +53,12 @@ public class CheckableViewManager {
 		setCheckedId(id);
 	}
 
+	public void protectedCheck(int id) {
+		mProtectFromCheckedChange = true;
+		check(id);
+		mProtectFromCheckedChange = false;
+	}
+
 	public void clearCheck() {
 		check(-1);
 	}
@@ -63,11 +67,18 @@ public class CheckableViewManager {
 		return mChildren.get(location);
 	}
 
+	public CheckableView findViewById(int id) {
+		for (CheckableView v : mChildren) {
+			if (v.getId() == id) return v;
+		}
+		return null;
+	}
+
 	// PRIVATE METHODS
 	private void setCheckedId(int id) {
 		mLastCheckedId = mCheckedId;
 		mCheckedId = id;
-		if (mOnCheckedChangedListener != null) {
+		if (mOnCheckedChangedListener != null && !mProtectFromCheckedChange) {
 			mOnCheckedChangedListener.onCheckedViewChanged(this, this.indexOfChildById(mCheckedId),
 					this.indexOfChildById(mLastCheckedId));
 		}
@@ -79,13 +90,6 @@ public class CheckableViewManager {
 
 	private int indexOfChildById(int id) {
 		return mChildren.indexOf(findViewById(id));
-	}
-
-	private View findViewById(int id) {
-		for (View v : mChildren) {
-			if (v.getId() == id) return v;
-		}
-		return null;
 	}
 
 	private void setCheckedStateForView(int viewId, boolean checked) {

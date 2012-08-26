@@ -21,6 +21,7 @@ public class ActionBarOverflow extends ScrollView {
 
 	private boolean mLayoutFinished = false;
 	private boolean mHasCustomViews = false;
+	private boolean mHasActionBarButtons = false;
 
 	// CONSTANTS
 	private static final int DEFAULT_LAYOUT = R.layout.vw_actionbar_overflow;
@@ -39,9 +40,10 @@ public class ActionBarOverflow extends ScrollView {
 		setBackgroundResource(background);
 
 		int width = mContext.getResources().getDimensionPixelSize(R.dimen.overflow_menu_width);
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width, LayoutParams.WRAP_CONTENT, Gravity.RIGHT);
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
+				LayoutParams.WRAP_CONTENT, Gravity.RIGHT);
 		params.gravity = Gravity.RIGHT;
-		
+
 		setLayoutParams(params);
 
 		LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -54,13 +56,18 @@ public class ActionBarOverflow extends ScrollView {
 	}
 
 	public boolean hasCustomViews() {
-		return mHasCustomViews;
+		return (mCustomViews != null && mCustomViews.getChildCount() != 0);
 	}
-	
+
+	public boolean hasActionBarButtons() {
+		return (mActionBarButtons != null && mActionBarButtons.getChildCount() != 0);
+
+	}
+
 	public void removeActionBarButtons() {
 		mActionBarButtons.removeAllViews();
 	}
-	
+
 	public void removeCustomViews() {
 		mCustomViews.removeAllViews();
 	}
@@ -70,33 +77,16 @@ public class ActionBarOverflow extends ScrollView {
 		if (!mLayoutFinished) super.removeView(v);
 		else {
 			if (v instanceof ActionBarButton) mActionBarButtons.removeView(v);
-			else {
-				mCustomViews.removeView(v);
-				// check if there are any custom views left
-				if (mCustomViews != null) mHasCustomViews = mCustomViews.getChildCount() != 0;
-			}
+			else mCustomViews.removeView(v);
 		}
 	}
-	
+
 	public void addButton(ActionBarButton b) {
 		mActionBarButtons.addView(b);
 	}
-	
+
 	public void addCustomView(View v) {
 		mCustomViews.addView(v);
 	}
-
-//	// OVERRIDE THIS addView SINCE ALL OTHERS ARE ROUTED THROUGH IT
-//	@Override
-//	public void addView(View child, int index, ViewGroup.LayoutParams params) {
-//		if (!mLayoutFinished) super.addView(child, index, params);
-//		else {
-//			if (child instanceof ActionBarButton) {
-//				mActionBarButtons.addView(child);
-//			} else {
-//				mCustomViews.addView(child);
-//			}
-//		}
-//	}
 
 }
