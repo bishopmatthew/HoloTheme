@@ -83,7 +83,7 @@ public class ActionBarViewGroupActivity extends FragmentActivity {
 				listener.onStop();
 			}
 		}
-		super.onDestroy();
+		super.onStop();
 	}
 
 	@Override

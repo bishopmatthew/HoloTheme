@@ -4,11 +4,13 @@
     <color name="grey_90">#E5E5E5</color>
     <color name="grey_80">#cccccc</color>
     <color name="grey_75">#BFBFBF</color>
+    <color name="grey_70">#B2B2B2</color>
     <color name="grey_60">#999999</color>
     <color name="grey_50">#808080</color>
     <color name="grey_45">#727272</color>
     <color name="grey_40">#666666</color>
     <color name="grey_30">#4C4C4C</color>
+    <color name="grey_25">#3F3F3F</color>
     <color name="grey_20">#333333</color>
     <color name="grey_15">#262626</color>
     <color name="grey_10">#1a1a1a</color>

@@ -11,8 +11,8 @@
     <com.airlocksoftware.holo.image.IconView
         android:id="@+id/icv"
         style="?overflowMenuButtonIconStyle"
-        android:layout_width="@dimen/action_bar_height"
-        android:layout_height="@dimen/action_bar_height"
+        android:layout_width="@dimen/actionbar_height"
+        android:layout_height="@dimen/actionbar_height"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:duplicateParentState="true"

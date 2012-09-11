@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.ProgressBar;
 
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.image.IconView;
@@ -24,10 +24,12 @@ public class ActionBarButton extends FrameLayout {
 	private Bitmap mIcon;
 	private FontText mFontText;
 	private IconView mIconView;
+	private ProgressBar mProgressSpinner;
 	private Priority mPriority = Priority.LOW;
 	private DrawMode mDrawMode;
 
 	private boolean mLayoutFinished = false;
+	private boolean mShowProgress = false;
 
 	// CONSTANTS
 	private int ACTIONBAR_HEIGHT;
@@ -36,6 +38,7 @@ public class ActionBarButton extends FrameLayout {
 	private LinearLayout.LayoutParams OVERFLOW_PARAMS;
 	private static final int ACTIONBAR_LAYOUT = R.layout.vw_actionbar_btn;
 	private static final int OVERFLOW_LAYOUT = R.layout.vw_actionbar_overflow_btn;
+	private static final int SPIN_LAYOUT = R.layout.vw_actionbar_progressbar_spin;
 
 	// CONSTRUCTORS
 	public ActionBarButton(Context context) {
@@ -45,25 +48,14 @@ public class ActionBarButton extends FrameLayout {
 	public ActionBarButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		ACTIONBAR_HEIGHT = mContext.getResources().getDimensionPixelSize(R.dimen.action_bar_underline_offset);
-		ACTIONBAR_WIDTH = mContext.getResources().getDimensionPixelSize(R.dimen.action_bar_height);
+		ACTIONBAR_HEIGHT = mContext.getResources().getDimensionPixelSize(
+				R.dimen.actionbar_underline_offset);
+		ACTIONBAR_WIDTH = mContext.getResources().getDimensionPixelSize(R.dimen.actionbar_height);
 		ACTIONBAR_PARAMS = new LinearLayout.LayoutParams(ACTIONBAR_HEIGHT, ACTIONBAR_HEIGHT);
-		OVERFLOW_PARAMS = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		
+		OVERFLOW_PARAMS = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.WRAP_CONTENT);
+
 		this.setClickable(true);
-		// TypedValue tv = new TypedValue();
-		// mContext.getTheme().resolveAttribute(R.attr.overflowMenuButtonBg, tv, true);
-		// int background = tv.resourceId;
-		// setBackgroundResource(background);
-		//
-		// LayoutInflater inflater = LayoutInflater.from(mContext);
-		// inflater.inflate(DEFAULT_LAYOUT, this);
-		// mLayoutFinished = true;
-		//
-		// mFontText = (FontText) findViewById(R.id.txt);
-		// mIconView = (IconView) findViewById(R.id.icv);
-		//
-		// drawMode(DrawMode.ICON_ONLY);
 	}
 
 	// PUBLIC API
@@ -90,8 +82,8 @@ public class ActionBarButton extends FrameLayout {
 
 			switch (mode) {
 			case ICON_ONLY:
-				inflater.inflate(ACTIONBAR_LAYOUT, this);
-//				mIconView = (IconView) findViewById(R.id.icv);
+				if (mShowProgress) inflater.inflate(SPIN_LAYOUT, this);
+				else inflater.inflate(ACTIONBAR_LAYOUT, this);
 				setLayoutParams(ACTIONBAR_PARAMS);
 				break;
 			case OVERFLOW:
@@ -133,6 +125,22 @@ public class ActionBarButton extends FrameLayout {
 
 	public Bitmap icon() {
 		return mIcon;
+	}
+
+	public boolean showProgress() {
+		return mShowProgress;
+	}
+
+	public ActionBarButton showProgress(boolean showProgress) {
+		mShowProgress = showProgress;
+
+		// refresh mDrawMode
+		if (mDrawMode == DrawMode.ICON_ONLY) {
+			mDrawMode = null;
+			drawMode(DrawMode.ICON_ONLY);
+		}
+
+		return this;
 	}
 
 	// PRIVATE METHODS

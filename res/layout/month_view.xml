@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/month_view_nav"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/action_bar_height"
+        android:layout_height="@dimen/actionbar_height"
         android:layout_weight="0"
         android:background="?monthViewNavBackground" >
 

@@ -75,6 +75,7 @@ public class IconView extends ImageView {
 
 	public IconView shadowColor(int color) {
 		mShadowColor = color;
+		mShadowColors = null;
 		generateDrawables();
 		return this;
 	}
@@ -95,6 +96,7 @@ public class IconView extends ImageView {
 
 	public IconView iconColor(int color) {
 		mColor = color;
+		mColors = null;
 		generateDrawables();
 		return this;
 	}

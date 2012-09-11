@@ -3,7 +3,6 @@
     xmlns:airlock="http://schemas.android.com/apk/res/com.airlocksoftware.holo"
     android:id="@+id/popup_list_item"
     android:layout_width="fill_parent"
-    android:background="?overflowMenuLayoutBackground"
     android:layout_height="wrap_content" >
 
     <com.airlocksoftware.holo.type.FontText
@@ -12,6 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true" />
 
 </RelativeLayout>

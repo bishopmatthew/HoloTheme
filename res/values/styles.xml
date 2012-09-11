@@ -137,8 +137,8 @@
     <style name="IconView"></style>
 
     <style name="IconView.ActionBar">
-        <item name="android:layout_width">@dimen/action_bar_height</item>
-        <item name="android:layout_height">@dimen/action_bar_underline_offset</item>
+        <item name="android:layout_width">@dimen/actionbar_height</item>
+        <item name="android:layout_height">@dimen/actionbar_underline_offset</item>
         <item name="android:scaleType">center</item>
         <item name="icon_colors">@drawable/st_ic_action_bar_colors</item>
         <item name="icon_shadowColors">@drawable/st_ic_action_bar_shadow_colors</item>
@@ -148,8 +148,8 @@
     </style>
     
      <style name="IconView.ActionBar.Overflow">
-        <item name="android:layout_width">@dimen/action_bar_height</item>
-        <item name="android:layout_height">@dimen/action_bar_underline_offset</item>
+        <item name="android:layout_width">@dimen/actionbar_height</item>
+        <item name="android:layout_height">@dimen/actionbar_underline_offset</item>
         <item name="android:scaleType">center</item>
         <item name="icon_colors">@drawable/csl_ic_actionbar_overflow</item>
     </style>

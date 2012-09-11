@@ -88,7 +88,7 @@ public class IcsDialog extends Dialog {
 	public void displayText(String toDisplay) {
 		FontText display = (FontText) LayoutInflater.from(mContext).inflate(R.layout.dialog_text, content, false);
 		display.setText(toDisplay);
-		setContent(display);
+		setContentView(display);
 	}
 	
 	public void clearButtons() {
@@ -96,15 +96,15 @@ public class IcsDialog extends Dialog {
 		buttonContainer.setVisibility(View.GONE);
 	}
 	
-	public void setButtonLayout(int layoutResId) {
+	public void setButtonLayoutResId(int layoutResId) {
 		btnLayoutResId = layoutResId;
 	}
 	
-	public void setContent(View contentView) {
+	public void setContentView(View contentView) {
 		content.addView(contentView);
 	}
 	
-	public void clearContent() {
+	public void clearContentView() {
 		content.removeAllViews();
 	}
 

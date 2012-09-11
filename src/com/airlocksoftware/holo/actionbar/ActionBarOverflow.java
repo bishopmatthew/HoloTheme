@@ -6,9 +6,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -20,8 +19,6 @@ public class ActionBarOverflow extends ScrollView {
 	private LinearLayout mActionBarButtons, mCustomViews;
 
 	private boolean mLayoutFinished = false;
-	private boolean mHasCustomViews = false;
-	private boolean mHasActionBarButtons = false;
 
 	// CONSTANTS
 	private static final int DEFAULT_LAYOUT = R.layout.vw_actionbar_overflow;
@@ -52,7 +49,6 @@ public class ActionBarOverflow extends ScrollView {
 
 		mActionBarButtons = (LinearLayout) findViewById(R.id.cnt_actionbar_buttons);
 		mCustomViews = (LinearLayout) findViewById(R.id.cnt_custom_views);
-
 	}
 
 	public boolean hasCustomViews() {

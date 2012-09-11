@@ -61,8 +61,8 @@
     <com.airlocksoftware.holo.image.IconView
         android:id="@+id/icv_overflow"
         style="@style/IconView.ActionBar"
-        android:layout_width="@dimen/action_bar_height"
-        android:layout_height="@dimen/action_bar_height"
+        android:layout_width="@dimen/actionbar_height"
+        android:layout_height="@dimen/actionbar_height"
         android:layout_alignParentRight="true"
         android:layout_weight="0"
         android:visibility="gone"

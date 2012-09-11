@@ -1,9 +1,9 @@
 <resources>
 
     <!-- ACTION BAR -->
-    <dimen name="action_bar_height">48dp</dimen>
-    <dimen name="action_bar_underline_offset">46dp</dimen>
-    <dimen name="action_bar_underline_height">2dp</dimen>
+    <dimen name="actionbar_height">48dp</dimen>
+    <dimen name="actionbar_underline_offset">46dp</dimen>
+    <dimen name="actionbar_underline_height">2dp</dimen>
     <dimen name="overflow_menu_width">220dp</dimen>
     
     <!-- OTHER -->

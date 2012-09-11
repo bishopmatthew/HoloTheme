@@ -22,6 +22,7 @@ import com.airlocksoftware.holo.anim.AnimationParams.FillType;
 import com.airlocksoftware.holo.anim.OverlayManager;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.type.FontText;
+import com.airlocksoftware.holo.utils.ViewUtils;
 
 public class ActionBarViewGroup extends RelativeLayout {
 
@@ -33,14 +34,7 @@ public class ActionBarViewGroup extends RelativeLayout {
 	FontText mTitleText;
 	View mSpacer;
 
-	// List<ActionBarButton> mHigh = new LinkedList<ActionBarButton>();
-	// List<ActionBarButton> mLow = new LinkedList<ActionBarButton>();
-	// List<ActionBarButton> mOverflowHigh = new LinkedList<ActionBarButton>();
-	// List<ActionBarButton> mOverflowLow = new LinkedList<ActionBarButton>();
-	// List<ActionBarButton> mNewHigh = new LinkedList<ActionBarButton>();
 	List<ActionBarButton> mButtons = new ArrayList<ActionBarButton>();
-	// private int mHighCount = 0;
-	// private int mLowCount = 0;
 
 	ActionBarOverflow mOverflow;
 	OverlayManager mOverlayManager;
@@ -60,7 +54,7 @@ public class ActionBarViewGroup extends RelativeLayout {
 	public ActionBarViewGroup(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		ACTIONBAR_HEIGHT = mContext.getResources().getDimensionPixelSize(R.dimen.action_bar_height);
+		ACTIONBAR_HEIGHT = mContext.getResources().getDimensionPixelSize(R.dimen.actionbar_height);
 
 		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.ActionBarView, 1, 0);
 
@@ -100,13 +94,32 @@ public class ActionBarViewGroup extends RelativeLayout {
 		});
 	}
 
+	/** Set the title text of the ActionBar. Automatically removes any other views from the Title container **/
 	public ActionBarViewGroup titleText(String text) {
-		if (mTitleText != null) mTitleText.setText(text);
+		mTitleText.setVisibility(View.VISIBLE);
+		mTitleText.setText(text);
+		for (View v : ViewUtils.directChildViews(mTitleContainer)) {
+			if (v != mTitleText) mTitleContainer.removeView(v);
+		}
 		return this;
+	}
+
+	public ActionBarViewGroup customTitle(View titleView) {
+		mTitleText.setVisibility(View.GONE);
+		mTitleContainer.addView(titleView);
+		return this;
+	}
+	
+	public RelativeLayout titleContainer() {
+		return mTitleContainer;
 	}
 
 	public RelativeLayout upButton() {
 		return mUpContainer;
+	}
+
+	public IconView upIndicator() {
+		return mUpIndicator;
 	}
 
 	public void toggleOverflow() {
@@ -123,7 +136,7 @@ public class ActionBarViewGroup extends RelativeLayout {
 				new AnimationParams(FillType.CLIP_CONTENT).exclusivity(Exclusivity.EXCLUDE_ALL));
 		return this;
 	}
-
+	
 	public OverlayManager overlayManager() {
 		return mOverlayManager;
 	}
@@ -142,9 +155,11 @@ public class ActionBarViewGroup extends RelativeLayout {
 		else {
 			if (v instanceof ActionBarButton) {
 				int index = mButtonContainer.indexOfChild(v);
-				if (index != -1) {
-					mButtonContainer.removeViewAt(index);
-				} else mOverflow.removeView(v);
+				
+				if (index != -1) mButtonContainer.removeViewAt(index);
+				else mOverflow.removeView(v);
+
+				mButtons.remove(v);
 			}
 		}
 	}

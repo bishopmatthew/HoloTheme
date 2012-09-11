@@ -36,6 +36,7 @@ public class CheckableViewManager {
 		child.setOnCheckedChangeListener(null);
 	}
 
+	/** Checks the view that matches id, if found. **/
 	public void check(int id) {
 		// don't even bother
 		if (id != -1 && (id == mCheckedId)) {
@@ -53,12 +54,13 @@ public class CheckableViewManager {
 		setCheckedId(id);
 	}
 
+	/** Checks the view matching id, supressing any calls to listeners. **/
 	public void protectedCheck(int id) {
 		mProtectFromCheckedChange = true;
 		check(id);
 		mProtectFromCheckedChange = false;
 	}
-
+	
 	public void clearCheck() {
 		check(-1);
 	}

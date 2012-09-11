@@ -51,7 +51,9 @@ public abstract class GroupAdapter<T> extends BaseAdapter {
 
 		if (viewType == HEADER_VIEW_TYPE) return mHeaderView;
 		else if (viewType == FOOTER_VIEW_TYPE) return mFooterView;
-		else return getView(getItem(position), convertView, parent);
+		else  {
+			return getView(getItem(position), convertView, parent);
+		}
 	}
 
 	public abstract View getView(T item, View convertView, ViewGroup parent);
@@ -72,11 +74,7 @@ public abstract class GroupAdapter<T> extends BaseAdapter {
 
 	@Override
 	public int getViewTypeCount() {
-		int count = 0;
-		if (mHeaderView != null) count++;
-		if (mFooterView != null) count++;
-		if (mObjects.size() > 0) count++;
-		return count;
+		return 3;
 	}
 	
 	public void addHeader(View header) {
@@ -85,20 +83,27 @@ public abstract class GroupAdapter<T> extends BaseAdapter {
 	}
 	
 	public void addFooter(View footer) {
-		mHeaderView = footer;
+		mFooterView = footer;
 		notifyDataSetChanged();
 	}
 	
 	public void add(T object) {
 		mObjects.add(object);
+		notifyDataSetChanged();
 	}
 	
 	public void addAll(Collection<? extends T> coll) {
 		mObjects.addAll(coll);
+		notifyDataSetChanged();
 	}
 	
 	public void clear() {
 		mObjects.clear();
+		notifyDataSetChanged();
+	}
+	
+	public List<T> getArray() {
+		return mObjects;
 	}
 
 }

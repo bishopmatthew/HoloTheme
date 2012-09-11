@@ -1,16 +1,13 @@
 package com.airlocksoftware.holo.anim;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.graphics.Rect;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -38,6 +35,13 @@ public class OverlayManager {
 	private Animation mInAnim;
 	private Animation mOutAnim;
 
+	private OnClickListener hideListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			hideAllViews();
+		}
+	};
+
 	// CONSTANTS
 	private static final int DEF_IN_ANIM = R.anim.scale_in;
 	private static final int DEF_OUT_ANIM = R.anim.scale_out;
@@ -48,10 +52,9 @@ public class OverlayManager {
 		mWindow = window;
 		mRoot = new FrameLayout(context, null);
 		mRoot.setId(R.id.overlay_root);
-		mWindow.addContentView(mRoot, new LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT));
-		mRoot.setVisibility(View.GONE);
-
+		mWindow.addContentView(mRoot, new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT));
+		
 		// TODO this is temporary
 		setDefaultInAnimation(DEF_IN_ANIM);
 		setDefaultOutAnimation(DEF_OUT_ANIM);
@@ -124,14 +127,16 @@ public class OverlayManager {
 		if (params.inAnimation() != null) {
 			inAnim = params.inAnimation();
 		}
-		FrameLayout frame = mFrames.get(params.fillType());
-		mRoot.setVisibility(View.VISIBLE);
-		frame.setVisibility(View.VISIBLE);
 
 		if (params.exclusivity() == Exclusivity.EXCLUDE_ALL) {
 			hideAllViews();
 		}
 
+//		FrameLayout frame = mFrames.get(params.fillType());
+//		mRoot.setVisibility(View.VISIBLE);
+//		frame.setVisibility(View.VISIBLE);
+		mRoot.setOnClickListener(hideListener);
+		
 		final AnimationFinishedListener showListener = listener;
 
 		inAnim.setAnimationListener(new AnimationListener() {
@@ -183,10 +188,13 @@ public class OverlayManager {
 		final View toHide = view;
 		AnimationParams params = mAnimationParams.get(toHide);
 		if (toHide == null || params == null) return;
-		
+
 		final AnimationFinishedListener hideListener = listener;
-		if (params.inAnimation() != null) {
-			outAnim = params.inAnimation();
+		if (params.outAnimation() != null) {
+			outAnim = params.outAnimation();
+		}
+		if (outAnim == null) {
+			outAnim = mOutAnim;
 		}
 
 		outAnim.setAnimationListener(new AnimationListener() {
@@ -235,11 +243,19 @@ public class OverlayManager {
 			for (int j = 0; j < frame.getChildCount(); j++) {
 				View child = frame.getChildAt(j);
 				if (child.getVisibility() == View.VISIBLE) {
+					// AnimationParams params = mAnimationParams.get(child);
+					// if (params.outAnimation() != null) {
+					// hideViewById(child.getId(), params.outAnimation());
+					// } else {
 					hideViewById(child.getId());
+					// }
 				}
 			}
+			// frame.setVisibility(View.GONE);
 		}
-
+		// mRoot.setVisibility(View.GONE);
+		mRoot.setOnClickListener(null);
+		mRoot.setClickable(false);
 	}
 
 	// setting animations
@@ -274,7 +290,7 @@ public class OverlayManager {
 		int statusBarHeight = (int) Math.ceil(25 * mContext.getResources().getDisplayMetrics().density);
 		int screenHeight = display.getHeight(); // deprecated
 
-		int abHeight = (int) mContext.getResources().getDimension(R.dimen.action_bar_height);
+		int abHeight = (int) mContext.getResources().getDimension(R.dimen.actionbar_height);
 		int contentHeight = screenHeight - statusBarHeight;
 
 		switch (fillType) {
@@ -292,7 +308,6 @@ public class OverlayManager {
 
 		frame.setLayoutParams(lp);
 		mRoot.addView(frame);
-		frame.setVisibility(View.GONE);
 		return frame;
 	}
 

@@ -5,56 +5,6 @@
     <string name="app_name">HoloTheme</string>
     <string name="debug_maps_api_key">0JpKm91f5vZqAGvbE6bLAV12z_3rLmC3ZC1Wimw</string>
     <string name="airlock_software_maps_key">0JpKm91f5vZr6oG7vt6TsAPh8k4LeHd9n3xExIA</string>
-
-    <!-- WILL NEED TO BE REPLACED -->
-    <string name="temp">Lorem ipsum</string>
-
-    <!-- FRENCH -->
-    <string name="commander">Commander</string>
-    <string name="date_de_naissance">Date de naissance</string>
-    <string name="scan_du_code_barre">Scan du code-barre</string>
-    <string name="entrer_le_no_de_la_carte">Entrer le no de la carte</string>
-    <string name="commander_ma_carteplus">Commander ma carteplus</string>
-    <string name="enregistrer_ma_carteplus">Enregistrer ma carteplus</string>
-    <string name="reponse">Réponse</string>
-    <string name="nom">Nom</string>
-    <string name="prenom">Prénom</string>
-    <string name="adresse">Adresse</string>
-    <string name="np">NPA</string>
-    <string name="tele">Téléphone</string>
-    <string name="email">E-mail</string>
-    <string name="participer">Participer</string>
-    <string name="bons">Bons</string>
-    <string name="pharmacies">Pharmacies</string>
-    <string name="garde">Garde</string>
-    <string name="concours">Concours</string>
-    <string name="carteplus">Carteplus</string>
-    <string name="ville">Ville</string>
-    
-    
-	<string name="no_connection">Aucune connexion</string>
-	<string name="order">Commande</string>
-	<string name="concours_magazine">Concours magazine</string>
-	<string name="email_subject">Contact depuis l\'application pharmacieplus pour Android</string>
-	<string name="error">Erreur</string>
-	<string name="no_connection_error">Internet n\'est pas accessible. Veuillez vous connecter à un réseau, réessayer ou relancer l\'application.</string>
-	<string name="empty_field_error">Merci de remplir tous les champs.</string>
-	<string name="mot_cache">Mot caché</string>
-	<string name="retry">Réessayer</string>
-	<string name="delete">Supprimer</string>
-	<string name="error_try_again">Une erreur est survenue, veuillez réessayer.</string>
-	<string name="request_sent">Votre demande a bien été envoyée.</string>
-	<string name="participation_sent">Votre participation a bien été envoyée.</string>
-	
-    <!-- NEEDS TO BE SHARED -->
-    
-    <!-- NEED TO BE CHECKED -->
-    <string name="submit">Envoyer</string> 
-    <string name="info">Informations</string>
-    <string name="email_error">Please enter a valid email address</string>
-    <string name="card_number">Card number</string>
-    <string name="barcode_error">Please enter your card number manually</string>
-    <string name="card_number_error">Please enter your 13 digit card number</string>
     
     
 </resources>

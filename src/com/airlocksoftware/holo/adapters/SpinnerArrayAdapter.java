@@ -1,6 +1,8 @@
 package com.airlocksoftware.holo.adapters;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,42 +16,37 @@ import android.widget.SpinnerAdapter;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.type.FontText;
 
-@SuppressWarnings("rawtypes")
-public abstract class RadioListAdapter extends BaseAdapter implements SpinnerAdapter, ListAdapter {
+public abstract class SpinnerArrayAdapter<T> extends BaseAdapter implements SpinnerAdapter,
+		ListAdapter {
 
-	protected transient Context context;
-	
-	protected ArrayList objects;
-	int selectedPosition;
+	protected transient Context mContext;
 
-	private String prompt;
-	
-	private static final String DEFAULT_PROMPT = "Tap to select";
+	protected List<T> mObjects = new ArrayList<T>();
+	int mSelectedPosition = -1;
 
-	public RadioListAdapter(Context context, ArrayList objects) {
-		super();
-		this.context = context;
-		setData(objects);
-		selectedPosition = -1;
+	public SpinnerArrayAdapter(Context context) {
+		this(context, null);
 	}
 
-	public void setData(ArrayList data) {
-		this.objects = data;
+	public SpinnerArrayAdapter(Context context, Collection<T> objects) {
+		super();
+		mContext = context;
+		if (objects != null) addAll(objects);
 	}
 
 	@Override
 	public int getCount() {
-		if (objects != null) {
-			return objects.size();
+		if (mObjects != null) {
+			return mObjects.size();
 		} else {
 			return 0;
 		}
 	}
 
 	@Override
-	public Object getItem(int position) {
-		if (objects != null) {
-			return objects.get(position);
+	public T getItem(int position) {
+		if (mObjects != null) {
+			return mObjects.get(position);
 		} else {
 			return null;
 		}
@@ -60,71 +57,31 @@ public abstract class RadioListAdapter extends BaseAdapter implements SpinnerAda
 		return position;
 	}
 
+	public void add(T item) {
+		mObjects.add(item);
+	}
+
+	public void addAll(Collection<T> items) {
+		mObjects.addAll(items);
+	}
+
+	public void clear() {
+		mObjects.clear();
+	}
+
 	/** Gets the position of an object within the array **/
 	public int getPosition(Object object) {
-		if (objects != null) {
-			return objects.indexOf(object);
+		if (mObjects != null) {
+			return mObjects.indexOf(object);
 		} else {
 			return -1;
 		}
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			LayoutInflater inflater = LayoutInflater.from(context);
-			convertView = inflater.inflate(R.layout.vw_spinner_dropdown, parent, false);
-		}
-		
-		convertView.setTag(getItem(position));
-		((FontText) convertView.findViewById(R.id.text)).setText(getItemText(position));
-		
-		RadioButton radioButton = (RadioButton) convertView.findViewById(R.id.radio_button);
-		if(position == selectedPosition) {
-			radioButton.setChecked(true);
-		} else {
-			radioButton.setChecked(false);
-		}
-		convertView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				setSelectedPosition(getPosition(v.getTag()));
-				
-				// call onItemClick
-				onItemClick(getSelectedPosition());
-			}
-		});
-		return convertView;
-	}
-
-	public View getSpinnerView(ViewGroup parent) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		View spinnerView = inflater.inflate(R.layout.vw_spinner, parent, false);
-
-		int position = getSelectedPosition();
-		FontText text = (FontText) spinnerView.findViewById(R.id.text);
-		if (position != -1) {
-			text.setText(getItemText(position));
-		} else if (prompt != null) {
-			text.setText(prompt);
-		} else {
-			text.setText(DEFAULT_PROMPT);
-		}
-		return spinnerView;
-	}
-
-	public abstract String getItemText(int position);
-
-	public abstract void onItemClick(int position);
-	
-	public void setSelectedPosition(int position) {
-		this.selectedPosition = position;
-	}
-
-	public Object getSelected() {
+	public T getSelected() {
 		try {
-			return objects.get(selectedPosition);
-		} catch(Exception e) {
+			return mObjects.get(mSelectedPosition);
+		} catch (IndexOutOfBoundsException e) {
 			return null;
 		}
 	}
@@ -134,11 +91,57 @@ public abstract class RadioListAdapter extends BaseAdapter implements SpinnerAda
 	 * otherwise
 	 **/
 	int getSelectedPosition() {
-		return selectedPosition;
+		return mSelectedPosition;
 	}
 
-	public void setPrompt(String prompt) {
-		this.prompt = prompt;
+	@Override
+	/** Gets the view that will display in dropdown list or dialog **/
+	public View getView(int position, View convertView, ViewGroup parent) {
+		if (convertView == null) {
+			LayoutInflater inflater = LayoutInflater.from(mContext);
+			convertView = inflater.inflate(R.layout.vw_spinner_dropdown, parent, false);
+		}
+
+		convertView.setTag(getItem(position));
+		((FontText) convertView.findViewById(R.id.text)).setText(getItemText(position));
+
+		RadioButton radioButton = (RadioButton) convertView.findViewById(R.id.radio_button);
+		if (position == mSelectedPosition) {
+			radioButton.setChecked(true);
+		} else {
+			radioButton.setChecked(false);
+		}
+		convertView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setSelectedPosition(getPosition(v.getTag()));
+
+				// call onItemClick
+				onItemClick(getSelectedPosition());
+			}
+		});
+		return convertView;
+	}
+
+	/** Gets the view that will display within the spinner on the page (usually just a TextView) **/
+	public View getSpinnerView(ViewGroup parent) {
+		LayoutInflater inflater = LayoutInflater.from(mContext);
+		View spinnerView = inflater.inflate(R.layout.vw_spinner, parent, false);
+
+		int position = getSelectedPosition();
+		FontText text = (FontText) spinnerView.findViewById(R.id.text);
+		if (position != -1) {
+			text.setText(getItemText(position));
+		}
+		return spinnerView;
+	}
+
+	public abstract String getItemText(int position);
+
+	public abstract void onItemClick(int position);
+
+	public void setSelectedPosition(int position) {
+		this.mSelectedPosition = position;
 	}
 
 }

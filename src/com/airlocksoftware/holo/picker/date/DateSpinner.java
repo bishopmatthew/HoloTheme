@@ -86,7 +86,7 @@ public class DateSpinner extends FrameLayout {
 	public void displayText(String text) {
 		if (selectedDateView == null) {
 			LayoutInflater inflater = LayoutInflater.from(mContext);
-			inflater.inflate(R.layout.spinner_view, this);
+			inflater.inflate(R.layout.vw_spinner, this);
 			selectedDateView = (FontText) findViewById(R.id.text);
 		}
 		selectedDateView.setText(text);
