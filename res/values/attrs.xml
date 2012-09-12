@@ -163,7 +163,7 @@
 
 
     <!-- HOLO THEME -->
-    <declare-styleable name="HoloTheme">
+    <declare-styleable name="BLAH">
 
         <!-- MONTH VIEW -->
         <!-- NAVIGATION -->

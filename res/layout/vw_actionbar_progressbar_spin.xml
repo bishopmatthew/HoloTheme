@@ -5,4 +5,4 @@
     android:layout_height="@dimen/actionbar_height"
     android:background="?actionBarButtonBg"
     android:duplicateParentState="true"
-    android:padding="6dp" />
+    android:padding="9dp" />

@@ -24,7 +24,6 @@ public class ActionBarButton extends FrameLayout {
 	private Bitmap mIcon;
 	private FontText mFontText;
 	private IconView mIconView;
-	private ProgressBar mProgressSpinner;
 	private Priority mPriority = Priority.LOW;
 	private DrawMode mDrawMode;
 
