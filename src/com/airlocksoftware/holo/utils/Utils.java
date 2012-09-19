@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+/** A collection of static methods useful for working with Android applications. **/
 public class Utils {
 
 	public static String getLocalizedDate(Context context, Date transactionDate) {

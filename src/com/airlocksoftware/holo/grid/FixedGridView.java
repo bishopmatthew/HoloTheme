@@ -29,7 +29,7 @@ public class FixedGridView extends LinearLayout {
 	private int mNumCols;
 	private int mDefStyle;
 
-	private FixedGridAdapter mAdapter;
+	private FixedGridAdapter<?> mAdapter;
 	ArrayList<View> mScrapViews;
 	private ArrayList<LinearLayout> mRows;
 
@@ -61,11 +61,11 @@ public class FixedGridView extends LinearLayout {
 	}
 
 	// PUBLIC METHODS
-	public FixedGridAdapter getAdapter() {
+	public FixedGridAdapter<?> getAdapter() {
 		return mAdapter;
 	}
 
-	public void setAdapter(FixedGridAdapter adapter) {
+	public void setAdapter(FixedGridAdapter<?> adapter) {
 		mAdapter = adapter;
 		mAdapter.registerDataSetObserver(mObserver);
 		populate();

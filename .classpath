@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry excluding="com/airlocksoftware/holo/demo/|com/korovyansk/android/slideout/SlideoutActivity.java|com/korovyansk/android/slideout/SlideoutHelper.java|com/airlocksoftware/holo/interfaces/PageHolder.java|com/airlocksoftware/holo/anim/AnimationOverlayView.java|com/airlocksoftware/holo/activities/TabActivity.java|com/airlocksoftware/holo/pages/Page.java|com/airlocksoftware/holo/pages/PageAdapter.java|com/airlocksoftware/holo/pages/PageFragment.java|com/airlocksoftware/holo/pages/StaticPageHolder.java|com/airlocksoftware/holo/tab/TabPager.java|com/airlocksoftware/holo/activities/MapActivity.java|com/airlocksoftware/holo/activities/SlideoutActivity.java|com/airlocksoftware/holo/actionbar/ActionBarView.java|com/airlocksoftware/holo/actionbar/ActionBar.java|com/airlocksoftware/holo/activities/ActionBarActivity.java|com/airlocksoftware/holo/adapters/OverflowAdapter.java" kind="src" path="src"/>
+	<classpathentry excluding="com/airlocksoftware/holo/demo/|com/korovyansk/android/slideout/SlideoutActivity.java|com/korovyansk/android/slideout/SlideoutHelper.java|com/airlocksoftware/holo/interfaces/PageHolder.java|com/airlocksoftware/holo/pages/Page.java|com/airlocksoftware/holo/pages/PageAdapter.java|com/airlocksoftware/holo/pages/PageFragment.java|com/airlocksoftware/holo/pages/StaticPageHolder.java|com/airlocksoftware/holo/actionbar/interfaces/ActionBarOverflow.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="output" path="bin/classes"/>

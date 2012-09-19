@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <com.airlocksoftware.holo.actionbar.ActionBarViewGroup
+    <com.airlocksoftware.holo.actionbar.ActionBarView
         android:id="@+id/actionbar"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/actionbar_height"

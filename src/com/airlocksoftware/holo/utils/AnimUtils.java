@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
+/** A collection of static methods useful for working with Animations **/
 public class AnimUtils {
 
 	public static void startInAnimation(View view, Animation inAnim) {

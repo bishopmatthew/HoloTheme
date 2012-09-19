@@ -18,6 +18,10 @@ import android.widget.ImageView;
 
 import com.airlocksoftware.holo.R;
 
+/** Useful extensions to ImageView for icons;
+ * - Change color of icon using ColorStateList / Color
+ * - Add a drop shadow from ColorStateList / Color
+ * **/
 public class IconView extends ImageView {
 
 	private Context mContext;

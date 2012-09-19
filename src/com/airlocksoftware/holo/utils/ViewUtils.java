@@ -12,6 +12,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 
+/** A collection of static methods useful when working with Views. **/
 public class ViewUtils {
 
 	/** Returns an array with the direct children of the parent ViewGroup **/

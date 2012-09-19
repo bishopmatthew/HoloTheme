@@ -7,6 +7,7 @@ import com.airlocksoftware.holo.checkable.CheckableViewGroup.OnCheckedViewChange
 
 import android.view.View;
 
+/** Allows you to register CheckableViews as children, and then manage them like they were in a CheckableViewGroup **/
 public class CheckableViewManager {
 
 	// STATE
