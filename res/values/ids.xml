@@ -15,15 +15,17 @@
 
     <!-- SLIDEOUT MENU -->
     <item name="slideout_frame" type="id"/>
-    
-    <!-- STATIC FRAGMENT HOLDER -->
-    <item name="static_fragment_holder_container" type="id" />
-    
-    <!-- ANIMATION OVERLAY VIEW -->
-	<item name="overlay_root" type="id" />
-	
-	<!-- ACTION BAR -->
-	<item name="actionbar_root" type="id"/>
 
-	
+    <!-- STATIC FRAGMENT HOLDER -->
+    <item name="static_fragment_holder_container" type="id"/>
+
+    <!-- ANIMATION OVERLAY VIEW -->
+    <item name="overlay_root" type="id"/>
+
+    <!-- ACTION BAR -->
+    <item name="actionbar_root" type="id"/>
+
+    <!-- SLIDINGMENU -->
+    <item name="selected_view" type="id"/>
+
 </resources>

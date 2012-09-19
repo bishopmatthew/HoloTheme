@@ -5,20 +5,16 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.actionbar.ActionBarView;
 import com.airlocksoftware.holo.anim.OverlayManager;
-import com.airlocksoftware.holo.interfaces.OnActivityResultListener;
-import com.airlocksoftware.holo.interfaces.OnBackPressedListener;
 import com.airlocksoftware.holo.interfaces.OnStopListener;
 
 /** An activity that has hooks for getting the action bar, and drop-down menus **/
-public class ActionBarActivity extends FragmentActivity {
+public class ActionBarActivity extends SlidingFragmentActivity {
 
 	// STATE
 	ActionBarView mActionBar;
@@ -87,7 +83,7 @@ public class ActionBarActivity extends FragmentActivity {
 	@Override
 	/** Layout is set inside of mFrame (the content below the ActionBar) **/
 	public void setContentView(int layoutResID) {
-		if (!mInitialized) throw new RuntimeException(
+		if (!mInitialized) throw new IllegalStateException(
 				"You must call ActionBarActivity.initialize() in your Activities onCreate() before calling setContentView().");
 		getLayoutInflater().inflate(layoutResID, mFrame);
 	}

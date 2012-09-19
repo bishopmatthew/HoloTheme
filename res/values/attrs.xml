@@ -103,6 +103,7 @@
         <attr name="maxValue" format="integer" />
         <attr name="wrap" format="boolean" />
     </declare-styleable>
+
     <attr name="numberPickerStyle" format="reference" />
     <attr name="numberPickerUpButtonStyle" format="reference" />
     <attr name="numberPickerDownButtonStyle" format="reference" />
@@ -137,6 +138,7 @@
         <attr name="viewAbove" format="reference" />
         <attr name="viewBehind" format="reference" />
         <attr name="behindOffset" format="dimension" />
+        <attr name="behindWidth" format="dimension" />
         <attr name="behindScrollScale" format="float" />
         <attr name="touchModeAbove">
             <enum name="margin" value="0" />
@@ -150,6 +152,8 @@
         <attr name="shadowWidth" format="dimension" />
         <attr name="behindFadeEnabled" format="boolean" />
         <attr name="behindFadeDegree" format="float" />
+        <attr name="selectorEnabled" format="boolean" />
+        <attr name="selectorDrawable" format="reference" />
     </declare-styleable>
 
     <!-- TABS -->
