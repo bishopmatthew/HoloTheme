@@ -11,16 +11,19 @@ import android.widget.ListView;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.adapters.SpinnerArrayAdapter;
 import com.airlocksoftware.holo.dialog.IcsDialog;
+import com.airlocksoftware.holo.utils.Utils;
 
 public class FontSpinner extends FrameLayout {
 
 	Context mContext;
 
+	FontText mText;
+	
 	SpinnerArrayAdapter<?> mAdapter;
 	IcsDialog mDialog;
 
 	String mPrompt;
-	FontText mFontText;
+	String mDialogTitle;
 
 	private View.OnClickListener spinnerListener = new View.OnClickListener() {
 		@Override
@@ -33,15 +36,25 @@ public class FontSpinner extends FrameLayout {
 		super(context, attrs);
 		this.mContext = context;
 
-		setAttributes(attrs);
+		LayoutInflater inflater = LayoutInflater.from(mContext);
+		inflater.inflate(R.layout.vw_spinner, this);
+		mText = (FontText) findViewById(R.id.text);
+
+		retrieveAttrs(attrs);
 		setOnClickListener(spinnerListener);
 	}
 
-	private void setAttributes(AttributeSet attrs) {
+	private void retrieveAttrs(AttributeSet attrs) {
 		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.ListSpinner);
 
 		String prompt = a.getString(R.styleable.ListSpinner_spinner_prompt);
 		setPrompt(prompt);
+
+		int textColor = a.getColor(R.styleable.ListSpinner_android_textColor, -1);
+		int textColorHint = a.getColor(R.styleable.ListSpinner_android_textColorHint, -1);
+
+		if (textColor != -1) mText.setTextColor(textColor);
+		if (textColorHint != -1) mText.setHintTextColor(textColorHint);
 
 		a.recycle();
 	}
@@ -58,8 +71,7 @@ public class FontSpinner extends FrameLayout {
 		if (mDialog == null) {
 			mDialog = new IcsDialog(mContext);
 
-			ListView list = (ListView) LayoutInflater.from(mContext).inflate(R.layout.dialog_spinner,
-					null);
+			ListView list = (ListView) LayoutInflater.from(mContext).inflate(R.layout.dialog_spinner, null);
 			list.setAdapter(mAdapter);
 			mDialog.setContentView(list);
 
@@ -81,14 +93,9 @@ public class FontSpinner extends FrameLayout {
 	public void setAdapter(SpinnerArrayAdapter<?> adapter) {
 		mAdapter = adapter;
 	}
-
+	
 	public void setText(String text) {
-		if (mFontText == null) {
-			LayoutInflater inflater = LayoutInflater.from(mContext);
-			inflater.inflate(R.layout.vw_spinner, this);
-			mFontText = (FontText) findViewById(R.id.text);
-		}
-		mFontText.setText(text);
+		mText.setText(text);
 	}
 
 	public IcsDialog getDialog() {

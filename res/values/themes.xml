@@ -46,6 +46,9 @@
         <item name="fontEditStyle">@style/FontEdit</item>
         <item name="fontEditBackground">@drawable/edit_text_holo_dark</item>
 
+        <!-- ACTIONBAR ACTIVITY -->
+        <item name="bgActionBarActivityFrame">@color/background_default</item>
+        
         <!-- ACTION BAR -->
         <item name="actionBarOverflowIcon">@drawable/ic_overflow_holo_dark</item>
         <item name="actionBarTitleTextStyle">@style/FontText.ActionBarTitle</item>

@@ -16,9 +16,8 @@ public class Utils {
 		return localizedDate.replace("/", ".");
 	}
 
-	public final static Pattern EMAIL_ADDRESS_PATTERN = Pattern
-			.compile("[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" + "\\@" + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}"
-					+ "(" + "\\." + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" + ")+");
+	public final static Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile("[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" + "\\@"
+			+ "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" + "(" + "\\." + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" + ")+");
 
 	public static boolean checkEmail(String email) {
 		return EMAIL_ADDRESS_PATTERN.matcher(email).matches();
@@ -41,6 +40,16 @@ public class Utils {
 
 	public static int dpToPixels(Context context, int dp) {
 		return (int) Math.ceil(dp * context.getResources().getDisplayMetrics().density);
+	}
+
+	public static float pixelsToSp(Context context, Float px) {
+		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+		return px / scaledDensity;
+	}
+	
+	public static float spToPixels(Context context, Float sp) {
+		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+		return sp * scaledDensity;
 	}
 
 }

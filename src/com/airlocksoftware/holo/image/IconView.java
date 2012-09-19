@@ -31,6 +31,7 @@ public class IconView extends ImageView {
 
 	// CONSTANTS
 	private static final int[][] COLOR_STATES = { new int[] { -android.R.attr.state_enabled },
+			new int[] { android.R.attr.state_checked, android.R.attr.state_enabled},
 			new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_focused, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_selected, android.R.attr.state_enabled },

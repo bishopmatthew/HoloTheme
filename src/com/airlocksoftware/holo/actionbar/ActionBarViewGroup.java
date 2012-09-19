@@ -109,7 +109,7 @@ public class ActionBarViewGroup extends RelativeLayout {
 		mTitleContainer.addView(titleView);
 		return this;
 	}
-	
+
 	public RelativeLayout titleContainer() {
 		return mTitleContainer;
 	}
@@ -130,13 +130,28 @@ public class ActionBarViewGroup extends RelativeLayout {
 		}
 	}
 
+	public void hideOverflow() {
+		if (mOverlayManager == null) {
+			throw new RuntimeException("You have to set the OverlayManager to use the ActionBarOverflow");
+		} else {
+			mOverlayManager.hideViewById(R.id.root_overflow_menu, R.anim.scale_out);
+		}
+	}
+
+	public void showOverflow() {
+		if (mOverlayManager == null) {
+			throw new RuntimeException("You have to set the OverlayManager to use the ActionBarOverflow");
+		} else if (mOverflow.hasCustomViews() || mOverflow.hasActionBarButtons()) {
+			mOverlayManager.showViewById(R.id.root_overflow_menu, R.anim.scale_out);
+		}
+	}
+
 	public ActionBarViewGroup overlayManager(OverlayManager om) {
 		mOverlayManager = om;
-		om.addView(mOverflow,
-				new AnimationParams(FillType.CLIP_CONTENT).exclusivity(Exclusivity.EXCLUDE_ALL));
+		om.addView(mOverflow, new AnimationParams(FillType.CLIP_CONTENT).exclusivity(Exclusivity.EXCLUDE_ALL));
 		return this;
 	}
-	
+
 	public OverlayManager overlayManager() {
 		return mOverlayManager;
 	}
@@ -155,12 +170,12 @@ public class ActionBarViewGroup extends RelativeLayout {
 		else {
 			if (v instanceof ActionBarButton) {
 				int index = mButtonContainer.indexOfChild(v);
-				
+
 				if (index != -1) mButtonContainer.removeViewAt(index);
 				else mOverflow.removeView(v);
 
 				mButtons.remove(v);
-			}
+			} else mOverflow.removeView(v);
 		}
 	}
 
@@ -213,8 +228,7 @@ public class ActionBarViewGroup extends RelativeLayout {
 
 			int title = mTitleContainer.getMeasuredWidth();
 			boolean highOverflow = available - hButtons.size() * ACTIONBAR_HEIGHT < 0;
-			boolean lowOverflow = (available - title - mButtons.size() * ACTIONBAR_HEIGHT < 0 && lButtons
-					.size() > 0);
+			boolean lowOverflow = (available - title - mButtons.size() * ACTIONBAR_HEIGHT < 0 && lButtons.size() > 0);
 			boolean overflow = mOverflow.hasCustomViews() || highOverflow || lowOverflow;
 
 			if (overflow) {

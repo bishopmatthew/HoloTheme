@@ -76,6 +76,7 @@ public class ClearableFontEdit extends RelativeLayout {
 	public void clearText() {
 		if (mFontEdit != null) mFontEdit.setText("");
 	}
+	
 
 	// PRIVATE METHODS
 	private void getAttrs(AttributeSet attrs) {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Debug;
@@ -25,6 +26,7 @@ import com.airlocksoftware.holo.anim.AnimationParams.FillType;
 import com.airlocksoftware.holo.anim.OverlayManager;
 import com.airlocksoftware.holo.anim.OverlayManager.AnimationFinishedListener;
 import com.airlocksoftware.holo.interfaces.OnStopListener;
+import com.airlocksoftware.holo.utils.Utils;
 
 /**
  * The frame the SlideoutView lives in. Consists of the ImageView that holds a screenshot of the
@@ -37,6 +39,7 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 
 	private View mShadowView;
 	GradientDrawable mShadowGradient;
+	Bitmap mBitmap;
 
 	private Context mContext;
 	Activity mActivity;
@@ -44,6 +47,7 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 	OverlayManager mOverlayManager;
 	private int mSlideWidth = 72; // default value
 	private int mRootId;
+	private View mRootView;
 
 	private Animation mInAnimation;
 	private Animation mOutAnimation;
@@ -76,19 +80,20 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 				if (!mIsAnimating) close();
 			}
 		});
-
-		mOverlayManager.addView(this,
-				new AnimationParams(FillType.FILL_SCREEN).exclusivity(Exclusivity.EXCLUDE_ALL));
-
-		int usedMegs = (int) (Debug.getNativeHeapAllocatedSize() / 1048576L);
-		String usedMegsString = String.format(" - Memory Used: %d MB", usedMegs);
-		Log.d(TAG, usedMegsString);
-
+		
+		// we pre-create the Bitmap to speed up the opening animation
+		mRootView = mActivity.findViewById(mRootId);
+		mBitmap = createFullscreenBitmap(mContext);
+		
+		mOverlayManager.addView(this, new AnimationParams(FillType.FILL_SCREEN).exclusivity(Exclusivity.EXCLUDE_ALL));
 	}
 
 	// PUBLIC METHODS
 
 	public void open() {
+		// TODO DEBUG
+//		android.os.Debug.startMethodTracing("slideout", 1000 * 1000 * 60);
+
 		mOpen = true;
 		mIsAnimating = true;
 
@@ -100,11 +105,12 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 		params.gravity = Gravity.LEFT;
 		this.setLayoutParams(params);
 
-		mScreenshotView.setImageBitmap(SlideoutFrame.loadBitmapFromView(mActivity.findViewById(mRootId)));
+		mScreenshotView.setImageBitmap(SlideoutFrame.loadBitmapFromView(mBitmap, mRootView));
+		
+		this.setDrawingCacheEnabled(true);
 
-		mInAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE,
-				-(screenWidth - mSlideWidth), TranslateAnimation.ABSOLUTE, 0, TranslateAnimation.ABSOLUTE,
-				0, TranslateAnimation.ABSOLUTE, 0);
+		mInAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE, -(screenWidth - mSlideWidth),
+				TranslateAnimation.ABSOLUTE, 0, TranslateAnimation.ABSOLUTE, 0, TranslateAnimation.ABSOLUTE, 0);
 		mInAnimation.setDuration(mDuration);
 		mInAnimation.setInterpolator(mContext, android.R.anim.accelerate_interpolator);
 		mInAnimation.setFillAfter(true);
@@ -114,6 +120,9 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 			@Override
 			public void onFinished(View overlay) {
 				mIsAnimating = false;
+				SlideoutFrame.this.setDrawingCacheEnabled(false);
+				// TODO DEBUG
+//				android.os.Debug.stopMethodTracing();
 			}
 		});
 	}
@@ -124,9 +133,8 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 
 		int screenWidth = getScreenWidth();
 
-		mOutAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE, 0,
-				TranslateAnimation.ABSOLUTE, -(screenWidth - mSlideWidth), TranslateAnimation.ABSOLUTE, 0,
-				TranslateAnimation.ABSOLUTE, 0);
+		mOutAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE, 0, TranslateAnimation.ABSOLUTE,
+				-(screenWidth - mSlideWidth), TranslateAnimation.ABSOLUTE, 0, TranslateAnimation.ABSOLUTE, 0);
 		mOutAnimation.setDuration(mDuration);
 		mOutAnimation.setInterpolator(mContext, android.R.anim.accelerate_interpolator);
 
@@ -151,8 +159,7 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 
 	public void showShadowEdge(int width) {
 		mShadowView = new View(mContext, null);
-		mShadowView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT, 0));
+		mShadowView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 0));
 	}
 
 	public void hideShadowEdge() {
@@ -178,37 +185,54 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 		return mOpen;
 	}
 
-	// PRIVATE METHODS
-
-	@SuppressWarnings("deprecation")
-	private int getScreenWidth() {
-		Display display = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE))
-				.getDefaultDisplay();
-		return display.getWidth();
-	}
-
+	// LIFECYCLE METHODS
 	@Override
 	public void onStop() {
 		
-		if(mScreenshotView != null && mScreenshotView.getDrawable() != null) {
+		mBitmap.recycle();
+		mBitmap = null;
+		
+		if (mScreenshotView != null && mScreenshotView.getDrawable() != null) {
 			((BitmapDrawable) mScreenshotView.getDrawable()).getBitmap().recycle();
 			mScreenshotView.setImageBitmap(null);
 			mScreenshotView.setImageDrawable(null);
 		}
+		
+		// Log.d(TAG, "Stopped - Recycled Bitmap");
+		// int usedMegs = (int) (Debug.getNativeHeapAllocatedSize() / 1048576L);
+		// String usedMegsString = String.format(" - Memory Used: %d MB", usedMegs);
+		// Log.d(TAG, usedMegsString);
+	}
+	
+	
+	// PRIVATE METHODS
 
-//		Log.d(TAG, "Stopped - Recycled Bitmap");
-//		int usedMegs = (int) (Debug.getNativeHeapAllocatedSize() / 1048576L);
-//		String usedMegsString = String.format(" - Memory Used: %d MB", usedMegs);
-//		Log.d(TAG, usedMegsString);
+	@SuppressWarnings("deprecation")
+	private int getScreenWidth() {
+		Display display = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		return display.getWidth();
+	}
+	
+	public static Bitmap createFullscreenBitmap(Context context) {
+		Point size = Utils.getScreenSize(context);
+		int width = size.x;
+		int height = size.y - Utils.getStatusBarHeight(context);
+		Bitmap bm = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+		return bm;
 	}
 
-	public static Bitmap loadBitmapFromView(View v) {
+
+	public static Bitmap createBitmapForView(View v) {
 		Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(b);
+		return b;
+	}
+	
+	public static Bitmap loadBitmapFromView(Bitmap bm, View v) {
+		Canvas c = new Canvas(bm);
 		v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
 		v.draw(c);
 		c = null;
-		return b;
+		return bm;
 	}
 
 }

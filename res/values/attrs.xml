@@ -10,6 +10,7 @@
             <enum name="roboto_th" value="4" />
             <enum name="roboto_lt" value="5" />
         </attr>
+        <attr name="textScalingEnabled" format="boolean" />
         <attr name="shadowColors" format="color|reference" />
         <attr name="android:shadowDx" />
         <attr name="android:shadowDy" />
@@ -63,6 +64,8 @@
     <declare-styleable name="ListSpinner">
         <attr name="spinner_prompt" format="string" />
         <attr name="spinner_title" format="string" />
+        <attr name="android:textColor" />
+        <attr name="android:textColorHint" />
     </declare-styleable>
     <declare-styleable name="Subtitle">
         <attr name="subtitle_text" format="string" />
@@ -137,6 +140,26 @@
         <attr name="layout" format="reference" />
     </declare-styleable>
     <!-- END DATE PICKER -->
+    
+    <!-- SLIDING MENU (from https://github.com/iPaulPro/SlidingMenu) -->
+     <declare-styleable name="SlidingMenu">
+        <attr name="viewAbove" format="reference" />
+        <attr name="viewBehind" format="reference" />
+        <attr name="behindOffset" format="dimension" />
+        <attr name="behindScrollScale" format="float" />
+        <attr name="touchModeAbove">
+            <enum name="margin" value="0" />
+            <enum name="fullscreen" value="1" />
+        </attr>
+        <attr name="touchModeBehind">
+            <enum name="margin" value="0" />
+            <enum name="fullscreen" value="1" />
+        </attr>
+        <attr name="shadowDrawable" format="reference" />
+        <attr name="shadowWidth" format="dimension" />
+        <attr name="behindFadeEnabled" format="boolean" />
+        <attr name="behindFadeDegree" format="float" />
+    </declare-styleable>
 
 
     <!-- TABS -->
@@ -162,8 +185,14 @@
     <!-- END TABs -->
 
 
+    <!-- SHARE LIST -->
+    <declare-styleable name="ShareList">
+        <attr name="android:textColor" />
+        <attr name="sharelist_itemBg" format="reference|color" />
+    </declare-styleable>
+
     <!-- HOLO THEME -->
-    <declare-styleable name="BLAH">
+    <declare-styleable name="HoloBootstrap">
 
         <!-- MONTH VIEW -->
         <!-- NAVIGATION -->
@@ -199,6 +228,9 @@
         <attr name="actionBarOverflowIcon" format="reference" />
         <attr name="actionBarNavUpIcon" format="reference" />
         <attr name="actionBarNavTopIcon" format="reference" />
+
+        <!-- ACTIONBAR ACTIVITY -->
+        <attr name="bgActionBarActivityFrame" format="reference|color" />
 
         <!-- ACTIONBAR VIEW -->
         <attr name="actionBarBg" format="reference" />

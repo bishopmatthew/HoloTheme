@@ -2,7 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cnt_sharelist_item"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:paddingBottom="4dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp" >
 
     <com.airlocksoftware.holo.type.FontText
         android:id="@+id/txt"
@@ -10,10 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@+id/img"
-        android:text="App name"
-        android:textColor="@color/textColorPrimary"
         android:textSize="22sp"
         app:font="roboto_rg" />
 
@@ -22,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp" />
+        android:layout_centerVertical="true" />
 
 </RelativeLayout>

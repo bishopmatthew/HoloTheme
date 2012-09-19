@@ -36,6 +36,13 @@ public class CheckableViewManager {
 		child.setOnCheckedChangeListener(null);
 	}
 
+	public void deregisterAll() {
+		for (CheckableView child : mChildren) {
+			child.setOnCheckedChangeListener(null);
+		}
+		mChildren.clear();
+	}
+
 	/** Checks the view that matches id, if found. **/
 	public void check(int id) {
 		// don't even bother
@@ -43,13 +50,10 @@ public class CheckableViewManager {
 			return;
 		}
 
-		if (mCheckedId != -1) {
-			setCheckedStateForView(mCheckedId, false);
-		}
+		if (mCheckedId != -1) setCheckedStateForView(mCheckedId, false);
 
-		if (id != -1) {
-			setCheckedStateForView(id, true);
-		}
+		if (id != -1) setCheckedStateForView(id, true);
+		else setCheckedStateForView(mCheckedId, false);
 
 		setCheckedId(id);
 	}
@@ -60,9 +64,9 @@ public class CheckableViewManager {
 		check(id);
 		mProtectFromCheckedChange = false;
 	}
-	
+
 	public void clearCheck() {
-		check(-1);
+		protectedCheck(-1);
 	}
 
 	public CheckableView getChildAt(int location) {

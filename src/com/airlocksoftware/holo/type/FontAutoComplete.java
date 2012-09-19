@@ -7,16 +7,20 @@ import android.util.AttributeSet;
 import android.widget.AutoCompleteTextView;
 
 import com.airlocksoftware.holo.R;
+import com.airlocksoftware.holo.utils.Utils;
 
 public class FontAutoComplete extends AutoCompleteTextView {
 
 	Context mContext;
 	
+	private boolean mTextScalingEnabled;
+	private float mTextScalingFactor;
+	
 	private static final int DEFAULT_STYLE = R.style.FontAutoComplete;
 
 
 	public FontAutoComplete(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		this(context, attrs, DEFAULT_STYLE);
 	}
 
 	public FontAutoComplete(Context context, AttributeSet attrs, int style) {
@@ -30,6 +34,13 @@ public class FontAutoComplete extends AutoCompleteTextView {
 
 		int font = a.getInt(R.styleable.FontText_font, 0);
 		setFont(font);
+		
+		// text scaling
+		mTextScalingEnabled = a.getBoolean(R.styleable.FontText_textScalingEnabled, true);
+		if (mTextScalingEnabled) {
+			mTextScalingFactor = FontFactory.getTextScaleFactor(mContext);
+			refreshTextSize();
+		}
 
 		a.recycle();
 	}
@@ -41,6 +52,18 @@ public class FontAutoComplete extends AutoCompleteTextView {
 	@Override
 	public void setTypeface(Typeface tf) {
 		super.setTypeface(tf);
+	}
+
+	@Override
+	public void setTextSize(float size) {
+		if (mTextScalingEnabled) size *= mTextScalingFactor;
+		super.setTextSize(size);
+	}
+
+	private void refreshTextSize() {
+		float textSize = getTextSize();
+		float converted = Utils.pixelsToSp(mContext, textSize);
+		setTextSize(converted);
 	}
 
 }

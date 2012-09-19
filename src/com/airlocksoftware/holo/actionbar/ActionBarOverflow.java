@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.airlocksoftware.holo.R;
+import com.airlocksoftware.holo.utils.ViewUtils;
 
 public class ActionBarOverflow extends ScrollView {
 
@@ -35,6 +36,7 @@ public class ActionBarOverflow extends ScrollView {
 		mContext.getTheme().resolveAttribute(R.attr.overflowMenuBg, tv, true);
 		int background = tv.resourceId;
 		setBackgroundResource(background);
+		ViewUtils.fixBackgroundRepeat(this);
 
 		int width = mContext.getResources().getDimensionPixelSize(R.dimen.overflow_menu_width);
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,

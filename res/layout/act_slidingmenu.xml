@@ -1,0 +1,9 @@
+<com.slidingmenu.lib.SlidingMenu xmlns:holo="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_slidingmenu"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    holo:behindOffset="@dimen/actionbar_height"
+    holo:touchModeAbove="fullscreen"
+    holo:touchModeBehind="fullscreen"
+    holo:viewAbove="@layout/act_actionbar" />

@@ -8,10 +8,15 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.airlocksoftware.holo.R;
+import com.airlocksoftware.holo.utils.Utils;
 
 public class FontText extends TextView {
 
 	Context mContext;
+
+	// text scaling
+	private boolean mTextScalingEnabled;
+	private float mTextScalingFactor;
 
 	// Text shadow with a color state list
 	private ColorStateList mShadowColors;
@@ -24,9 +29,7 @@ public class FontText extends TextView {
 	 * or by calling setFont()
 	 **/
 	public FontText(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		this.mContext = context;
-		getAttributes(attrs);
+		this(context, attrs, 0);
 	}
 
 	/**
@@ -48,17 +51,31 @@ public class FontText extends TextView {
 			setFont(font);
 		}
 
-		mShadowColors = a.getColorStateList(R.styleable.FontText_shadowColors);
-		mShadowDx = a.getFloat(R.styleable.FontText_android_shadowDx, 0);
-		mShadowDy = a.getFloat(R.styleable.FontText_android_shadowDy, 0);
-		mShadowRadius = a.getFloat(R.styleable.FontText_android_shadowRadius, 0);
-		updateShadowColor();
-		
+		// text scaling
+		mTextScalingEnabled = a.getBoolean(R.styleable.FontText_textScalingEnabled, true);
+		if (mTextScalingEnabled) {
+			mTextScalingFactor = FontFactory.getTextScaleFactor(mContext);
+			refreshTextSize();
+		}
+
+		// TODO make shadows be ColorStateLists -- currently unfinished
+		// mShadowColors = a.getColorStateList(R.styleable.FontText_shadowColors);
+		// mShadowDx = a.getFloat(R.styleable.FontText_android_shadowDx, 0);
+		// mShadowDy = a.getFloat(R.styleable.FontText_android_shadowDy, 0);
+		// mShadowRadius = a.getFloat(R.styleable.FontText_android_shadowRadius, 0);
+		// updateShadowColor();
+
 		a.recycle();
 	}
 
 	public void setFont(int font) {
 		setTypeface(FontFactory.getTypeface(mContext, font));
+	}
+
+	@Override
+	public void setTextSize(float size) {
+		if (mTextScalingEnabled) size *= mTextScalingFactor;
+		super.setTextSize(size);
 	}
 
 	@Override
@@ -78,10 +95,15 @@ public class FontText extends TextView {
 
 	private void updateShadowColor() {
 		if (mShadowColors != null) {
-			setShadowLayer(mShadowRadius, mShadowDx, mShadowDy,
-					mShadowColors.getColorForState(getDrawableState(), 0));
+			setShadowLayer(mShadowRadius, mShadowDx, mShadowDy, mShadowColors.getColorForState(getDrawableState(), 0));
 			invalidate();
 		}
+	}
+
+	private void refreshTextSize() {
+		float textSize = getTextSize();
+		float converted = Utils.pixelsToSp(mContext, textSize);
+		setTextSize(converted);
 	}
 
 	@Override

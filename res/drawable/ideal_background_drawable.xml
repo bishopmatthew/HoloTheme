@@ -11,7 +11,7 @@
 
                     <stroke android:width="2dp" android:color="@color/holo_blue_light" />
                 </shape></item>
-            <item android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"><bitmap android:src="@drawable/nse_5" android:tileMode="repeat"></bitmap></item>
+            <item android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"><bitmap android:src="@drawable/nse_5_mono" android:tileMode="repeat"></bitmap></item>
         </layer-list></item>
     <item><layer-list> <!-- default -->
 
@@ -23,7 +23,7 @@
 
                     <stroke android:width="2dp" android:color="@color/grey_20" />
                 </shape></item>
-            <item android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"><bitmap android:src="@drawable/nse_5" android:tileMode="repeat"></bitmap></item>
+            <item android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"><bitmap android:src="@drawable/nse_5_mono" android:tileMode="repeat"></bitmap></item>
         </layer-list></item>
 
 </selector>

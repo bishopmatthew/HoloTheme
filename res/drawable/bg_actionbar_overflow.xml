@@ -26,7 +26,7 @@
         android:right="2dp"
         android:top="2dp">
         <bitmap
-            android:src="@drawable/nse_5"
+            android:src="@drawable/nse_5_mono"
             android:tileMode="repeat" >
         </bitmap>
     </item>

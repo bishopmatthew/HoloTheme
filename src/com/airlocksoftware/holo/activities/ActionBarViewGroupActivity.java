@@ -25,8 +25,8 @@ public class ActionBarViewGroupActivity extends FragmentActivity {
 	FrameLayout mFrame;
 	OverlayManager mOverlayManager;
 
-	private List<OnBackPressedListener> mOnBackPressedListeners;
-	private List<OnActivityResultListener> mOnActivityResultListeners;
+	// private List<OnBackPressedListener> mOnBackPressedListeners;
+	// private List<OnActivityResultListener> mOnActivityResultListeners;
 	private List<OnStopListener> mOnStopListeners;
 	private boolean mInitialized = false;
 
@@ -44,7 +44,7 @@ public class ActionBarViewGroupActivity extends FragmentActivity {
 
 	protected void initialize() {
 		super.setContentView(DEFAULT_LAYOUT);
-		
+
 		mActionBar = (ActionBarViewGroup) findViewById(ACTIONBAR_ID);
 		mFrame = (FrameLayout) findViewById(FRAME_ID);
 
@@ -54,18 +54,10 @@ public class ActionBarViewGroupActivity extends FragmentActivity {
 		mInitialized = true;
 	}
 
-	// @Override
-	// public void onBackPressed() {
-	// // TODO go through mOnBackPressedListeners to see if any accept the back press
-	// super.onBackPressed();
-	// }
-
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			mActionBar.toggleOverflow();
 			return true;
-//		} else if (keyCode == KeyEvent.KEYCODE_BACK) {
-//			mActionBar
 		}
 		return super.onKeyUp(keyCode, event);
 	}
@@ -74,6 +66,12 @@ public class ActionBarViewGroupActivity extends FragmentActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		// TODO go through mOnActivityResultListeners to see if any accept the result
 		super.onActivityResult(requestCode, resultCode, intent);
+	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO go through mOnBackPressedListeners to see if any accept the back press
+		super.onBackPressed();
 	}
 
 	@Override
