@@ -107,6 +107,8 @@ public class DatePicker extends FrameLayout {
 	private Context mContext;
 
 	private boolean mIsEnabled = DEFAULT_ENABLED_STATE;
+	
+	private static final int DEFAULT_LAYOUT = R.layout.vw_datepicker;
 
 	private static final int DATE_PICKER_STYLE = 0; // was
 													// R.attr.datePickerStyle
@@ -153,7 +155,7 @@ public class DatePicker extends FrameLayout {
 		int endYear = attributesArray.getInt(R.styleable.DatePicker_endYear, DEFAULT_END_YEAR);
 		String minDate = attributesArray.getString(R.styleable.DatePicker_minDate);
 		String maxDate = attributesArray.getString(R.styleable.DatePicker_maxDate);
-		int layoutResourceId = attributesArray.getResourceId(R.styleable.DatePicker_layout, R.layout.date_picker);
+		int layoutResourceId = attributesArray.getResourceId(R.styleable.DatePicker_layout, DEFAULT_LAYOUT);
 		attributesArray.recycle();
 
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

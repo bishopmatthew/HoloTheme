@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:background="?overflowMenuLayoutBackground"
+    android:paddingLeft="5dp" 
+    android:paddingRight="5dp" 
+    android:paddingTop="7dp" 
+    android:paddingBottom="7dp">
+
+    <ImageView
+        android:id="?overflowMenuImageResId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_placeholder" />
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="?overflowMenuTextResId"
+        style="?overflowMenuTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp" />
+
+</LinearLayout>

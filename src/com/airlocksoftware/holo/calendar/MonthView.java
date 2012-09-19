@@ -44,7 +44,7 @@ public class MonthView extends FrameLayout {
 
 	// CONSTANTS
 	private static final int DEFAULT_STYLE = 0;
-	private static final int DEFAULT_LAYOUT = R.layout.month_view;
+	private static final int DEFAULT_LAYOUT = R.layout.vw_month;
 //	private static final int NUM_ROWS = 6;
 //	private static final int NUM_COLS = 7;
 	private static SimpleDateFormat NAV_TITLE_FORMATTER = new SimpleDateFormat("MMMM yyyy");

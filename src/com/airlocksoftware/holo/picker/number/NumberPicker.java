@@ -124,7 +124,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 		super(context, attrs);
 		setOrientation(VERTICAL);
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.number_picker, this, true);
+		inflater.inflate(R.layout.vw_numberpicker, this, true);
 		mHandler = new Handler();
 		InputFilter inputFilter = new NumberPickerInputFilter();
 		mNumberInputFilter = new NumberRangeKeyListener();

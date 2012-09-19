@@ -48,6 +48,7 @@
     <declare-styleable name="ViewSwiper">
         <attr name="attachLongClickListener" format="boolean" />
     </declare-styleable>
+    <!-- DRAG & DROP LISTVIEW -->
     <declare-styleable name="TouchListView">
         <attr name="normal_height" format="dimension" />
         <attr name="expanded_height" format="dimension" />
@@ -83,14 +84,8 @@
         <attr name="clearable_hint" format="string|reference" />
     </declare-styleable>
     <declare-styleable name="SlideoutListItem">
-
-        <!--
-        <attr name="page_classname" format="string" />
-        <attr name="page_fragmentId" format="integer" />
-        -->
         <attr name="android:text" />
         <attr name="android:src" />
-        <!-- <attr name="slideout_header" format="reference" /> -->
     </declare-styleable>
     <!--
     <declare-styleable name="Flip3dView">
@@ -108,14 +103,9 @@
         <attr name="maxValue" format="integer" />
         <attr name="wrap" format="boolean" />
     </declare-styleable>
-
-    <!-- NumberPicker style. -->
     <attr name="numberPickerStyle" format="reference" />
-    <!-- NumberPicker up button style. -->
     <attr name="numberPickerUpButtonStyle" format="reference" />
-    <!-- NumberPicker down button style. -->
     <attr name="numberPickerDownButtonStyle" format="reference" />
-    <!-- NumberPicker input text style. -->
     <attr name="numberPickerInputTextStyle" format="reference" />
 
     <!-- END NUMBER PICKER -->
@@ -140,9 +130,10 @@
         <attr name="layout" format="reference" />
     </declare-styleable>
     <!-- END DATE PICKER -->
-    
+
+
     <!-- SLIDING MENU (from https://github.com/iPaulPro/SlidingMenu) -->
-     <declare-styleable name="SlidingMenu">
+    <declare-styleable name="SlidingMenu">
         <attr name="viewAbove" format="reference" />
         <attr name="viewBehind" format="reference" />
         <attr name="behindOffset" format="dimension" />
@@ -160,7 +151,6 @@
         <attr name="behindFadeEnabled" format="boolean" />
         <attr name="behindFadeDegree" format="float" />
     </declare-styleable>
-
 
     <!-- TABS -->
 
@@ -196,21 +186,14 @@
 
         <!-- MONTH VIEW -->
         <!-- NAVIGATION -->
-        <!-- Default button used by the MonthView as part of it's navigation. -->
         <attr name="monthViewNavButton" format="reference" />
-        <!-- Default background used by the MonthView as part of it's navigation. -->
         <attr name="monthViewNavBackground" format="reference|color" />
-        <!-- Default drawable used by the MonthView for the right arrow. -->
         <attr name="monthViewNavDrawableRight" format="reference" />
-        <!-- Default drawable used by the MonthView for the left arrow. -->
         <attr name="monthViewNavDrawableLeft" format="reference" />
-        <!-- MonthView navigation hearder text style. -->
         <attr name="monthViewNavTextStyle" format="reference" />
         <!-- CALENDAR HEADER -->
-        <!-- MonthView calendar hearder text style -->
         <attr name="monthViewCalHeaderText" format="reference" />
         <!-- CALENDAR -->
-        <!-- Default background used by the MonthView for the calendr. -->
         <attr name="monthViewCalBackground" format="reference|color" />
 
         <!-- CLEARABLE FONT EDIT -->
@@ -224,11 +207,6 @@
         <attr name="fontEditStyle" format="reference" />
         <attr name="fontEditBackground" format="reference" />
 
-        <!-- ACTION BAR -->
-        <attr name="actionBarOverflowIcon" format="reference" />
-        <attr name="actionBarNavUpIcon" format="reference" />
-        <attr name="actionBarNavTopIcon" format="reference" />
-
         <!-- ACTIONBAR ACTIVITY -->
         <attr name="bgActionBarActivityFrame" format="reference|color" />
 
@@ -236,6 +214,7 @@
         <attr name="actionBarBg" format="reference" />
         <attr name="actionBarTitleTextStyle" format="reference" />
         <attr name="actionBarOverflowBg" format="reference" />
+        <attr name="actionBarOverflowIcon" format="reference" />
         <attr name="actionBarOverflowInAnim" format="reference" />
         <attr name="actionBarOverflowOutAnim" format="reference" />
         <attr name="actionBarUpIcon" format="reference" />

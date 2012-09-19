@@ -26,7 +26,7 @@ public class ClearableFontEdit extends RelativeLayout {
 	private OnClickListener mEmptyListener;
 
 	// CONSTANTS
-	private static final int DEFAULT_LAYOUT = R.layout.clearable_font_edit;
+	private static final int DEFAULT_LAYOUT = R.layout.vw_clearable_fontedit;
 	private static final int FONT_EDIT_ID = R.id.edit;
 	private static final int CLEAR_BUTTON_ID = R.id.icon;
 

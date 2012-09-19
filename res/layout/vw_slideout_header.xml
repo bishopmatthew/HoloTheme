@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:holo="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/actionbar_height"
+    android:background="@drawable/bg_slideout_header" >
+
+    <com.airlocksoftware.holo.image.IconView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0"
+        holo:icon_src="@drawable/ic_action_placeholder" />
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/text"
+        style="@style/FontText.ActionBarTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical"
+        android:text="Header" />
+
+</LinearLayout>

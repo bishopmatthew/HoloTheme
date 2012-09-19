@@ -21,7 +21,7 @@
               android:layout_height="wrap_content"
               android:padding="10dip">
 
-    <ch.editionplus.views.numberpicker.NumberPicker
+    <com.airlocksoftware.holo.picker.number.NumberPicker
             android:id="@+id/num_picker"
             android:layout_width="100dp"
             android:layout_height="wrap_content" />

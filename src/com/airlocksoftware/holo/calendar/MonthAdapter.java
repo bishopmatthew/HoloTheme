@@ -25,7 +25,7 @@ public class MonthAdapter extends FixedGridAdapter<CalendarDay> {
 	private OnMonthChangedListener mMonthChangedListener;
 
 	// CONSTANTS
-	public static final int DEFAULT_DAY_LAYOUT = R.layout.month_view_day_view;
+	public static final int DEFAULT_DAY_LAYOUT = R.layout.vw_month_day;
 	public static final int NUM_WEEKS = 6;
 	public static final int NUM_DAYS = 7;
 

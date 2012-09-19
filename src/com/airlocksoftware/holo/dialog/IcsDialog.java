@@ -25,8 +25,8 @@ public class IcsDialog extends Dialog {
 	private int btnLayoutResId;
 
 	public static final int DEFAULT_THEME = R.style.Dialog;
-	public static final int DEFAULT_LAYOUT = R.layout.ics_dialog_holo_dark;
-	public static final int DEFAULT_BUTTON = R.layout.dialog_button_holo_dark;
+	public static final int DEFAULT_LAYOUT = R.layout.dialog_holo;
+	public static final int DEFAULT_BUTTON = R.layout.btn_dialog;
 	
 
 	public IcsDialog(Context context) {

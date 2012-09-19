@@ -29,8 +29,8 @@
         <!-- NAV -->
         <item name="monthViewNavButton">@drawable/btn_default_holo_dark</item>
         <item name="monthViewNavBackground">@color/background_default</item>
-        <item name="monthViewNavDrawableRight">@drawable/ic_arrow_right_white</item>
-        <item name="monthViewNavDrawableLeft">@drawable/ic_arrow_left_white</item>
+        <item name="monthViewNavDrawableRight">@drawable/ic_action_arrow_right</item>
+        <item name="monthViewNavDrawableLeft">@drawable/ic_action_arrow_left</item>
         <item name="monthViewNavTextStyle">@style/FontText</item>
         <!-- CALENDAR HEADER -->
         <item name="monthViewCalHeaderText">@style/FontText.CalHeader</item>
@@ -49,18 +49,14 @@
         <!-- ACTIONBAR ACTIVITY -->
         <item name="bgActionBarActivityFrame">@color/background_default</item>
         
-        <!-- ACTION BAR -->
-        <item name="actionBarOverflowIcon">@drawable/ic_overflow_holo_dark</item>
-        <item name="actionBarTitleTextStyle">@style/FontText.ActionBarTitle</item>
-        <item name="actionBarNavUpIcon">@drawable/ic_back_arrow</item>
-        <item name="actionBarNavTopIcon">@drawable/ic_ab_list</item>
-
-        <!-- ACTIONBAR VIEW (V2) -->
+        <!-- ACTIONBAR VIEW -->
         <item name="actionBarBg">@drawable/bg_actionbar</item>
+        <item name="actionBarTitleTextStyle">@style/FontText.ActionBarTitle</item>
+        <item name="actionBarOverflowIcon">@drawable/ic_action_overflow</item>
         <item name="actionBarOverflowBg">@drawable/bg_actionbar</item>
         <item name="actionBarOverflowInAnim">@anim/scale_in</item>
         <item name="actionBarOverflowOutAnim">@anim/scale_out</item>
-        <item name="actionBarUpIcon">@drawable/ic_logo_ab</item>
+        <item name="actionBarUpIcon">@drawable/ic_actionup_back</item>
 
         <!-- ACTIONBAR BUTTON -->
         <item name="actionBarButtonBg">@drawable/btn_actionbar</item>
@@ -76,7 +72,7 @@
         <!-- OVERFLOW MENU -->
         <item name="overflowMenuTextResId">@id/overflow_menu_text</item>
         <item name="overflowMenuImageResId">@id/overflow_menu_icon</item>
-        <item name="overflowMenuLayoutResId">@layout/overflow_menu_item</item>
+        <item name="overflowMenuLayoutResId">@layout/vw_overflow_item</item>
         <item name="overflowMenuTextStyle">@style/FontText.OverflowMenu</item>
         <item name="overflowMenuLayoutBackground">@drawable/bg_actionbar_overflow</item>
 

@@ -21,7 +21,7 @@ public class DatePickerDialog extends IcsDialog {
 	
 	private OnDateChangedListener mDateListener;
 	
-	private static final int DEFAULT_LAYOUT = R.layout.ics_dialog_holo_dark;
+	private static final int DEFAULT_LAYOUT = R.layout.dialog_holo;
 
 	public DatePickerDialog(Context context, OnDateChangedListener onDateChangedListener, int year, int month, int day) {
 		super(context, DEFAULT_LAYOUT);
@@ -37,12 +37,12 @@ public class DatePickerDialog extends IcsDialog {
 	}
 	
 	private void inflateLayout() {
-		mDatePicker = (DatePicker) LayoutInflater.from(mContext).inflate(R.layout.date_picker_dialog, null);
+		mDatePicker = (DatePicker) LayoutInflater.from(mContext).inflate(R.layout.dialog_date_picker, null);
 		
 		setContentView(mDatePicker);
 		setTitle(null);
 
-		setButtonLayoutResId(R.layout.dialog_button_holo_light);
+		setButtonLayoutResId(R.layout.btn_dialog);
 		addButton(mContext.getString(android.R.string.cancel), new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
