@@ -2,4 +2,4 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="30dp"
     android:layout_height="fill_parent"
-    android:src="@drawable/defaultshadow" />
+    android:src="@drawable/grad_shadow" />

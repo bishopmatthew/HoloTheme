@@ -56,14 +56,14 @@
         <item name="actionBarNavTopIcon">@drawable/ic_ab_list</item>
 
         <!-- ACTIONBAR VIEW (V2) -->
-        <item name="actionBarBg">@drawable/grad_ab</item>
-        <item name="actionBarOverflowBg">@drawable/grad_ab</item>
+        <item name="actionBarBg">@drawable/bg_actionbar</item>
+        <item name="actionBarOverflowBg">@drawable/bg_actionbar</item>
         <item name="actionBarOverflowInAnim">@anim/scale_in</item>
         <item name="actionBarOverflowOutAnim">@anim/scale_out</item>
         <item name="actionBarUpIcon">@drawable/ic_logo_ab</item>
 
         <!-- ACTIONBAR BUTTON -->
-        <item name="actionBarButtonBg">@drawable/btn_ab</item>
+        <item name="actionBarButtonBg">@drawable/btn_actionbar</item>
         <item name="actionBarButtonIconStyle">@style/IconView.ActionBar</item>
 
         <!-- ACTIONBAR OVERFLOW -->
@@ -78,7 +78,7 @@
         <item name="overflowMenuImageResId">@id/overflow_menu_icon</item>
         <item name="overflowMenuLayoutResId">@layout/overflow_menu_item</item>
         <item name="overflowMenuTextStyle">@style/FontText.OverflowMenu</item>
-        <item name="overflowMenuLayoutBackground">@drawable/btn_overflow_item_holo_dark</item>
+        <item name="overflowMenuLayoutBackground">@drawable/bg_actionbar_overflow</item>
 
         <!-- SUBTITLE -->
         <item name="subtitleTextStyle">@style/FontText.Subtitle</item>

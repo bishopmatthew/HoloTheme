@@ -35,7 +35,7 @@ public class TabButton extends CheckableView {
 	// CONSTANTS
 	private static final int DEFAULT_STYLE = R.style.TabButton;
 
-	private static final int DEFAULT_BACKGROUND = R.drawable.btn_tab_background;
+	private static final int DEFAULT_BACKGROUND = R.drawable.btn_tab;
 	private static final int DEFAULT_TEXT_LAYOUT = R.layout.text_tab;
 	private static final int DEFAULT_IMAGE_LAYOUT = R.layout.image_tab;
 

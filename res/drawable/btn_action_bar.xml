@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/layer_button_ab_pressed" android:state_pressed="true"/>
-    <item android:drawable="@drawable/outline_button_ab"/>
-
-</selector>

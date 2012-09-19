@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:background="@drawable/shape_bg_slideout_header"
+    android:background="@drawable/bg_slideout_header"
     android:layout_height="@dimen/actionbar_height" >
 
     <ImageView

@@ -31,7 +31,7 @@
     
     <style name="FontText.ActionBarOverflow">
         <item name="android:gravity">left|center_vertical</item>
-        <item name="android:textColor">@drawable/csl_ic_actionbar_overflow</item>
+        <item name="android:textColor">@drawable/st_ic_actionbar_overflow</item>
         <item name="android:textSize">20sp</item>
         <item name="font">roboto_rg</item>
     </style>
@@ -140,8 +140,8 @@
         <item name="android:layout_width">@dimen/actionbar_height</item>
         <item name="android:layout_height">@dimen/actionbar_underline_offset</item>
         <item name="android:scaleType">center</item>
-        <item name="icon_colors">@drawable/st_ic_action_bar_colors</item>
-        <item name="icon_shadowColors">@drawable/st_ic_action_bar_shadow_colors</item>
+        <item name="icon_colors">@drawable/st_ic_actionbar_colors</item>
+        <item name="icon_shadowColors">@drawable/st_ic_actionbar_shadow_colors</item>
         <item name="icon_shadowRadius">1.0px</item>
         <item name="icon_shadowDx">0.0dp</item>
         <item name="icon_shadowDy">1.5dp</item>
@@ -151,7 +151,7 @@
         <item name="android:layout_width">@dimen/actionbar_height</item>
         <item name="android:layout_height">@dimen/actionbar_underline_offset</item>
         <item name="android:scaleType">center</item>
-        <item name="icon_colors">@drawable/csl_ic_actionbar_overflow</item>
+        <item name="icon_colors">@drawable/st_ic_actionbar_overflow</item>
     </style>
 
     <!-- DIALOG -->
