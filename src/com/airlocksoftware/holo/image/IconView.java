@@ -1,5 +1,6 @@
 package com.airlocksoftware.holo.image;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -14,11 +15,13 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.airlocksoftware.holo.R;
 
-/** Useful extensions to ImageView for icons;
+/**
+ * Useful extensions to ImageView for icons;
  * - Change color of icon using ColorStateList / Color
  * - Add a drop shadow from ColorStateList / Color
  * **/
@@ -28,14 +31,17 @@ public class IconView extends ImageView {
 
 	private Bitmap mSourceBitmap;
 	private ColorStateList mColors, mShadowColors;
-	private int mColor = Color.TRANSPARENT, mShadowColor = Color.TRANSPARENT;
+	private int mColor = Color.TRANSPARENT, 
+							mShadowColor = Color.TRANSPARENT;
 	private float mShadowRadius = 0.0f, mShadowDx = 0.0f, mShadowDy = 0.0f;
 
 	private boolean mWaitForBuild = false;
 
+	private static final boolean IS_HONEYCOMB = android.os.Build.VERSION.SDK_INT >= 11;
+
 	// CONSTANTS
 	private static final int[][] COLOR_STATES = { new int[] { -android.R.attr.state_enabled },
-			new int[] { android.R.attr.state_checked, android.R.attr.state_enabled},
+			new int[] { android.R.attr.state_checked, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_focused, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_selected, android.R.attr.state_enabled },
@@ -45,10 +51,14 @@ public class IconView extends ImageView {
 		this(context, null);
 	}
 
+	@SuppressLint("NewApi")
 	public IconView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
 		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.IconView);
+
+		// disable hardware acceleration (since it is unsupported for setShadowLayer() that isn't text)
+		if (IS_HONEYCOMB) setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 		for (int i = 0; i < a.getIndexCount(); i++) {
 			int attr = a.getIndex(i);
@@ -84,11 +94,19 @@ public class IconView extends ImageView {
 		generateDrawables();
 		return this;
 	}
+	
+	public int shadowColor() {
+		return mShadowColor;
+	}
 
 	public IconView shadowColors(ColorStateList colors) {
 		mShadowColors = colors;
 		generateDrawables();
 		return this;
+	}
+	
+	public ColorStateList shadowColors() {
+		return mShadowColors;
 	}
 
 	public IconView shadow(float radius, float dx, float dy) {
@@ -105,11 +123,19 @@ public class IconView extends ImageView {
 		generateDrawables();
 		return this;
 	}
+	
+	public int iconColor() {
+		return mColor;
+	}
 
 	public IconView iconColors(ColorStateList colors) {
 		mColors = colors;
 		generateDrawables();
 		return this;
+	}
+	
+	public ColorStateList iconColors() {
+		return mColors;
 	}
 
 	public IconView iconSource(Bitmap b) {
@@ -117,7 +143,7 @@ public class IconView extends ImageView {
 		generateDrawables();
 		return this;
 	}
-	
+
 	public IconView iconSource(int iconResId) {
 		mSourceBitmap = BitmapFactory.decodeResource(getResources(), iconResId);
 		generateDrawables();
@@ -155,8 +181,7 @@ public class IconView extends ImageView {
 					shadowColor = mShadowColor;
 				}
 
-				Bitmap b = generateBitmap(mSourceBitmap, color, shadowColor, mShadowRadius, mShadowDx,
-						mShadowDy);
+				Bitmap b = generateBitmap(mSourceBitmap, color, shadowColor, mShadowRadius, mShadowDx, mShadowDy);
 				BitmapDrawable bd = new BitmapDrawable(getResources(), b);
 				icons.addState(stateSet, bd);
 			}
@@ -168,17 +193,14 @@ public class IconView extends ImageView {
 		return generateBitmap(source, iconColor, Color.TRANSPARENT, 0.0f, 0.0f, 0.0f);
 	}
 
-	public static Bitmap generateBitmap(Bitmap source, int shadowColor, float radius, float dx,
-			float dy) {
+	public static Bitmap generateBitmap(Bitmap source, int shadowColor, float radius, float dx, float dy) {
 		return generateBitmap(source, Color.TRANSPARENT, shadowColor, radius, dx, dy);
 	}
 
-	public static Bitmap generateBitmap(Bitmap source, int iconColor, int shadowColor, float radius,
-			float dx, float dy) {
-		
+	public static Bitmap generateBitmap(Bitmap source, int iconColor, int shadowColor, float radius, float dx, float dy) {
+
 		int paddingX = (int) (radius + dx);
 		int paddingY = (int) (radius + dy);
-		
 
 		Bitmap result = Bitmap.createBitmap(source.getWidth() + paddingX, source.getHeight() + paddingY,
 				Bitmap.Config.ARGB_8888);

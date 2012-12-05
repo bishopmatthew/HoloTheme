@@ -52,9 +52,8 @@ public class OverlayManager {
 		mWindow = window;
 		mRoot = new FrameLayout(context, null);
 		mRoot.setId(R.id.overlay_root);
-		mWindow.addContentView(mRoot, new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT));
-		
+		mWindow.addContentView(mRoot, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
 		// TODO this is temporary
 		setDefaultInAnimation(DEF_IN_ANIM);
 		setDefaultOutAnimation(DEF_OUT_ANIM);
@@ -132,11 +131,11 @@ public class OverlayManager {
 			hideAllViews();
 		}
 
-//		FrameLayout frame = mFrames.get(params.fillType());
-//		mRoot.setVisibility(View.VISIBLE);
-//		frame.setVisibility(View.VISIBLE);
+		// FrameLayout frame = mFrames.get(params.fillType());
+		// mRoot.setVisibility(View.VISIBLE);
+		// frame.setVisibility(View.VISIBLE);
 		mRoot.setOnClickListener(hideListener);
-		
+
 		final AnimationFinishedListener showListener = listener;
 
 		inAnim.setAnimationListener(new AnimationListener() {
@@ -184,7 +183,11 @@ public class OverlayManager {
 		hideView(findViewById(id), outAnim, listener);
 	}
 
-	private void hideView(View view, Animation outAnim, AnimationFinishedListener listener) {
+	public void hideView(View view, int outAnim) {
+		hideView(view, AnimationUtils.loadAnimation(mContext, outAnim), null);
+	}
+
+	public void hideView(View view, Animation outAnim, AnimationFinishedListener listener) {
 		final View toHide = view;
 		AnimationParams params = mAnimationParams.get(toHide);
 		if (toHide == null || params == null) return;
@@ -222,8 +225,7 @@ public class OverlayManager {
 	}
 
 	public void toggleViewById(int id, int inAnim, int outAnim) {
-		toggleViewById(id, AnimationUtils.loadAnimation(mContext, inAnim),
-				AnimationUtils.loadAnimation(mContext, outAnim));
+		toggleViewById(id, AnimationUtils.loadAnimation(mContext, inAnim), AnimationUtils.loadAnimation(mContext, outAnim));
 	}
 
 	public void toggleViewById(int id, Animation inAnim, Animation outAnim) {
@@ -283,8 +285,7 @@ public class OverlayManager {
 
 	private FrameLayout createFrame(FillType fillType) {
 		FrameLayout frame = new FrameLayout(mContext, null);
-		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT);
+		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
 		Display display = mWindow.getWindowManager().getDefaultDisplay();
 		int statusBarHeight = (int) Math.ceil(25 * mContext.getResources().getDisplayMetrics().density);
@@ -315,4 +316,5 @@ public class OverlayManager {
 	public interface AnimationFinishedListener {
 		public void onFinished(View overlay);
 	}
+
 }

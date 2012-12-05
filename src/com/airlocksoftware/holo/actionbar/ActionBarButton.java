@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.image.IconView;
@@ -47,12 +46,12 @@ public class ActionBarButton extends FrameLayout {
 	public ActionBarButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		ACTIONBAR_HEIGHT = mContext.getResources().getDimensionPixelSize(
-				R.dimen.actionbar_underline_offset);
-		ACTIONBAR_WIDTH = mContext.getResources().getDimensionPixelSize(R.dimen.actionbar_height);
+		ACTIONBAR_HEIGHT = mContext.getResources()
+																.getDimensionPixelSize(R.dimen.actionbar_underline_offset);
+		ACTIONBAR_WIDTH = mContext.getResources()
+															.getDimensionPixelSize(R.dimen.actionbar_height);
 		ACTIONBAR_PARAMS = new LinearLayout.LayoutParams(ACTIONBAR_HEIGHT, ACTIONBAR_HEIGHT);
-		OVERFLOW_PARAMS = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.WRAP_CONTENT);
+		OVERFLOW_PARAMS = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
 		this.setClickable(true);
 	}
@@ -126,6 +125,29 @@ public class ActionBarButton extends FrameLayout {
 		return mIcon;
 	}
 
+	public Object tag() {
+		return getTag();
+	}
+
+	public ActionBarButton tag(Object tag) {
+		setTag(tag);
+		return this;
+	}
+
+	public int id() {
+		return getId();
+	}
+
+	public ActionBarButton id(int id) {
+		setId(id);
+		return this;
+	}
+
+	public ActionBarButton onClick(OnClickListener click) {
+		setOnClickListener(click);
+		return this;
+	}
+
 	public boolean showProgress() {
 		return mShowProgress;
 	}
@@ -158,6 +180,11 @@ public class ActionBarButton extends FrameLayout {
 	public void addView(View child, int index, ViewGroup.LayoutParams params) {
 		if (!mLayoutFinished) super.addView(child, index, params);
 		else throw new RuntimeException("Can't add views to an ActionBarButton after initial layout");
+	}
+
+	@Override
+	public String toString() {
+		return ActionBarButton.class.getSimpleName() + ": \"" + ((mText != null) ? mText : "NULL") + "\"";
 	}
 
 }

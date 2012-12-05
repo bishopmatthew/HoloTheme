@@ -91,7 +91,7 @@ public class FontFactory {
 		mEditor.commit();
 	}
 	
-	public static float getTextScaleFactor(Context context) {
+	public static float getTextScaleFactor(Context context) {	
 		SharedPreferences mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 		return mPrefs.getFloat(TEXT_SCALING_FACTOR, 1.0f);
 	}

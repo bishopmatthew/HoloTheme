@@ -20,7 +20,12 @@
         <attr name="grid_cols" format="integer" />
         <attr name="grid_rows" format="integer" />
     </declare-styleable>
-    <declare-styleable name="ActionBarView"></declare-styleable>
+    <declare-styleable name="ActionBarView">
+        <attr name="ab_layout_mode">
+            <enum name="one_pane" value="0" />
+            <enum name="two_pane" value="1" />
+        </attr>
+    </declare-styleable>
     <declare-styleable name="ActionBarButton">
         <attr name="abb_priority">
             <enum name="high" value="0" />

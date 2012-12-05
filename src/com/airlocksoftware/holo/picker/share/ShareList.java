@@ -38,7 +38,6 @@ public class ShareList extends ListView {
 		a.recycle();
 
 		setItemsCanFocus(true);
-//		setSelector(mContext.getResources().getDrawable(mItemBgDrawable));
 
 		mShareItems = new ArrayAdapter<ShareItem>(mContext, 0) {
 			@Override
@@ -61,12 +60,16 @@ public class ShareList extends ListView {
 		setOnItemClickListener(mListener);
 	}
 
-	public void setIntent(Intent intent) {
-		mIntent = intent;
+	public void setIntentType(Intent intent) {
+		if (mIntent == null) setIntent(intent);
 		mShareItems.clear();
 		for (ShareItem item : ShareItem.getShareItems(mContext, mIntent)) {
 			mShareItems.add(item);
 		}
+	}
+
+	public void setIntent(Intent intent) {
+		mIntent = intent;
 	}
 
 	private OnItemClickListener mListener = new OnItemClickListener() {

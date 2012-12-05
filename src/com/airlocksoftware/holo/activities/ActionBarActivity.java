@@ -84,7 +84,7 @@ public class ActionBarActivity extends SlidingFragmentActivity {
 	/** Layout is set inside of mFrame (the content below the ActionBar) **/
 	public void setContentView(int layoutResID) {
 		if (!mInitialized) throw new IllegalStateException(
-				"You must call ActionBarActivity.initialize() in your Activities onCreate() before calling setContentView().");
+				"You must call ActionBarActivity.initialize() in your Activity's onCreate() before calling setContentView().");
 		getLayoutInflater().inflate(layoutResID, mFrame);
 	}
 

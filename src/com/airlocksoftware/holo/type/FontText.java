@@ -53,7 +53,7 @@ public class FontText extends TextView {
 
 		// text scaling
 		mTextScalingEnabled = a.getBoolean(R.styleable.FontText_textScalingEnabled, true);
-		if (mTextScalingEnabled) {
+		if (mTextScalingEnabled && !isInEditMode()) {
 			mTextScalingFactor = FontFactory.getTextScaleFactor(mContext);
 			refreshTextSize();
 		}
