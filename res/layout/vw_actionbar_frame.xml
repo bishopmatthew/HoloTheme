@@ -35,38 +35,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/cnt_title"
+        android:id="@+id/cnt_actionbar_controller"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_toRightOf="@+id/cnt_up" >
-
-        <com.airlocksoftware.holo.type.FontText
-            android:id="@+id/txt_actionbar_title"
-            style="?attr/actionBarTitleTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:maxLines="1" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/cnt_buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toLeftOf="@+id/icv_overflow" />
-
-    <com.airlocksoftware.holo.image.IconView
-        android:id="@+id/icv_overflow"
-        style="?attr/actionBarButtonIconStyle"
-        android:layout_width="@dimen/actionbar_height"
-        android:layout_height="@dimen/actionbar_height"
         android:layout_alignParentRight="true"
-        android:layout_weight="0"
-        android:background="?actionBarButtonBg"
-        android:clickable="true"
-        android:visibility="gone"
-        holo:icon_src="@drawable/ic_action_overflow" />
+        android:layout_toRightOf="@+id/cnt_up" />
 
 </merge>
