@@ -10,29 +10,34 @@ import android.widget.FrameLayout;
 
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.actionbar.ActionBarView;
+import com.airlocksoftware.holo.actionbar.OnePaneController;
+import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.anim.OverlayManager;
 import com.airlocksoftware.holo.interfaces.OnStopListener;
 
 /** An activity that has hooks for getting the action bar, and drop-down menus **/
-public class ActionBarActivity extends SlidingFragmentActivity {
+public abstract class ActionBarActivity extends SlidingFragmentActivity {
 
-	// STATE
+	// VIEWS & CONTROLLERS
 	ActionBarView mActionBar;
+	ActionBarController mController;
 	FrameLayout mFrame;
 	OverlayManager mOverlayManager;
 
 	// private List<OnBackPressedListener> mOnBackPressedListeners;
 	// private List<OnActivityResultListener> mOnActivityResultListeners;
 	private List<OnStopListener> mOnStopListeners;
+
+	// STATE
 	private boolean mInitialized = false;
 
 	// CONSTANTS
-
 	private static final int DEFAULT_LAYOUT = R.layout.act_actionbar;
 	protected static final int FRAME_ID = R.id.actionbar_activity_frame;
 	protected static final int ACTIONBAR_ID = R.id.actionbar;
 	protected static final int ROOT_VIEW_ID = R.id.actionbar_activity_root;
 
+	// PUBLIC METHODS
 	@Override
 	public void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
@@ -45,9 +50,19 @@ public class ActionBarActivity extends SlidingFragmentActivity {
 		mFrame = (FrameLayout) findViewById(FRAME_ID);
 
 		mOverlayManager = new OverlayManager(this, this.getWindow());
-		mActionBar.overlayManager(mOverlayManager);
+		mActionBar.setOverlayManager(mOverlayManager);
+
+		createActionBarController();
 
 		mInitialized = true;
+	}
+
+	/**
+	 * Creates the ActionBarController and attaches it to the ActionBar. Override this method if the Activity
+	 * needs to specify it's own Controller / Layout.
+	 **/
+	protected void createActionBarController() {
+		mActionBar.setController(new OnePaneController(this, mActionBar));
 	}
 
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -89,21 +104,27 @@ public class ActionBarActivity extends SlidingFragmentActivity {
 	}
 
 	/** Get the ActionBar **/
-	public ActionBarView actionBar() {
+	public ActionBarView getActionBarView() {
 		return mActionBar;
 	}
 
 	/** Get the frame where the content goes **/
-	public FrameLayout frame() {
+	public FrameLayout getContentFrame() {
 		return mFrame;
 	}
 
-	public OverlayManager overlayManager() {
+	/** Get the manager for views that overlay on top of the content. **/
+	public OverlayManager getOverlayManager() {
 		return mOverlayManager;
 	}
 
+	/** Add a callback when onStop is called in the Activity. **/
 	public void addOnStopListener(OnStopListener listener) {
 		if (mOnStopListeners == null) mOnStopListeners = new ArrayList<OnStopListener>();
 		mOnStopListeners.add(listener);
 	}
+
+//	public void setActionBarController(ActionBarController controller) {
+//		mController = controller;
+//	}
 }

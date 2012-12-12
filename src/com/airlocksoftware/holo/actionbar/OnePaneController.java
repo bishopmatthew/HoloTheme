@@ -46,17 +46,18 @@ public class OnePaneController implements ActionBarController {
 	private boolean mNeedsLayout = false;
 
 	// CONSTANTS
-	private static final int ONE_PANE_LAYOUT_RES = R.layout.vw_actionbar;
+	private static final int ONE_PANE_LAYOUT_RES = R.layout.vw_actionbar_onepane;
 	@SuppressWarnings("unused")
 	private static final String TAG = OnePaneController.class.getSimpleName();
 	private int ACTIONBAR_HEIGHT; // constant but has to be looked up at runtime
 
 	// CONSTRUCTOR
-	public OnePaneController(Context context, ActionBarView ab) {
+	public OnePaneController(Context context, ActionBarView actionBar) {
 		mContext = context;
-		mActionBar = ab;
-		mControllerContainer = ab.getControllerContainer();
-		// mOverflow = ab.getOverflow();
+		mActionBar = actionBar;
+		mControllerContainer = actionBar.getControllerContainer();
+		mOverflow = actionBar.getOverflow();
+		actionBar.setController(this);
 
 		ACTIONBAR_HEIGHT = mContext.getResources()
 																.getDimensionPixelSize(R.dimen.actionbar_height);
@@ -76,6 +77,14 @@ public class OnePaneController implements ActionBarController {
 
 	@Override
 	public void removeButton(ActionBarButton button) {
+		switch (button.priority()) {
+		case HIGH:
+			mHighButtons.remove(button);
+			break;
+		case LOW:
+			mLowButtons.remove(button);
+			break;
+		}
 		int index = mButtonContainer.indexOfChild(button);
 
 		if (index != -1) mButtonContainer.removeViewAt(index);
@@ -108,7 +117,7 @@ public class OnePaneController implements ActionBarController {
 		mTitleText.setVisibility(View.GONE);
 		return mTitleContainer;
 	}
-	
+
 	@Override
 	public void clearTitleGroup() {
 		for (View v : ViewUtils.directChildViews(mTitleContainer)) {

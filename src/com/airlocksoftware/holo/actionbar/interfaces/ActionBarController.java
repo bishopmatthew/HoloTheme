@@ -1,15 +1,20 @@
 package com.airlocksoftware.holo.actionbar.interfaces;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
+import com.airlocksoftware.holo.actionbar.ActionBarView;
 
 /**
  * The interface exposed to fragments that need access to the ActionBar, exposed to Fragments
  * through the ActionBarClient interface.
  **/
 public interface ActionBarController {
+	
+//	/** Common method for initializing the controller once the ActionBar has been created. **/
+//	public void initialize(Context context, ActionBarView actionBar);
 
 	/** Add an ActionBarButton to either the overflow or the HIGH_PRIORITY button area. **/
 	public void addButton(ActionBarButton button);

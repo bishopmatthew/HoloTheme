@@ -2,11 +2,13 @@ package com.airlocksoftware.holo.actionbar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.airlocksoftware.holo.R;
@@ -16,6 +18,7 @@ import com.airlocksoftware.holo.anim.AnimationParams.Exclusivity;
 import com.airlocksoftware.holo.anim.AnimationParams.FillType;
 import com.airlocksoftware.holo.anim.OverlayManager;
 import com.airlocksoftware.holo.image.IconView;
+import com.airlocksoftware.holo.utils.ViewUtils;
 
 public class ActionBarView extends RelativeLayout {
 
@@ -23,68 +26,63 @@ public class ActionBarView extends RelativeLayout {
 
 	// CONTROLLER UPDATE
 	ActionBarController mController;
-	
-	ViewGroup mControllerContainer;
-	private static final int ACTIONBAR_FRAME = R.layout.vw_actionbar_frame;
 
-	// VIEWS
-	RelativeLayout mUpContainer;
+	ViewGroup mControllerContainer;
+	View mUpContainer, mUpIcon;
 	IconView mUpIndicator;
-	ImageView mUpIcon;
 
 	ActionBarOverflow mOverflow;
 	OverlayManager mOverlayManager;
 
 	private boolean mLayoutFinished = false;
-	private boolean mNeedsLayout = false;
-
-	public static final int ONE_PANE_LAYOUT = 0;
-	public static final int TWO_PANE_LAYOUT = 1;
+	// private boolean mNeedsLayout = false;
 
 	// CONSTANTS
 	private static final String TAG = ActionBarView.class.getSimpleName();
-	private int ACTIONBAR_HEIGHT;
+	private static final int ACTIONBAR_FRAME = R.layout.vw_actionbar_frame;
 
 	public ActionBarView(Context context) {
 		this(context, null);
 	}
 
+	@SuppressWarnings("deprecation")
 	public ActionBarView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		ACTIONBAR_HEIGHT = mContext.getResources()
-																.getDimensionPixelSize(R.dimen.actionbar_height);
 
 		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.ActionBarView, 1, 0);
+		// int layoutType = a.getInt(R.styleable.ActionBarView_ab_layout_mode, ONE_PANE_LAYOUT);
+		a.recycle();
 
 		mOverflow = new ActionBarOverflow(mContext);
 		mOverflow.setId(R.id.root_overflow_menu);
 
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		inflater.inflate(ACTIONBAR_FRAME, this);
+
 		mControllerContainer = (ViewGroup) findViewById(R.id.cnt_actionbar_controller);
+		mUpContainer = findViewById(R.id.cnt_up);
+		mUpIndicator = (IconView) findViewById(R.id.icv_up_indicator);
+		mUpIcon = findViewById(R.id.img_up_icon);
 
-		int layoutType = a.getInt(R.styleable.ActionBarView_ab_layout_mode, ONE_PANE_LAYOUT);
-		switch (layoutType) {
-		case ONE_PANE_LAYOUT:
-			// inflateOnePaneLayout(inflater);
-			break;
-		case TWO_PANE_LAYOUT:
-			// inflateTwoPaneLayout(inflater);
-			break;
-		}
+		// TODO get the proper background resource
 
-		a.recycle();
+		TypedValue typedValue = new TypedValue();
+		mContext.getTheme()
+						.resolveAttribute(R.attr.actionBarBg, typedValue, true);
+		Drawable d = getResources().getDrawable(typedValue.resourceId);
+		ViewUtils.fixDrawableRepeat(d);
+		setBackgroundDrawable(d);
 
 		mLayoutFinished = true;
 	}
 
 	// UP BUTTON
-	public RelativeLayout upButton() {
+	public View getUpButton() {
 		return mUpContainer;
 	}
 
-	public IconView upIndicator() {
+	public IconView getUpIndicator() {
 		return mUpIndicator;
 	}
 
@@ -118,16 +116,16 @@ public class ActionBarView extends RelativeLayout {
 	}
 
 	// OVERLAY MANAGER
-	public ActionBarView overlayManager(OverlayManager om) {
+	public ActionBarView setOverlayManager(OverlayManager om) {
 		mOverlayManager = om;
 		om.addView(mOverflow, new AnimationParams(FillType.CLIP_CONTENT).exclusivity(Exclusivity.EXCLUDE_ALL));
 		return this;
 	}
 
-	public OverlayManager overlayManager() {
+	public OverlayManager getOverlayManager() {
 		return mOverlayManager;
 	}
-	
+
 	// MISC
 	/** Clients should use this method instead of findViewById() in order to find views in the Overflow **/
 	public View findView(int id) {
@@ -144,18 +142,18 @@ public class ActionBarView extends RelativeLayout {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		if (mLayoutFinished) {
 			// TODO get width and height of mControllerContainer instead
-			 mController.onMeasure(widthMeasureSpec, heightMeasureSpec);
+			mController.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		}
 	}
 
 	public ViewGroup getControllerContainer() {
 		return mControllerContainer;
 	}
-	
+
 	public ActionBarController getController() {
 		return mController;
 	}
-	
+
 	public void setController(ActionBarController controller) {
 		mController = controller;
 	}

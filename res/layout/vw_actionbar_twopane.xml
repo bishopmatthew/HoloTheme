@@ -3,38 +3,6 @@
     xmlns:holo="http://schemas.android.com/apk/res-auto" >
 
     <RelativeLayout
-        android:id="@+id/cnt_up"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="4dp"
-        android:background="?attr/actionBarButtonBg"
-        android:paddingRight="4dp" >
-
-        <com.airlocksoftware.holo.image.IconView
-            android:id="@+id/icv_up_indicator"
-            style="?attr/actionBarButtonIconStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:duplicateParentState="true"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            holo:icon_src="@drawable/ic_action_slideout_menu" />
-
-        <ImageView
-            android:id="@+id/img_up_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/icv_up_indicator"
-            android:duplicateParentState="true"
-            android:scaleType="center"
-            android:src="?attr/actionBarUpIcon" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/cnt_title_left"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"

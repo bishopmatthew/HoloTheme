@@ -50,7 +50,7 @@ public class ActionBarButton extends FrameLayout {
 																.getDimensionPixelSize(R.dimen.actionbar_underline_offset);
 		ACTIONBAR_WIDTH = mContext.getResources()
 															.getDimensionPixelSize(R.dimen.actionbar_height);
-		ACTIONBAR_PARAMS = new LinearLayout.LayoutParams(ACTIONBAR_HEIGHT, ACTIONBAR_HEIGHT);
+		ACTIONBAR_PARAMS = new LinearLayout.LayoutParams(ACTIONBAR_WIDTH, ACTIONBAR_WIDTH);
 		OVERFLOW_PARAMS = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
 		this.setClickable(true);

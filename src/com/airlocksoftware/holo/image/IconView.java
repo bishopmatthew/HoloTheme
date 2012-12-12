@@ -31,13 +31,12 @@ public class IconView extends ImageView {
 
 	private Bitmap mSourceBitmap;
 	private ColorStateList mColors, mShadowColors;
-	private int mColor = Color.TRANSPARENT, 
-							mShadowColor = Color.TRANSPARENT;
+	private int mColor = Color.TRANSPARENT, mShadowColor = Color.TRANSPARENT;
 	private float mShadowRadius = 0.0f, mShadowDx = 0.0f, mShadowDy = 0.0f;
 
 	private boolean mWaitForBuild = false;
 
-	private static final boolean IS_HONEYCOMB = android.os.Build.VERSION.SDK_INT >= 11;
+	private static final boolean HONEYCOMB_OR_GREATER = android.os.Build.VERSION.SDK_INT >= 11;
 
 	// CONSTANTS
 	private static final int[][] COLOR_STATES = { new int[] { -android.R.attr.state_enabled },
@@ -58,7 +57,7 @@ public class IconView extends ImageView {
 		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.IconView);
 
 		// disable hardware acceleration (since it is unsupported for setShadowLayer() that isn't text)
-		if (IS_HONEYCOMB) setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		if (HONEYCOMB_OR_GREATER) setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 		for (int i = 0; i < a.getIndexCount(); i++) {
 			int attr = a.getIndex(i);
@@ -94,7 +93,7 @@ public class IconView extends ImageView {
 		generateDrawables();
 		return this;
 	}
-	
+
 	public int shadowColor() {
 		return mShadowColor;
 	}
@@ -104,7 +103,7 @@ public class IconView extends ImageView {
 		generateDrawables();
 		return this;
 	}
-	
+
 	public ColorStateList shadowColors() {
 		return mShadowColors;
 	}
@@ -123,7 +122,7 @@ public class IconView extends ImageView {
 		generateDrawables();
 		return this;
 	}
-	
+
 	public int iconColor() {
 		return mColor;
 	}
@@ -133,7 +132,7 @@ public class IconView extends ImageView {
 		generateDrawables();
 		return this;
 	}
-	
+
 	public ColorStateList iconColors() {
 		return mColors;
 	}
