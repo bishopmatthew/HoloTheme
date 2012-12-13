@@ -43,7 +43,6 @@ public class OnePaneController implements ActionBarController {
 	private List<ActionBarButton> mLowButtons = new ArrayList<ActionBarButton>();
 
 	// STATE
-	private boolean mNeedsLayout = false;
 
 	// CONSTANTS
 	private static final int ONE_PANE_LAYOUT_RES = R.layout.vw_actionbar_onepane;
@@ -71,8 +70,7 @@ public class OnePaneController implements ActionBarController {
 	public void addButton(ActionBarButton button) {
 		if (button.priority() == Priority.HIGH) mHighButtons.add(button);
 		else mLowButtons.add(button);
-		mNeedsLayout = true;
-		mControllerContainer.requestLayout();
+		mActionBar.requestNeedsLayout();
 	}
 
 	@Override
@@ -99,7 +97,7 @@ public class OnePaneController implements ActionBarController {
 	@Override
 	public void removeOverflowView(View toRemove) {
 		mOverflow.removeView(toRemove);
-		mControllerContainer.requestLayout();
+		mActionBar.requestNeedsLayout();
 	}
 
 	@Override

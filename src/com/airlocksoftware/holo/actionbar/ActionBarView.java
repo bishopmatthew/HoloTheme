@@ -35,7 +35,7 @@ public class ActionBarView extends RelativeLayout {
 	OverlayManager mOverlayManager;
 
 	private boolean mLayoutFinished = false;
-	// private boolean mNeedsLayout = false;
+	 private boolean mNeedsLayout = false;
 
 	// CONSTANTS
 	private static final String TAG = ActionBarView.class.getSimpleName();
@@ -65,8 +65,8 @@ public class ActionBarView extends RelativeLayout {
 		mUpIndicator = (IconView) findViewById(R.id.icv_up_indicator);
 		mUpIcon = findViewById(R.id.img_up_icon);
 
-		// TODO get the proper background resource
 
+		// get the background drawable & make sure it repeats properly
 		TypedValue typedValue = new TypedValue();
 		mContext.getTheme()
 						.resolveAttribute(R.attr.actionBarBg, typedValue, true);
@@ -140,10 +140,15 @@ public class ActionBarView extends RelativeLayout {
 	 * If any buttons won't fit, move them to the OverflowMenu. **/
 	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		if (mLayoutFinished) {
-			// TODO get width and height of mControllerContainer instead
-			mController.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		if (mLayoutFinished && mNeedsLayout) {
+			mController.onMeasure(mControllerContainer.getMeasuredWidth(), mControllerContainer.getMeasuredHeight());
+			mNeedsLayout = false;
 		}
+	}
+	
+	public void requestNeedsLayout() {
+		mNeedsLayout = true;
+		requestLayout();
 	}
 
 	public ViewGroup getControllerContainer() {

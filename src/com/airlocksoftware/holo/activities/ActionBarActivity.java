@@ -124,7 +124,4 @@ public abstract class ActionBarActivity extends SlidingFragmentActivity {
 		mOnStopListeners.add(listener);
 	}
 
-//	public void setActionBarController(ActionBarController controller) {
-//		mController = controller;
-//	}
 }

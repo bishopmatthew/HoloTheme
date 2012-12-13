@@ -12,9 +12,9 @@ import com.airlocksoftware.holo.actionbar.ActionBarView;
  * through the ActionBarClient interface.
  **/
 public interface ActionBarController {
-	
-//	/** Common method for initializing the controller once the ActionBar has been created. **/
-//	public void initialize(Context context, ActionBarView actionBar);
+
+	// /** Common method for initializing the controller once the ActionBar has been created. **/
+	// public void initialize(Context context, ActionBarView actionBar);
 
 	/** Add an ActionBarButton to either the overflow or the HIGH_PRIORITY button area. **/
 	public void addButton(ActionBarButton button);
@@ -33,11 +33,14 @@ public interface ActionBarController {
 
 	/** Get the ViewGroup that can be used for custom titles. Empty when cleaning up ActionBar. **/
 	public ViewGroup getTitleGroup();
-	
+
 	/** Returns the title group to the default state (i.e. an empty textview being the only child) **/
 	public void clearTitleGroup();
 
-	/** Called by ActionBarView when it's own onMeasure method is called. **/
+	/**
+	 * Called by ActionBarView when it's own onMeasure method is called. Don't forget to set the draw mode of the
+	 * ActionBarButtons!
+	 **/
 	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec);
 
 }

@@ -1,7 +1,9 @@
 package com.airlocksoftware.holo.actionbar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +12,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.actionbar.ActionBarButton.DrawMode;
@@ -19,6 +21,7 @@ import com.airlocksoftware.holo.actionbar.ActionBarButton.Priority;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.type.FontText;
+import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
 
 public class TwoPaneController implements ActionBarController {
@@ -30,20 +33,14 @@ public class TwoPaneController implements ActionBarController {
 	private ActionBarOverflow mOverflow;
 
 	// STATE
-	/** Controls which half of the ActionBar Buttons / Titles get added to. **/
-	private boolean mAddToLeftSide = false;
+	/** Controls which half of the ActionBar Buttons / Titles get added to. Default is right side. **/
+	public Side mActiveSide = Side.RIGHT;
 	private int mLeftPaneWidth;
 
 	// VIEWS
-	ViewGroup mTitleLeft;
-	TextView mTitleTextLeft;
-	ViewGroup mButtonsLeft;
-	ViewGroup mTitleRight;
-	TextView mTitleTextRight;
-	ViewGroup mButtonsRight;
+	ViewGroup mTitleLeft, mTitleRight, mButtonsLeft, mButtonsRight;
+	TextView mTitleTextLeft, mTitleTextRight;
 	IconView mOverflowIcon;
-
-	// TODO keep a separate reference for whichever is active (or just switch them all out when
 
 	private List<ActionBarButton> mLowRightButtons = new ArrayList<ActionBarButton>();
 	private List<ActionBarButton> mHighRightButtons = new ArrayList<ActionBarButton>();
@@ -52,6 +49,7 @@ public class TwoPaneController implements ActionBarController {
 
 	// CONSTANTS
 	private static final int TWO_PANE_LAYOUT_RES = R.layout.vw_actionbar_twopane;
+	private static final int LEFT_PANE_DEFAULT_SIZE = 320;// in dp
 	public static final int TWOPANE_LEFT_TAG = 0;
 	public static final int TWOPANE_RIGHT_TAG = 1;
 
@@ -69,6 +67,7 @@ public class TwoPaneController implements ActionBarController {
 
 		ACTIONBAR_HEIGHT = mContext.getResources()
 																.getDimensionPixelSize(R.dimen.actionbar_height);
+		this.setLeftPaneWidth(Utils.dpToPixels(context, LEFT_PANE_DEFAULT_SIZE)); // matches value in vw_actionbar_twopane
 
 		inflateLayout(LayoutInflater.from(mContext));
 	}
@@ -77,13 +76,13 @@ public class TwoPaneController implements ActionBarController {
 	@Override
 	public void addButton(ActionBarButton button) {
 		if (button.priority() == Priority.HIGH) {
-			if (mAddToLeftSide) mHighLeftButtons.add(button);
+			if (mActiveSide == Side.LEFT) mHighLeftButtons.add(button);
 			else mHighRightButtons.add(button);
 		} else {
-			if (mAddToLeftSide) mLowLeftButtons.add(button);
+			if (mActiveSide == Side.LEFT) mLowLeftButtons.add(button);
 			else mLowRightButtons.add(button);
 		}
-		mActionBar.requestLayout();
+		mActionBar.requestNeedsLayout();
 	}
 
 	@Override
@@ -116,7 +115,7 @@ public class TwoPaneController implements ActionBarController {
 
 	@Override
 	public void setTitleText(String text) {
-		if (mAddToLeftSide) {
+		if (mActiveSide == Side.LEFT) {
 			if (text == null) mTitleTextLeft.setVisibility(View.GONE);
 			else {
 				mTitleTextLeft.setVisibility(View.VISIBLE);
@@ -137,13 +136,13 @@ public class TwoPaneController implements ActionBarController {
 	@Override
 	public void removeOverflowView(View toRemove) {
 		mOverflow.removeView(toRemove);
-		mActionBar.requestLayout();
+		mActionBar.requestNeedsLayout();
 	}
 
 	@Override
 	public ViewGroup getTitleGroup() {
 		ViewGroup container = null;
-		if (mAddToLeftSide) {
+		if (mActiveSide == Side.LEFT) {
 			mTitleTextLeft.setVisibility(View.GONE);
 			container = mTitleLeft;
 		} else {
@@ -155,7 +154,7 @@ public class TwoPaneController implements ActionBarController {
 
 	@Override
 	public void clearTitleGroup() {
-		if (mAddToLeftSide) {
+		if (mActiveSide == Side.LEFT) {
 			for (View v : ViewUtils.directChildViews(mTitleLeft)) {
 				if (v != mTitleTextLeft) mTitleLeft.removeView(v);
 			}
@@ -166,8 +165,29 @@ public class TwoPaneController implements ActionBarController {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+		mButtonsLeft.removeAllViews();
+		mButtonsRight.removeAllViews();
+
+		// TODO temporary
+		for (ActionBarButton btn : mHighLeftButtons) {
+			mButtonsLeft.addView(btn.drawMode(DrawMode.ICON_ONLY));
+		}
+		for (ActionBarButton btn : mLowLeftButtons) {
+			mButtonsLeft.addView(btn.drawMode(DrawMode.ICON_ONLY));
+		}
+		for (ActionBarButton btn : mHighRightButtons) {
+			mButtonsRight.addView(btn.drawMode(DrawMode.ICON_ONLY));
+		}
+		for (ActionBarButton btn : mLowRightButtons) {
+			mButtonsRight.addView(btn.drawMode(DrawMode.ICON_ONLY));
+		}
+
+		if (1 < 2) return;
+
 		mButtonsLeft.removeAllViews();
 		mButtonsRight.removeAllViews();
 		mOverflow.removeActionBarButtons();
@@ -203,7 +223,7 @@ public class TwoPaneController implements ActionBarController {
 			availableLeftWidth -= titleLeftWidth;
 		}
 		mTitleLeft.setLayoutParams(params);
-		
+
 		// low buttons
 		for (ActionBarButton btn : mLowLeftButtons) {
 			if (availableLeftWidth > ACTIONBAR_HEIGHT) {
@@ -214,7 +234,7 @@ public class TwoPaneController implements ActionBarController {
 				leftHasOverflowed = true;
 			}
 		}
-		
+
 		// setup right side
 
 		// // should add all views in one go, because the next onMeasure isn't called synchronously
@@ -271,8 +291,8 @@ public class TwoPaneController implements ActionBarController {
 
 	// PUBLIC METHODS
 	/** Controls which half of the ActionBar we are adding Buttons & titles to. **/
-	public void setAddToLeftSide(boolean addToLeft) {
-		mAddToLeftSide = addToLeft;
+	public void setActiveSide(Side currentSide) {
+		mActiveSide = currentSide;
 	}
 
 	public void setLeftPaneWidth(int px) {
@@ -284,12 +304,12 @@ public class TwoPaneController implements ActionBarController {
 	private void inflateLayout(LayoutInflater inflater) {
 		inflater.inflate(TWO_PANE_LAYOUT_RES, mControllerContainer);
 
-		mTitleLeft = (RelativeLayout) mControllerContainer.findViewById(R.id.cnt_title_left);
+		mTitleLeft = (ViewGroup) mControllerContainer.findViewById(R.id.cnt_title_left);
 		mTitleTextLeft = (FontText) mControllerContainer.findViewById(R.id.txt_title_left);
-		mTitleRight = (RelativeLayout) mControllerContainer.findViewById(R.id.cnt_title_right);
-		mTitleTextRight = (FontText) mControllerContainer.findViewById(R.id.txt_title_left);
-		mButtonsLeft = (LinearLayout) mControllerContainer.findViewById(R.id.cnt_btns_left);
-		mButtonsRight = (LinearLayout) mControllerContainer.findViewById(R.id.cnt_btns_right);
+		mTitleRight = (ViewGroup) mControllerContainer.findViewById(R.id.cnt_title_right);
+		mTitleTextRight = (FontText) mControllerContainer.findViewById(R.id.txt_title_right);
+		mButtonsLeft = (ViewGroup) mControllerContainer.findViewById(R.id.cnt_btns_left);
+		mButtonsRight = (ViewGroup) mControllerContainer.findViewById(R.id.cnt_btns_right);
 
 		mOverflowIcon = (IconView) mControllerContainer.findViewById(R.id.icv_overflow);
 
@@ -301,4 +321,34 @@ public class TwoPaneController implements ActionBarController {
 		});
 	}
 
+	// ENUMS
+	public enum Side {
+		LEFT, RIGHT;
+	}
+
+	/** Used to implement a HashMap that maps from a Side and Priority to a list of buttons. **/
+	public class BtnKey {
+		private Side mSide;
+		private Priority mPriority;
+
+		public BtnKey(Side side, Priority priority) {
+			mSide = side;
+			mPriority = priority;
+		}
+
+		@Override
+		public int hashCode() {
+			int code = 1;
+			if (mSide != null) code += 2 * mSide.ordinal();
+			if (mPriority != null) code += 3 * mPriority.ordinal();
+			return code;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (o == null || !(o instanceof BtnKey)) return false;
+			BtnKey toCheck = (BtnKey) o;
+			return toCheck.mPriority == this.mPriority && toCheck.mSide == this.mSide;
+		}
+	}
 }

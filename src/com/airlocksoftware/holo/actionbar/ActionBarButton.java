@@ -56,6 +56,16 @@ public class ActionBarButton extends FrameLayout {
 		this.setClickable(true);
 	}
 
+	// OVERRIDEN METHODS
+	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		
+		// check to make sure drawmode is set
+		if (mDrawMode == null) throw new RuntimeException("You forgot to set the DrawMode for the ActionBarButton"
+				+ toString());
+	}
+
 	// PUBLIC API
 	/** Set the mode of this button. **/
 	public ActionBarButton priority(Priority priority) {

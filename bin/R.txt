@@ -126,6 +126,7 @@ int color background_holo_dark 0x7f070021
 int color background_holo_light 0x7f070022
 int color black 0x7f07000f
 int color black_50_opacity 0x7f070010
+int color blue 0x7f07004c
 int color bright_accent 0x7f070020
 int color bright_foreground_disabled_holo_dark 0x7f070025
 int color bright_foreground_disabled_holo_light 0x7f070026
@@ -141,6 +142,7 @@ int color dim_foreground_inverse_disabled_holo_dark 0x7f07002c
 int color dim_foreground_inverse_disabled_holo_light 0x7f070031
 int color dim_foreground_inverse_holo_dark 0x7f07002b
 int color dim_foreground_inverse_holo_light 0x7f070030
+int color green 0x7f07004b
 int color grey_10 0x7f07000c
 int color grey_15 0x7f07000b
 int color grey_20 0x7f07000a
@@ -172,11 +174,14 @@ int color holo_orange_light 0x7f070045
 int color holo_purple 0x7f070044
 int color holo_red_dark 0x7f070043
 int color holo_red_light 0x7f070040
+int color indigo 0x7f07004d
 int color legacy_long_pressed_highlight 0x7f07003d
 int color legacy_pressed_highlight 0x7f07003b
 int color legacy_selected_highlight 0x7f07003c
 int color link_text_holo_dark 0x7f070035
 int color link_text_holo_light 0x7f070036
+int color orange 0x7f070049
+int color red 0x7f070048
 int color tab_bg_check_off 0x7f070015
 int color tab_bg_check_on 0x7f070016
 int color tab_top 0x7f070014
@@ -185,10 +190,12 @@ int color textColorHint 0x7f070019
 int color textColorLink 0x7f07001a
 int color textColorPrimary 0x7f070017
 int color transparent 0x7f07000d
+int color violet 0x7f07004e
 int color white 0x7f07000e
 int color white_20_opacity 0x7f070013
 int color white_33_opacity 0x7f070012
 int color white_50_opacity 0x7f070011
+int color yellow 0x7f07004a
 int dimen actionbar_height 0x7f080000
 int dimen actionbar_underline_height 0x7f080002
 int dimen actionbar_underline_offset 0x7f080001
@@ -312,7 +319,7 @@ int id checkable_group 0x7f060063
 int id cnt_actionbar_buttons 0x7f06003a
 int id cnt_actionbar_controller 0x7f060039
 int id cnt_btns_left 0x7f060040
-int id cnt_btns_right 0x7f060043
+int id cnt_btns_right 0x7f060042
 int id cnt_buttons 0x7f060036
 int id cnt_custom_views 0x7f06003b
 int id cnt_sharelist_item 0x7f06005e
@@ -403,7 +410,7 @@ int id two_pane 0x7f060007
 int id txt 0x7f06003c
 int id txt_actionbar_title 0x7f060035
 int id txt_title_left 0x7f06003f
-int id txt_title_right 0x7f060042
+int id txt_title_right 0x7f060043
 int id wed 0x7f060053
 int id year 0x7f060049
 int layout act_actionbar 0x7f030000
