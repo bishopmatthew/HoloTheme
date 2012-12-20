@@ -16,7 +16,8 @@ public class CheckableViewManager {
 	private OnCheckedViewChangedListener mOnCheckedChangedListener;
 	public boolean mProtectFromCheckedChange;
 	public int mCheckedId;
-	private int mLastCheckedId;
+	
+	private static final int NO_CHECKED_ID = -1;
 
 	// CONSTRUCTOR
 	public CheckableViewManager() {
@@ -35,6 +36,8 @@ public class CheckableViewManager {
 	public void deregister(CheckableView child) {
 		mChildren.remove(child);
 		child.setOnCheckedChangeListener(null);
+		
+		if(child.getId() == mCheckedId) mCheckedId = NO_CHECKED_ID;
 	}
 
 	public void deregisterAll() {
@@ -42,18 +45,19 @@ public class CheckableViewManager {
 			child.setOnCheckedChangeListener(null);
 		}
 		mChildren.clear();
+		mCheckedId = NO_CHECKED_ID;
 	}
 
 	/** Checks the view that matches id, if found. **/
 	public void check(int id) {
 		// don't even bother
-		if (id != -1 && (id == mCheckedId)) {
+		if (id != NO_CHECKED_ID && (id == mCheckedId)) {
 			return;
 		}
 
-		if (mCheckedId != -1) setCheckedStateForView(mCheckedId, false);
+		if (mCheckedId != NO_CHECKED_ID) setCheckedStateForView(mCheckedId, false);
 
-		if (id != -1) setCheckedStateForView(id, true);
+		if (id != NO_CHECKED_ID) setCheckedStateForView(id, true);
 		else setCheckedStateForView(mCheckedId, false);
 
 		setCheckedId(id);
@@ -67,7 +71,7 @@ public class CheckableViewManager {
 	}
 
 	public void clearCheck() {
-		protectedCheck(-1);
+		protectedCheck(NO_CHECKED_ID);
 	}
 
 	public CheckableView getChildAt(int location) {
@@ -83,11 +87,11 @@ public class CheckableViewManager {
 
 	// PRIVATE METHODS
 	private void setCheckedId(int id) {
-		mLastCheckedId = mCheckedId;
+		int previousCheckedId = mCheckedId;
 		mCheckedId = id;
 		if (mOnCheckedChangedListener != null && !mProtectFromCheckedChange) {
 			mOnCheckedChangedListener.onCheckedViewChanged(this, this.indexOfChildById(mCheckedId),
-					this.indexOfChildById(mLastCheckedId));
+					this.indexOfChildById(previousCheckedId));
 		}
 	}
 
@@ -118,7 +122,7 @@ public class CheckableViewManager {
 	public interface OnCheckedViewChangedListener {
 		/**
 		 * Called when the checked view has changed. When the selection
-		 * is cleared, newId is -1.
+		 * is cleared, newId is NO_CHECKED_ID.
 		 * 
 		 * @param group the group in which the checked radio button has changed
 		 * @param newIndex the position of the newly selected CheckableView within this group
@@ -136,7 +140,7 @@ public class CheckableViewManager {
 			}
 
 			mProtectFromCheckedChange = true;
-			if (mCheckedId != -1) {
+			if (mCheckedId != NO_CHECKED_ID) {
 				setCheckedStateForView(mCheckedId, false);
 			}
 			mProtectFromCheckedChange = false;
