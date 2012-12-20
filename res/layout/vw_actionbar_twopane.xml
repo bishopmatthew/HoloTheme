@@ -4,10 +4,9 @@
 
     <RelativeLayout
         android:id="@+id/cnt_title_left"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:background="@color/red" >
+        android:layout_alignParentLeft="true" >
 
         <com.airlocksoftware.holo.type.FontText
             android:id="@+id/txt_title_left"
@@ -21,19 +20,17 @@
 
     <LinearLayout
         android:id="@+id/cnt_btns_left"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_toRightOf="@+id/cnt_title_left"
-        android:background="@color/orange"
         android:orientation="horizontal" />
 
     <RelativeLayout
         android:id="@+id/cnt_title_right"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_toLeftOf="@+id/cnt_btns_right"
-        android:layout_toRightOf="@+id/cnt_btns_left"
-        android:background="@color/yellow" >
+        android:layout_toRightOf="@+id/cnt_btns_left" >
 
         <com.airlocksoftware.holo.type.FontText
             android:id="@+id/txt_title_right"
@@ -47,11 +44,10 @@
 
     <LinearLayout
         android:id="@+id/cnt_btns_right"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toLeftOf="@+id/icv_overflow"
-        android:background="@color/green"
         android:orientation="horizontal" />
 
     <com.airlocksoftware.holo.image.IconView
@@ -63,7 +59,7 @@
         android:layout_weight="0"
         android:background="?actionBarButtonBg"
         android:clickable="true"
-        android:visibility="visible"
+        android:visibility="gone"
         holo:icon_src="@drawable/ic_action_overflow" />
 
 </merge>

@@ -1,12 +1,11 @@
 package com.airlocksoftware.holo.webview;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
-/** A ViewPager that correctly handles a WebView as a child. **/
-public class WebViewPager extends ViewPager {
+/** A ViewPager that correctly handles a WebView as a child. Additionally,**/
+public class WebViewPager extends DisableableViewPager {
 	public WebViewPager(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}

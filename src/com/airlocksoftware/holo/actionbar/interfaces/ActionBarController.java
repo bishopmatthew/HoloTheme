@@ -1,11 +1,9 @@
 package com.airlocksoftware.holo.actionbar.interfaces;
 
-import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
-import com.airlocksoftware.holo.actionbar.ActionBarView;
 
 /**
  * The interface exposed to fragments that need access to the ActionBar, exposed to Fragments
@@ -32,7 +30,7 @@ public interface ActionBarController {
 	public void setTitleText(String text);
 
 	/** Get the ViewGroup that can be used for custom titles. Empty when cleaning up ActionBar. **/
-	public ViewGroup getTitleGroup();
+	public RelativeLayout getTitleGroup();
 
 	/** Returns the title group to the default state (i.e. an empty textview being the only child) **/
 	public void clearTitleGroup();

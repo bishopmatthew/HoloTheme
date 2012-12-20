@@ -1,16 +1,13 @@
 package com.airlocksoftware.holo.actionbar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
@@ -38,7 +35,8 @@ public class TwoPaneController implements ActionBarController {
 	private int mLeftPaneWidth;
 
 	// VIEWS
-	ViewGroup mTitleLeft, mTitleRight, mButtonsLeft, mButtonsRight;
+	RelativeLayout mTitleLeft, mTitleRight;
+	ViewGroup mButtonsLeft, mButtonsRight;
 	TextView mTitleTextLeft, mTitleTextRight;
 	IconView mOverflowIcon;
 
@@ -140,8 +138,8 @@ public class TwoPaneController implements ActionBarController {
 	}
 
 	@Override
-	public ViewGroup getTitleGroup() {
-		ViewGroup container = null;
+	public RelativeLayout getTitleGroup() {
+		RelativeLayout container = null;
 		if (mActiveSide == Side.LEFT) {
 			mTitleTextLeft.setVisibility(View.GONE);
 			container = mTitleLeft;
@@ -167,39 +165,30 @@ public class TwoPaneController implements ActionBarController {
 
 	@SuppressWarnings("unused")
 	@Override
+	/** Layout the ActionBar according to the following rules:
+	 * 
+	 * 1) Everything in the left pane gets laid out first
+	 * 2) Place Priority.HIGH buttons first, then the title container, then Priority.LOW buttons.
+	 * 3) If a button won't fit in available space with respect to the previous rules, move it to the Overflow menu 
+	 * 
+	 * TODO This could probably be done better: do math upfront (i.e. number of HIGH and LOW buttons + 
+	 * expected title width, then layout according to the results.
+	 * **/
 	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-		mButtonsLeft.removeAllViews();
-		mButtonsRight.removeAllViews();
-
-		// TODO temporary
-		for (ActionBarButton btn : mHighLeftButtons) {
-			mButtonsLeft.addView(btn.drawMode(DrawMode.ICON_ONLY));
-		}
-		for (ActionBarButton btn : mLowLeftButtons) {
-			mButtonsLeft.addView(btn.drawMode(DrawMode.ICON_ONLY));
-		}
-		for (ActionBarButton btn : mHighRightButtons) {
-			mButtonsRight.addView(btn.drawMode(DrawMode.ICON_ONLY));
-		}
-		for (ActionBarButton btn : mLowRightButtons) {
-			mButtonsRight.addView(btn.drawMode(DrawMode.ICON_ONLY));
-		}
-
-		if (1 < 2) return;
-
+		// remove any views currently in the containers
 		mButtonsLeft.removeAllViews();
 		mButtonsRight.removeAllViews();
 		mOverflow.removeActionBarButtons();
 
 		// screen width - width of up button
-		int totalWidth = mControllerContainer.getMeasuredWidth();
-		int upButtonWidth = mActionBar.getUpButton()
-																	.getMeasuredWidth();
+		final int totalWidth = mControllerContainer.getMeasuredWidth();
+		final int upButtonWidth = mActionBar.getUpButton()
+																				.getMeasuredWidth();
 
-		// setup LEFT SIDE
+		// --- SETUP LEFT SIDE ---
+		final int totalLeftWidth = mLeftPaneWidth - upButtonWidth;
 		int availableLeftWidth = mLeftPaneWidth - upButtonWidth;
-		int titleLeftWidth = mTitleLeft.getMeasuredWidth();
+		final int titleLeftWidth = mTitleLeft.getMeasuredWidth();
 		boolean leftHasOverflowed = false;
 
 		// high buttons
@@ -214,15 +203,14 @@ public class TwoPaneController implements ActionBarController {
 		}
 
 		// title
-		RelativeLayout.LayoutParams params = (LayoutParams) mTitleLeft.getLayoutParams();
+		RelativeLayout.LayoutParams leftTitleParams = (LayoutParams) mTitleLeft.getLayoutParams();
 		if (availableLeftWidth < titleLeftWidth) {
-			params.width = availableLeftWidth;
+			leftTitleParams.width = availableLeftWidth;
 			availableLeftWidth = 0;
 		} else {
-			params.width = LayoutParams.WRAP_CONTENT;
+			leftTitleParams.width = titleLeftWidth;
 			availableLeftWidth -= titleLeftWidth;
 		}
-		mTitleLeft.setLayoutParams(params);
 
 		// low buttons
 		for (ActionBarButton btn : mLowLeftButtons) {
@@ -235,58 +223,68 @@ public class TwoPaneController implements ActionBarController {
 			}
 		}
 
-		// setup right side
+		// finish by giving title any extra width to finish padding out the space
+		if (availableLeftWidth > 0) {
+			// TODO there's error introduced in here somewhere (possibly due to rounding?) and the -8 is a manual correction
+			// and will probably need to be adjusted
+			leftTitleParams.width += availableLeftWidth - 8;
+			availableLeftWidth = 0;
+		}
+		mTitleLeft.setLayoutParams(leftTitleParams);
 
-		// // should add all views in one go, because the next onMeasure isn't called synchronously
-		//
-		// mButtonContainer.removeAllViews();
-		// mOverflow.removeActionBarButtons();
-		//
-		// // setup variables for calculations
-		// int available = mControllerContainer.getMeasuredWidth(); // available space
-		//
-		// int title = mTitleContainer.getMeasuredWidth(); // width the title container would like to have
-		// boolean highOverflow = available - mHighButtons.size() * ACTIONBAR_HEIGHT < 0; // do high pri. buttons overflow
-		// boolean lowOverflow = (available - title - (mHighButtons.size() + mLowButtons.size()) * ACTIONBAR_HEIGHT < 0 &&
-		// mLowButtons.size() > 0);
-		// boolean overflow = mOverflow.hasCustomViews() || highOverflow || lowOverflow; // does anything belong in Overflow
-		//
-		// // show or hide overflow button
-		// if (overflow) {
-		// available -= ACTIONBAR_HEIGHT;
-		// mOverflowIcon.setVisibility(View.VISIBLE);
-		// } else mOverflowIcon.setVisibility(View.GONE);
-		//
-		// // high priority
-		// for (ActionBarButton h : mHighButtons) {
-		// if (available > ACTIONBAR_HEIGHT) {
-		// mButtonContainer.addView(h.drawMode(DrawMode.ICON_ONLY));
-		// available -= ACTIONBAR_HEIGHT;
-		// } else {
-		// mOverflow.addButton(h.drawMode(DrawMode.OVERFLOW));
-		// }
-		// }
-		//
-		// // then title
-		// RelativeLayout.LayoutParams params = (LayoutParams) mTitleContainer.getLayoutParams();
-		// if (available < title) {
-		// params.width = available;
-		// available = 0;
-		// } else {
-		// params.width = LayoutParams.WRAP_CONTENT;
-		// available -= title;
-		// }
-		// mTitleContainer.setLayoutParams(params);
-		//
-		// // then low btns
-		// for (ActionBarButton l : mLowButtons) {
-		// if (available > ACTIONBAR_HEIGHT) {
-		// mButtonContainer.addView(l.drawMode(DrawMode.ICON_ONLY));
-		// available -= ACTIONBAR_HEIGHT;
-		// } else {
-		// mOverflow.addButton(l.drawMode(DrawMode.OVERFLOW));
-		// }
-		// }
+		// ---- SETUP RIGHT SIDE ---
+
+		// setup variables for calculations
+		final int totalRightWidth = totalWidth - totalLeftWidth;
+		int availableRightWidth = totalRightWidth;
+		final int titleRightWidth = mTitleRight.getMeasuredWidth();
+
+		// do high priority buttons overflow?
+		boolean highRightOverflow = totalRightWidth - mHighRightButtons.size() * ACTIONBAR_HEIGHT < 0;
+
+		// do low priority buttons overflow?
+		boolean lowRightOverflow = (totalRightWidth - titleRightWidth
+				- (mHighRightButtons.size() + mLowRightButtons.size()) * ACTIONBAR_HEIGHT < 0 && mHighRightButtons.size() > 0);
+
+		// does anything on the right side belong in Overflow
+		boolean rightHasOverflowed = mOverflow.hasCustomViews() || highRightOverflow || lowRightOverflow;
+
+		// show or hide overflow button
+		if (rightHasOverflowed || leftHasOverflowed) {
+			availableRightWidth -= ACTIONBAR_HEIGHT;
+			mOverflowIcon.setVisibility(View.VISIBLE);
+		} else mOverflowIcon.setVisibility(View.GONE);
+
+		// high priority
+		for (ActionBarButton h : mHighRightButtons) {
+			if (availableRightWidth > ACTIONBAR_HEIGHT) {
+				mButtonsRight.addView(h.drawMode(DrawMode.ICON_ONLY));
+				availableRightWidth -= ACTIONBAR_HEIGHT;
+			} else {
+				mOverflow.addButton(h.drawMode(DrawMode.OVERFLOW));
+			}
+		}
+
+		// then title
+		RelativeLayout.LayoutParams rightTitleParams = (LayoutParams) mTitleRight.getLayoutParams();
+		if (availableRightWidth < titleRightWidth) {
+			rightTitleParams.width = availableRightWidth;
+			availableRightWidth = 0;
+		} else {
+			rightTitleParams.width = LayoutParams.WRAP_CONTENT;
+			availableRightWidth -= titleRightWidth;
+		}
+		mTitleRight.setLayoutParams(rightTitleParams);
+
+		// then low btns
+		for (ActionBarButton l : mLowRightButtons) {
+			if (availableRightWidth > ACTIONBAR_HEIGHT) {
+				mButtonsRight.addView(l.drawMode(DrawMode.ICON_ONLY));
+				availableRightWidth -= ACTIONBAR_HEIGHT;
+			} else {
+				mOverflow.addButton(l.drawMode(DrawMode.OVERFLOW));
+			}
+		}
 	}
 
 	// PUBLIC METHODS
@@ -304,9 +302,9 @@ public class TwoPaneController implements ActionBarController {
 	private void inflateLayout(LayoutInflater inflater) {
 		inflater.inflate(TWO_PANE_LAYOUT_RES, mControllerContainer);
 
-		mTitleLeft = (ViewGroup) mControllerContainer.findViewById(R.id.cnt_title_left);
+		mTitleLeft = (RelativeLayout) mControllerContainer.findViewById(R.id.cnt_title_left);
 		mTitleTextLeft = (FontText) mControllerContainer.findViewById(R.id.txt_title_left);
-		mTitleRight = (ViewGroup) mControllerContainer.findViewById(R.id.cnt_title_right);
+		mTitleRight = (RelativeLayout) mControllerContainer.findViewById(R.id.cnt_title_right);
 		mTitleTextRight = (FontText) mControllerContainer.findViewById(R.id.txt_title_right);
 		mButtonsLeft = (ViewGroup) mControllerContainer.findViewById(R.id.cnt_btns_left);
 		mButtonsRight = (ViewGroup) mControllerContainer.findViewById(R.id.cnt_btns_right);

@@ -33,7 +33,8 @@ public class OnePaneController implements ActionBarController {
 	// VIEWS
 	private ViewGroup mControllerContainer;
 
-	private ViewGroup mTitleContainer, mButtonContainer;
+	private RelativeLayout mTitleContainer;
+	private ViewGroup mButtonContainer;
 	private IconView mOverflowIcon;
 	private TextView mTitleText;
 
@@ -75,6 +76,7 @@ public class OnePaneController implements ActionBarController {
 
 	@Override
 	public void removeButton(ActionBarButton button) {
+		if (button == null) return;
 		switch (button.priority()) {
 		case HIGH:
 			mHighButtons.remove(button);
@@ -111,7 +113,7 @@ public class OnePaneController implements ActionBarController {
 	}
 
 	@Override
-	public ViewGroup getTitleGroup() {
+	public RelativeLayout getTitleGroup() {
 		mTitleText.setVisibility(View.GONE);
 		return mTitleContainer;
 	}
