@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 
 /** A collection of static methods useful for working with Android applications. **/
@@ -24,12 +25,14 @@ public class Utils {
 			+ "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" + "(" + "\\." + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" + ")+");
 
 	public static boolean checkEmail(String email) {
-		return EMAIL_ADDRESS_PATTERN.matcher(email).matches();
+		return EMAIL_ADDRESS_PATTERN.matcher(email)
+																.matches();
 	}
 
 	/** Returns screen size as a point in pixels **/
 	public static Point getScreenSize(Context context) {
-		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+		DisplayMetrics metrics = context.getResources()
+																		.getDisplayMetrics();
 		return new Point(metrics.widthPixels, metrics.heightPixels);
 	}
 
@@ -42,27 +45,40 @@ public class Utils {
 
 	/** Returns the pixel size of the status bar **/
 	public static int getStatusBarHeight(Context context) {
-		return (int) Math.ceil(25 * context.getResources().getDisplayMetrics().density);
+		return (int) Math.ceil(25 * context.getResources()
+																				.getDisplayMetrics().density);
 	}
 
 	public static int dpToPixels(Context context, float dp) {
-		return (int) Math.ceil(dp * context.getResources().getDisplayMetrics().density);
+		return (int) Math.ceil(dp * context.getResources()
+																				.getDisplayMetrics().density);
 	}
 
 	public static float pixelsToSp(Context context, Float px) {
-		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+		float scaledDensity = context.getResources()
+																	.getDisplayMetrics().scaledDensity;
 		return px / scaledDensity;
 	}
 
 	public static float spToPixels(Context context, Float sp) {
-		float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+		float scaledDensity = context.getResources()
+																	.getDisplayMetrics().scaledDensity;
 		return sp * scaledDensity;
 	}
 
 	/** Converts a Point representing pixels into a PointF representing inches **/
 	public static PointF pixelsToInches(Context context, Point point) {
-		DisplayMetrics dm = context.getResources().getDisplayMetrics();
+		DisplayMetrics dm = context.getResources()
+																.getDisplayMetrics();
 		return new PointF(point.x / dm.xdpi, point.y / dm.ydpi);
+	}
+
+	/** Retrieves a single resourceId from the context and attribute id. **/
+	public static int getThemedResourceId(Context context, int attrId) {
+		TypedValue tv = new TypedValue();
+		context.getTheme()
+						.resolveAttribute(attrId, tv, true);
+		return tv.resourceId;
 	}
 
 }

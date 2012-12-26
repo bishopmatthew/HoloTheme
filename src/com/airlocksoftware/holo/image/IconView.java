@@ -15,15 +15,16 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
-import android.view.View;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.airlocksoftware.holo.R;
 
 /**
- * Useful extensions to ImageView for icons;
+ * Useful extensions to ImageView for icons. Takes a source icon (in white) and:
  * - Change color of icon using ColorStateList / Color
- * - Add a drop shadow from ColorStateList / Color
+ * - Add a drop shadow from ColorStateList / Color. Unfortunately, because blurring isn't supported,
+ * you can't have a blurred drop shadow with hardware acceleration. It still works with hard shadow edges, though.
  * **/
 public class IconView extends ImageView {
 
@@ -37,6 +38,7 @@ public class IconView extends ImageView {
 	private boolean mWaitForBuild = false;
 
 	private static final boolean HONEYCOMB_OR_GREATER = android.os.Build.VERSION.SDK_INT >= 11;
+	private static final String TAG = IconView.class.getSimpleName();
 
 	// CONSTANTS
 	private static final int[][] COLOR_STATES = { new int[] { -android.R.attr.state_enabled },
@@ -53,11 +55,9 @@ public class IconView extends ImageView {
 	@SuppressLint("NewApi")
 	public IconView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+
 		mContext = context;
 		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.IconView);
-
-		// disable hardware acceleration (since it is unsupported for setShadowLayer() that isn't text)
-		if (HONEYCOMB_OR_GREATER) setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 		for (int i = 0; i < a.getIndexCount(); i++) {
 			int attr = a.getIndex(i);
@@ -160,6 +160,8 @@ public class IconView extends ImageView {
 		return this;
 	}
 
+	public int drawCount = 0;
+
 	// PRIVATE METHODS
 	private void generateDrawables() {
 		if (mSourceBitmap != null && !mWaitForBuild) {
@@ -183,6 +185,7 @@ public class IconView extends ImageView {
 				Bitmap b = generateBitmap(mSourceBitmap, color, shadowColor, mShadowRadius, mShadowDx, mShadowDy);
 				BitmapDrawable bd = new BitmapDrawable(getResources(), b);
 				icons.addState(stateSet, bd);
+
 			}
 			this.setImageDrawable(icons);
 		}
@@ -196,23 +199,35 @@ public class IconView extends ImageView {
 		return generateBitmap(source, Color.TRANSPARENT, shadowColor, radius, dx, dy);
 	}
 
+	@SuppressLint("NewApi")
 	public static Bitmap generateBitmap(Bitmap source, int iconColor, int shadowColor, float radius, float dx, float dy) {
 
+		// padding must take into account the blur radius and dx/dy values of the shadow
 		int paddingX = (int) (radius + dx);
 		int paddingY = (int) (radius + dy);
 
+		// create bitmap and canvas
 		Bitmap result = Bitmap.createBitmap(source.getWidth() + paddingX, source.getHeight() + paddingY,
 				Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(result);
 
+		// draw shadow, if there is one. On non-hardware accelerated version it uses setShadowLayer to acheive blur effect
+		// on hardware accelerated devices it can't blur the shadow
 		if (shadowColor != Color.TRANSPARENT) {
 			Paint shadow = new Paint();
-			shadow.setShadowLayer(radius, dx, dy, shadowColor);
-			ColorFilter filter = new PorterDuffColorFilter(shadowColor, PorterDuff.Mode.MULTIPLY);
-			shadow.setColorFilter(filter);
-			canvas.drawBitmap(source, 0, 0, shadow);
+			if (HONEYCOMB_OR_GREATER && canvas.isHardwareAccelerated()) {
+				ColorFilter filter = new PorterDuffColorFilter(shadowColor, PorterDuff.Mode.MULTIPLY);
+				shadow.setColorFilter(filter);
+				canvas.drawBitmap(source, dx, dy, shadow);
+			} else {
+				shadow.setShadowLayer(radius, dx, dy, shadowColor);
+				ColorFilter filter = new PorterDuffColorFilter(shadowColor, PorterDuff.Mode.MULTIPLY);
+				shadow.setColorFilter(filter);
+				canvas.drawBitmap(source, 0, 0, shadow);
+			}
 		}
 
+		// draw the icon in the specified color
 		Paint icon = new Paint();
 		if (iconColor != Color.TRANSPARENT) {
 			ColorFilter filter = new PorterDuffColorFilter(iconColor, PorterDuff.Mode.MULTIPLY);
