@@ -1,3 +1,4 @@
 bin/jarlist.cache
 bin/*
 gen/*
+psds/*

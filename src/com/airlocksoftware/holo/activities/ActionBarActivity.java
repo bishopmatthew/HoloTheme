@@ -13,6 +13,7 @@ import com.airlocksoftware.holo.actionbar.ActionBarView;
 import com.airlocksoftware.holo.actionbar.OnePaneController;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.anim.OverlayManager;
+import com.airlocksoftware.holo.interfaces.OnBackPressedListener;
 import com.airlocksoftware.holo.interfaces.OnStopListener;
 
 /** An activity that has hooks for getting the action bar, and drop-down menus **/
@@ -24,7 +25,7 @@ public abstract class ActionBarActivity extends SlidingFragmentActivity {
 	FrameLayout mFrame;
 	OverlayManager mOverlayManager;
 
-	// private List<OnBackPressedListener> mOnBackPressedListeners;
+	private List<OnBackPressedListener> mOnBackPressedListeners;
 	// private List<OnActivityResultListener> mOnActivityResultListeners;
 	private List<OnStopListener> mOnStopListeners;
 
@@ -51,6 +52,7 @@ public abstract class ActionBarActivity extends SlidingFragmentActivity {
 
 		mOverlayManager = new OverlayManager(this, this.getWindow());
 		mActionBar.setOverlayManager(mOverlayManager);
+		addOnBackPressedListener(mOverlayManager);
 
 		createActionBarController();
 
@@ -81,7 +83,11 @@ public abstract class ActionBarActivity extends SlidingFragmentActivity {
 
 	@Override
 	public void onBackPressed() {
-		// TODO go through mOnBackPressedListeners to see if any accept the back press
+		if (mOnBackPressedListeners != null) {
+			for (OnBackPressedListener listener : mOnBackPressedListeners) {
+				if(listener.onBackPressed()) return;
+			}
+		}
 		super.onBackPressed();
 	}
 
@@ -122,6 +128,21 @@ public abstract class ActionBarActivity extends SlidingFragmentActivity {
 	public void addOnStopListener(OnStopListener listener) {
 		if (mOnStopListeners == null) mOnStopListeners = new ArrayList<OnStopListener>();
 		mOnStopListeners.add(listener);
+	}
+
+	/** Adds a callback when back is pressed in this Activity. **/
+	public void addOnBackPressedListener(OnBackPressedListener listener) {
+		if (mOnBackPressedListeners == null) {
+			mOnBackPressedListeners = new ArrayList<OnBackPressedListener>();
+		}
+		mOnBackPressedListeners.add(listener);
+	}
+
+	/** Removes onBackPressed callback from this Activity. **/
+	public void removeOnBackPressedListener(OnBackPressedListener listener) {
+		if (mOnBackPressedListeners != null) {
+			mOnBackPressedListeners.remove(listener);
+		}
 	}
 
 }

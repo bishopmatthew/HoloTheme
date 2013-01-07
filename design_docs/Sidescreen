@@ -1,8 +1,0 @@
-Sidescreen
-	- Like in the Facebook app - a screen that slides over to cover most (but not all) of the screen and has additional controls
-	- How to build?
-		- First instinct is to generate a bitmap from the "main" screen and use that for the sliver
-			- See how it performs?
-			- This isn't what the facebook app does
-		- Has someone else built it?
-			- Found an implementation very similar to what I was imagineing online

@@ -18,8 +18,9 @@ import android.widget.FrameLayout;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.anim.AnimationParams.Exclusivity;
 import com.airlocksoftware.holo.anim.AnimationParams.FillType;
+import com.airlocksoftware.holo.interfaces.OnBackPressedListener;
 
-public class OverlayManager {
+public class OverlayManager implements OnBackPressedListener {
 
 	// STATE
 	Map<AnimationParams.FillType, FrameLayout> mFrames = new HashMap<AnimationParams.FillType, FrameLayout>();
@@ -34,6 +35,8 @@ public class OverlayManager {
 	private int mOutAnimResId;
 	private Animation mInAnim;
 	private Animation mOutAnim;
+	
+	private boolean mHasOpenViews = false;
 
 	private OnClickListener hideListener = new OnClickListener() {
 		@Override
@@ -131,10 +134,9 @@ public class OverlayManager {
 			hideAllViews();
 		}
 
-		// FrameLayout frame = mFrames.get(params.fillType());
-		// mRoot.setVisibility(View.VISIBLE);
-		// frame.setVisibility(View.VISIBLE);
+		// makes it so clicking outside overlay view hides all views
 		mRoot.setOnClickListener(hideListener);
+		mHasOpenViews = true;
 
 		final AnimationFinishedListener showListener = listener;
 
@@ -245,19 +247,13 @@ public class OverlayManager {
 			for (int j = 0; j < frame.getChildCount(); j++) {
 				View child = frame.getChildAt(j);
 				if (child.getVisibility() == View.VISIBLE) {
-					// AnimationParams params = mAnimationParams.get(child);
-					// if (params.outAnimation() != null) {
-					// hideViewById(child.getId(), params.outAnimation());
-					// } else {
 					hideViewById(child.getId());
-					// }
 				}
 			}
-			// frame.setVisibility(View.GONE);
 		}
-		// mRoot.setVisibility(View.GONE);
 		mRoot.setOnClickListener(null);
 		mRoot.setClickable(false);
+		mHasOpenViews = false;
 	}
 
 	// setting animations
@@ -315,6 +311,16 @@ public class OverlayManager {
 	// INNER CLASSES
 	public interface AnimationFinishedListener {
 		public void onFinished(View overlay);
+	}
+
+	@Override
+	public boolean onBackPressed() {
+		if(mHasOpenViews) {
+			hideAllViews();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
