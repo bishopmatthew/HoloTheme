@@ -2,6 +2,10 @@ package com.airlocksoftware.holo.anim;
 
 import android.view.animation.Animation;
 
+/**
+ * Used by OverlayManager to control how a view is animated. Includes parameters for enter / exit animations, which part
+ * of the screen to cover, and whether to hide other overlay views when displaying it.
+ **/
 public class AnimationParams {
 
 	// STATE
@@ -72,16 +76,16 @@ public class AnimationParams {
 	public Animation inAnimation() {
 		return mInAnim;
 	}
-	
+
 	public AnimationParams inAnimation(Animation in) {
 		mInAnim = in;
 		return this;
 	}
-	
+
 	public Animation outAnimation() {
 		return mOutAnim;
 	}
-	
+
 	public AnimationParams outAnimation(Animation out) {
 		mOutAnim = out;
 		return this;

@@ -20,11 +20,18 @@ import com.airlocksoftware.holo.anim.OverlayManager;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.utils.ViewUtils;
 
+/**
+ * A 2.1+ compatible replacement for the ActionBar in Android 3.0+. As of now (Jan 2013) I would recommend that you
+ * use ActionBarSherlock from Jake Wharton instead. This implementation does have some interesting properties though:
+ * - the content is set by ActionBarController, which allows you to create different types of layouts (e.g. a split-pane
+ * ActionBar)
+ * - uses OverlayManager so you can use custom animation on the Overflow menu
+ * - customize the icon that the UpButton displays
+ * - use custom fonts in the title
+ **/
 public class ActionBarView extends RelativeLayout {
 
 	private Context mContext;
-
-	// CONTROLLER UPDATE
 	ActionBarController mController;
 
 	ViewGroup mControllerContainer;
@@ -35,7 +42,7 @@ public class ActionBarView extends RelativeLayout {
 	OverlayManager mOverlayManager;
 
 	private boolean mLayoutFinished = false;
-	 private boolean mNeedsLayout = false;
+	private boolean mNeedsLayout = false;
 
 	// CONSTANTS
 	private static final String TAG = ActionBarView.class.getSimpleName();
@@ -50,10 +57,6 @@ public class ActionBarView extends RelativeLayout {
 		super(context, attrs);
 		mContext = context;
 
-		TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.ActionBarView, 1, 0);
-		// int layoutType = a.getInt(R.styleable.ActionBarView_ab_layout_mode, ONE_PANE_LAYOUT);
-		a.recycle();
-
 		mOverflow = new ActionBarOverflow(mContext);
 		mOverflow.setId(R.id.root_overflow_menu);
 
@@ -64,7 +67,6 @@ public class ActionBarView extends RelativeLayout {
 		mUpContainer = findViewById(R.id.cnt_up);
 		mUpIndicator = (IconView) findViewById(R.id.icv_up_indicator);
 		mUpIcon = findViewById(R.id.img_up_icon);
-
 
 		// get the background drawable & make sure it repeats properly
 		TypedValue typedValue = new TypedValue();
@@ -145,7 +147,7 @@ public class ActionBarView extends RelativeLayout {
 			mNeedsLayout = false;
 		}
 	}
-	
+
 	public void requestNeedsLayout() {
 		mNeedsLayout = true;
 		requestLayout();

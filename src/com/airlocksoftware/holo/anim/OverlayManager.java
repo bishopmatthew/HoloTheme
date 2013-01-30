@@ -20,23 +20,28 @@ import com.airlocksoftware.holo.anim.AnimationParams.Exclusivity;
 import com.airlocksoftware.holo.anim.AnimationParams.FillType;
 import com.airlocksoftware.holo.interfaces.OnBackPressedListener;
 
+/**
+ * Used to show and animate views on top of the rest of the content. Basically an set of frame layouts that go above
+ * other content in the Window. Should be registered with the Activity via OnBackPressedListener. See ActionBarActivity
+ * for example usage.
+ **/
 public class OverlayManager implements OnBackPressedListener {
 
-	// STATE
+	// State
 	Map<AnimationParams.FillType, FrameLayout> mFrames = new HashMap<AnimationParams.FillType, FrameLayout>();
 	Map<View, AnimationParams> mAnimationParams = new HashMap<View, AnimationParams>();
+	private boolean mHasOpenViews = false;
 
+	// Views
 	private Context mContext;
 	private Window mWindow;
 	FrameLayout mRoot;
 
-	// animations
+	// Animations
 	private int mInAnimResId;
 	private int mOutAnimResId;
 	private Animation mInAnim;
 	private Animation mOutAnim;
-	
-	private boolean mHasOpenViews = false;
 
 	private OnClickListener hideListener = new OnClickListener() {
 		@Override
@@ -45,11 +50,10 @@ public class OverlayManager implements OnBackPressedListener {
 		}
 	};
 
-	// CONSTANTS
+	// Constants
 	private static final int DEF_IN_ANIM = R.anim.scale_in;
 	private static final int DEF_OUT_ANIM = R.anim.scale_out;
 
-	// CONSTRUCTOR
 	public OverlayManager(Context context, Window window) {
 		mContext = context;
 		mWindow = window;
@@ -61,8 +65,6 @@ public class OverlayManager implements OnBackPressedListener {
 		setDefaultInAnimation(DEF_IN_ANIM);
 		setDefaultOutAnimation(DEF_OUT_ANIM);
 	}
-
-	// PUBLIC METHODS
 
 	// Adding and removing
 	/** Adds the view, and initializes a new AnimationParams object **/
@@ -206,7 +208,8 @@ public class OverlayManager implements OnBackPressedListener {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				toHide.setVisibility(View.GONE);
-				mAnimationParams.get(toHide).visible(false);
+				mAnimationParams.get(toHide)
+												.visible(false);
 				if (hideListener != null) hideListener.onFinished(toHide);
 			}
 
@@ -277,17 +280,18 @@ public class OverlayManager implements OnBackPressedListener {
 		mOutAnim = AnimationUtils.loadAnimation(mContext, mOutAnimResId);
 	}
 
-	// PRIVATE METHODS
-
 	private FrameLayout createFrame(FillType fillType) {
 		FrameLayout frame = new FrameLayout(mContext, null);
 		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
-		Display display = mWindow.getWindowManager().getDefaultDisplay();
-		int statusBarHeight = (int) Math.ceil(25 * mContext.getResources().getDisplayMetrics().density);
+		Display display = mWindow.getWindowManager()
+															.getDefaultDisplay();
+		int statusBarHeight = (int) Math.ceil(25 * mContext.getResources()
+																												.getDisplayMetrics().density);
 		int screenHeight = display.getHeight(); // deprecated
 
-		int abHeight = (int) mContext.getResources().getDimension(R.dimen.actionbar_height);
+		int abHeight = (int) mContext.getResources()
+																	.getDimension(R.dimen.actionbar_height);
 		int contentHeight = screenHeight - statusBarHeight;
 
 		switch (fillType) {
@@ -315,7 +319,7 @@ public class OverlayManager implements OnBackPressedListener {
 
 	@Override
 	public boolean onBackPressed() {
-		if(mHasOpenViews) {
+		if (mHasOpenViews) {
 			hideAllViews();
 			return true;
 		} else {

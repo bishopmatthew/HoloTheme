@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -15,6 +14,7 @@ import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
 
+/** Displays the Overflow menu for ActionBarView. **/
 public class ActionBarOverflow extends ScrollView {
 
 	private Context mContext;
@@ -22,7 +22,7 @@ public class ActionBarOverflow extends ScrollView {
 
 	private boolean mLayoutFinished = false;
 
-	// CONSTANTS
+	// Constants
 	private static final int DEFAULT_LAYOUT = R.layout.vw_actionbar_overflow;
 
 	public ActionBarOverflow(Context context) {
@@ -34,15 +34,16 @@ public class ActionBarOverflow extends ScrollView {
 		mContext = context;
 
 		TypedValue tv = new TypedValue();
-		mContext.getTheme().resolveAttribute(R.attr.overflowMenuBg, tv, true);
+		mContext.getTheme()
+						.resolveAttribute(R.attr.overflowMenuBg, tv, true);
 		int background = tv.resourceId;
 		setBackgroundResource(background);
 		ViewUtils.fixBackgroundRepeat(this);
 
 		int widthResId = Utils.getThemedResourceId(mContext, R.attr.overflowMenuWidth);
-		int width = mContext.getResources().getDimensionPixelSize(widthResId);
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width,
-				LayoutParams.WRAP_CONTENT, Gravity.RIGHT);
+		int width = mContext.getResources()
+												.getDimensionPixelSize(widthResId);
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width, LayoutParams.WRAP_CONTENT, Gravity.RIGHT);
 		params.gravity = Gravity.RIGHT;
 
 		setLayoutParams(params);

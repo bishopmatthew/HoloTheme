@@ -42,13 +42,13 @@ public class ViewUtils {
 		return (View[]) arr.toArray();
 	}
 
-	/** Mutates the state of background BitmapDrawables so that TileMode.REPEAT works properly**/
+	/** Mutates the state of background BitmapDrawables so that TileMode.REPEAT works properly **/
 	public static void fixBackgroundRepeat(View view) {
 		Drawable bg = view.getBackground();
 		fixDrawableRepeat(bg);
 	}
 
-	/** Dispatches Drawable repeat fixes based on the type of the Drawable  **/
+	/** Dispatches Drawable repeat fixes based on the type of the Drawable **/
 	public static void fixDrawableRepeat(Drawable d) {
 		if (d != null) {
 			if (d instanceof BitmapDrawable) fixBitmapRepeat((BitmapDrawable) d);
@@ -57,7 +57,7 @@ public class ViewUtils {
 		}
 	}
 
-	/** There's a limitation where we can only get the current Drawable, so that's the only one that can be mutated**/
+	/** There's a limitation where we can only get the current Drawable, so that's the only one that can be mutated **/
 	private static void fixStateListRepeat(StateListDrawable d) {
 		fixDrawableRepeat(d.getCurrent());
 	}
@@ -73,6 +73,11 @@ public class ViewUtils {
 		for (int i = 0; i < lyr.getNumberOfLayers(); i++) {
 			fixDrawableRepeat(lyr.getDrawable(i));
 		}
+	}
+
+	/** Converts a boolean for visibility into View.VISIBLE or View.GONE **/
+	public static int boolToVis(boolean show) {
+		return show ? View.VISIBLE : View.GONE;
 	}
 
 }

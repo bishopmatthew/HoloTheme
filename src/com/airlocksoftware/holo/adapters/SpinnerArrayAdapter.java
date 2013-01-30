@@ -16,8 +16,11 @@ import android.widget.SpinnerAdapter;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.type.FontText;
 
-public abstract class SpinnerArrayAdapter<T> extends BaseAdapter implements SpinnerAdapter,
-		ListAdapter {
+/**
+ * An Adapter used (primarily) for custom spinner dialogs. It's almost certainly a better idea to use HoloEverywhere
+ * https://github.com/ChristopheVersieux/HoloEverywhere
+ **/
+public abstract class SpinnerArrayAdapter<T> extends BaseAdapter implements SpinnerAdapter, ListAdapter {
 
 	protected transient Context mContext;
 

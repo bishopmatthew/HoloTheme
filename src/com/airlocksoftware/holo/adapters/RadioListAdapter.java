@@ -15,15 +15,17 @@ import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.type.FontText;
 
 @SuppressWarnings("rawtypes")
+/** An Adapter used (primarily) for custom spinner dialogs. It's almost certainly a better idea to use HoloEverywhere
+ * https://github.com/ChristopheVersieux/HoloEverywhere**/
 public abstract class RadioListAdapter extends BaseAdapter implements SpinnerAdapter, ListAdapter {
 
 	protected transient Context context;
-	
+
 	protected ArrayList objects;
 	int selectedPosition;
 
 	private String prompt;
-	
+
 	private static final String DEFAULT_PROMPT = "Tap to select";
 
 	public RadioListAdapter(Context context, ArrayList objects) {
@@ -75,12 +77,12 @@ public abstract class RadioListAdapter extends BaseAdapter implements SpinnerAda
 			LayoutInflater inflater = LayoutInflater.from(context);
 			convertView = inflater.inflate(R.layout.vw_spinner_dropdown, parent, false);
 		}
-		
+
 		convertView.setTag(getItem(position));
 		((FontText) convertView.findViewById(R.id.text)).setText(getItemText(position));
-		
+
 		RadioButton radioButton = (RadioButton) convertView.findViewById(R.id.radio_button);
-		if(position == selectedPosition) {
+		if (position == selectedPosition) {
 			radioButton.setChecked(true);
 		} else {
 			radioButton.setChecked(false);
@@ -89,7 +91,7 @@ public abstract class RadioListAdapter extends BaseAdapter implements SpinnerAda
 			@Override
 			public void onClick(View v) {
 				setSelectedPosition(getPosition(v.getTag()));
-				
+
 				// call onItemClick
 				onItemClick(getSelectedPosition());
 			}
@@ -116,7 +118,7 @@ public abstract class RadioListAdapter extends BaseAdapter implements SpinnerAda
 	public abstract String getItemText(int position);
 
 	public abstract void onItemClick(int position);
-	
+
 	public void setSelectedPosition(int position) {
 		this.selectedPosition = position;
 	}
@@ -124,7 +126,7 @@ public abstract class RadioListAdapter extends BaseAdapter implements SpinnerAda
 	public Object getSelected() {
 		try {
 			return objects.get(selectedPosition);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}

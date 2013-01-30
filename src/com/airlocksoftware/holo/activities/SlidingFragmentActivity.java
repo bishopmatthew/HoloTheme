@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
 import com.airlocksoftware.holo.interfaces.SlidingActivityBase;
+import com.slidingmenu.lib.SlidingActivityHelper;
 import com.slidingmenu.lib.SlidingMenu;
 
+/** A fragment Activity that supports SlidingMenu. **/
 public class SlidingFragmentActivity extends FragmentActivity implements SlidingActivityBase {
 
 	private SlidingActivityHelper mHelper;

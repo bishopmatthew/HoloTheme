@@ -21,6 +21,11 @@ import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
 
+/**
+ * An ActionBar that is split it half (for tablets). The width of the left side is controlled by LEFT_PANE_DEFAULT_SIZE,
+ * and should match the width in vw_actionbar_twopane (TODO move to R.dimen). Which side the title and buttons will be
+ * added to is controlled by mActiveSide.
+ **/
 public class TwoPaneController implements ActionBarController {
 
 	// CONTEXT & CONTAINERS
@@ -47,7 +52,7 @@ public class TwoPaneController implements ActionBarController {
 
 	// CONSTANTS
 	private static final int TWO_PANE_LAYOUT_RES = R.layout.vw_actionbar_twopane;
-	private static final int LEFT_PANE_DEFAULT_SIZE = 320;// in dp
+	private static final int LEFT_PANE_DEFAULT_SIZE = 320;// in dp, matches value in vw_actionbar_twopane
 	public static final int TWOPANE_LEFT_TAG = 0;
 	public static final int TWOPANE_RIGHT_TAG = 1;
 
@@ -65,7 +70,7 @@ public class TwoPaneController implements ActionBarController {
 
 		ACTIONBAR_HEIGHT = mContext.getResources()
 																.getDimensionPixelSize(R.dimen.actionbar_height);
-		this.setLeftPaneWidth(Utils.dpToPixels(context, LEFT_PANE_DEFAULT_SIZE)); // matches value in vw_actionbar_twopane
+		this.setLeftPaneWidth(Utils.dpToPixels(context, LEFT_PANE_DEFAULT_SIZE));
 
 		inflateLayout(LayoutInflater.from(mContext));
 	}

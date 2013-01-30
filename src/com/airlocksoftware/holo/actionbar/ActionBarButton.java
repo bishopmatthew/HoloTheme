@@ -14,9 +14,14 @@ import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.type.FontText;
 
+/**
+ * A view whose layout changes based on the value of mDrawMode - text displays next to the icon when it's in the
+ * overflow menu, and the icon displays by itself when it's part of the ActionBar. Also has easy support for a spinning
+ * progress bar.
+ **/
 public class ActionBarButton extends FrameLayout {
 
-	// STATE
+	// State
 	private Context mContext;
 
 	private String mText;
@@ -29,7 +34,7 @@ public class ActionBarButton extends FrameLayout {
 	private boolean mLayoutFinished = false;
 	private boolean mShowProgress = false;
 
-	// CONSTANTS
+	// Constants
 	private int ACTIONBAR_HEIGHT;
 	private int ACTIONBAR_WIDTH;
 	private LinearLayout.LayoutParams ACTIONBAR_PARAMS;
@@ -38,7 +43,16 @@ public class ActionBarButton extends FrameLayout {
 	private static final int OVERFLOW_LAYOUT = R.layout.vw_actionbar_overflow_btn;
 	private static final int SPIN_LAYOUT = R.layout.vw_actionbar_progressbar_spin;
 
-	// CONSTRUCTORS
+	// Enums
+	public enum Priority {
+		HIGH, LOW;
+	}
+
+	public enum DrawMode {
+		ICON_ONLY, OVERFLOW;
+	}
+
+	// Constructors
 	public ActionBarButton(Context context) {
 		this(context, null);
 	}
@@ -56,17 +70,16 @@ public class ActionBarButton extends FrameLayout {
 		this.setClickable(true);
 	}
 
-	// OVERRIDEN METHODS
 	@Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
-		
+
 		// check to make sure drawmode is set
 		if (mDrawMode == null) throw new RuntimeException("You forgot to set the DrawMode for the ActionBarButton"
 				+ toString());
 	}
 
-	// PUBLIC API
+	// Public API
 	/** Set the mode of this button. **/
 	public ActionBarButton priority(Priority priority) {
 		mPriority = priority;
@@ -174,18 +187,7 @@ public class ActionBarButton extends FrameLayout {
 		return this;
 	}
 
-	// PRIVATE METHODS
-
-	// ENUMS & INNER CLASSES
-	public enum Priority {
-		HIGH, LOW;
-	}
-
-	public enum DrawMode {
-		ICON_ONLY, OVERFLOW;
-	}
-
-	// OVERRIDE THIS addView SINCE ALL OTHERS ARE ROUTED THROUGH IT
+	// Override this addView since all others are routed through it
 	@Override
 	public void addView(View child, int index, ViewGroup.LayoutParams params) {
 		if (!mLayoutFinished) super.addView(child, index, params);

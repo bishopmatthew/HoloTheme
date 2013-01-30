@@ -7,10 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+/** Simple FragmentPagerAdapter that uses an ArrayList<> to hold the fragments. **/
 public class FragmentPagerArrayAdapter extends FragmentPagerAdapter {
 
 	private List<Fragment> mFragments = new ArrayList<Fragment>();
-	
+
 	public FragmentPagerArrayAdapter(FragmentManager fm) {
 		super(fm);
 	}

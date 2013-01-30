@@ -17,8 +17,11 @@ local.properties
 
 # Eclipse project files
 .classpath
+<<<<<<< HEAD
 .project
 res/values/bugsense.xml
 
 # psds used in this project
+=======
+>>>>>>> Updated documentation for some components
 psds/

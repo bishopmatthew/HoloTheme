@@ -1,3 +1,19 @@
+/**Copyright 2012 Jeremy Feinstein
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.**/
+
+/** I've slightly modified these five files from https://github.com/jfeinstein10/SlidingMenu to support the way I am using them. **/
+
 package com.slidingmenu.lib;
 
 import android.content.Context;
@@ -11,7 +27,7 @@ import com.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 
 public class CustomViewBehind extends CustomViewAbove {
 
-	//private static final String TAG = "CustomViewBehind";
+	// private static final String TAG = "CustomViewBehind";
 
 	private CustomViewAbove mViewAbove;
 	private CanvasTransformer mTransformer;
@@ -32,8 +48,7 @@ public class CustomViewBehind extends CustomViewAbove {
 
 	public void setTouchMode(int i) {
 		mTouchMode = i;
-		if (mViewAbove != null)
-			mViewAbove.setTouchModeBehind(i);
+		if (mViewAbove != null) mViewAbove.setTouchModeBehind(i);
 	}
 
 	public void setCanvasTransformer(CanvasTransformer t) {
@@ -46,7 +61,7 @@ public class CustomViewBehind extends CustomViewAbove {
 
 	@Override
 	public int getCustomWidth() {
-		int i = isMenuOpen()? 0 : 1;
+		int i = isMenuOpen() ? 0 : 1;
 		return getChildWidth(i);
 	}
 
@@ -72,12 +87,11 @@ public class CustomViewBehind extends CustomViewAbove {
 	public void setChildrenEnabled(boolean enabled) {
 		mChildrenEnabled = enabled;
 	}
-	
+
 	@Override
 	public void scrollTo(int x, int y) {
 		super.scrollTo(x, y);
-		if (mTransformer != null)
-			invalidate();
+		if (mTransformer != null) invalidate();
 	}
 
 	@Override
@@ -97,8 +111,7 @@ public class CustomViewBehind extends CustomViewAbove {
 			mTransformer.transformCanvas(canvas, mViewAbove.getPercentOpen());
 			super.dispatchDraw(canvas);
 			canvas.restore();
-		} else
-			super.dispatchDraw(canvas);
+		} else super.dispatchDraw(canvas);
 	}
 
 }
