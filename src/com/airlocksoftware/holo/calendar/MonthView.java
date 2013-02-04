@@ -21,6 +21,7 @@ import com.airlocksoftware.holo.grid.FixedGridView;
 import com.airlocksoftware.holo.type.FontButton;
 import com.airlocksoftware.holo.type.FontText;
 
+/** Displays a monthly calendar with controls at the top for changing the month. **/
 public class MonthView extends FrameLayout {
 
 	// CONTEXT

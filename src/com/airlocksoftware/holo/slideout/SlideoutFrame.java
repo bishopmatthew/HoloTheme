@@ -29,6 +29,9 @@ import com.airlocksoftware.holo.interfaces.OnStopListener;
 import com.airlocksoftware.holo.utils.Utils;
 
 /**
+ * An old implementation of SlidingMenu I wrote. Take a screenshot of the content, then displays an animation of the new
+ * content and the screenshot sliding over the content.
+ * 
  * The frame the SlideoutView lives in. Consists of the ImageView that holds a screenshot of the
  * screen we're sliding over, and a FrameLayout to hold the content.
  **/
@@ -80,11 +83,11 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 				if (!mIsAnimating) close();
 			}
 		});
-		
+
 		// we pre-create the Bitmap to speed up the opening animation
 		mRootView = mActivity.findViewById(mRootId);
 		mBitmap = createFullscreenBitmap(mContext);
-		
+
 		mOverlayManager.addView(this, new AnimationParams(FillType.FILL_SCREEN).exclusivity(Exclusivity.EXCLUDE_ALL));
 	}
 
@@ -92,7 +95,7 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 
 	public void open() {
 		// TODO DEBUG
-//		android.os.Debug.startMethodTracing("slideout", 1000 * 1000 * 60);
+		// android.os.Debug.startMethodTracing("slideout", 1000 * 1000 * 60);
 
 		mOpen = true;
 		mIsAnimating = true;
@@ -106,7 +109,7 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 		this.setLayoutParams(params);
 
 		mScreenshotView.setImageBitmap(SlideoutFrame.loadBitmapFromView(mBitmap, mRootView));
-		
+
 		this.setDrawingCacheEnabled(true);
 
 		mInAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE, -(screenWidth - mSlideWidth),
@@ -122,7 +125,7 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 				mIsAnimating = false;
 				SlideoutFrame.this.setDrawingCacheEnabled(false);
 				// TODO DEBUG
-//				android.os.Debug.stopMethodTracing();
+				// android.os.Debug.stopMethodTracing();
 			}
 		});
 	}
@@ -188,23 +191,23 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 	// LIFECYCLE METHODS
 	@Override
 	public void onStop() {
-		
+
 		mBitmap.recycle();
 		mBitmap = null;
-		
+
 		if (mScreenshotView != null && mScreenshotView.getDrawable() != null) {
-			((BitmapDrawable) mScreenshotView.getDrawable()).getBitmap().recycle();
+			((BitmapDrawable) mScreenshotView.getDrawable()).getBitmap()
+																											.recycle();
 			mScreenshotView.setImageBitmap(null);
 			mScreenshotView.setImageDrawable(null);
 		}
-		
+
 		// Log.d(TAG, "Stopped - Recycled Bitmap");
 		// int usedMegs = (int) (Debug.getNativeHeapAllocatedSize() / 1048576L);
 		// String usedMegsString = String.format(" - Memory Used: %d MB", usedMegs);
 		// Log.d(TAG, usedMegsString);
 	}
-	
-	
+
 	// PRIVATE METHODS
 
 	@SuppressWarnings("deprecation")
@@ -212,7 +215,7 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 		Display display = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		return display.getWidth();
 	}
-	
+
 	public static Bitmap createFullscreenBitmap(Context context) {
 		Point size = Utils.getScreenSize(context);
 		int width = size.x;
@@ -221,12 +224,11 @@ public class SlideoutFrame extends FrameLayout implements OnStopListener {
 		return bm;
 	}
 
-
 	public static Bitmap createBitmapForView(View v) {
 		Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
 		return b;
 	}
-	
+
 	public static Bitmap loadBitmapFromView(Bitmap bm, View v) {
 		Canvas c = new Canvas(bm);
 		v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);

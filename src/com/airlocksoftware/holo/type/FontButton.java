@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.utils.Utils;
 
+/** An Button that allows you to use different fonts & apply an app-wide scaling factor. **/
 public class FontButton extends Button {
 
 	Context mContext;

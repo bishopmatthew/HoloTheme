@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.airlocksoftware.holo.R;
 
+/** A FontEdit that shows an "X" on the right side when text is entered. **/
 public class ClearableFontEdit extends RelativeLayout {
 
 	// CONTEXT
@@ -70,13 +71,14 @@ public class ClearableFontEdit extends RelativeLayout {
 	}
 
 	public boolean hasText() {
-		return mFontEdit != null && !mFontEdit.getText().toString().equals("");
+		return mFontEdit != null && !mFontEdit.getText()
+																					.toString()
+																					.equals("");
 	}
 
 	public void clearText() {
 		if (mFontEdit != null) mFontEdit.setText("");
 	}
-	
 
 	// PRIVATE METHODS
 	private void getAttrs(AttributeSet attrs) {
@@ -98,10 +100,11 @@ public class ClearableFontEdit extends RelativeLayout {
 	}
 
 	private void inflateLayout() {
-		LayoutInflater.from(mContext).inflate(DEFAULT_LAYOUT, this);
+		LayoutInflater.from(mContext)
+									.inflate(DEFAULT_LAYOUT, this);
 		mFontEdit = (FontEdit) findViewById(FONT_EDIT_ID);
 		mImageButton = (ImageView) findViewById(CLEAR_BUTTON_ID);
-		
+
 		mFontEdit.addTextChangedListener(mTextWatcher);
 		mFontEdit.setText("");
 	}

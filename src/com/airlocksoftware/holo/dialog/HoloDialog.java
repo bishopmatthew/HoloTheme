@@ -13,7 +13,8 @@ import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.type.FontButton;
 import com.airlocksoftware.holo.type.FontText;
 
-public class IcsDialog extends Dialog {
+/** A holo type dialog that's backwards compatible with 2.1+ **/
+public class HoloDialog extends Dialog {
 
 	protected Context mContext;
 
@@ -21,15 +22,14 @@ public class IcsDialog extends Dialog {
 	private RelativeLayout titleContainer;
 	private TextView title;
 	private LinearLayout buttonContainer;
-	
+
 	private int btnLayoutResId;
 
 	public static final int DEFAULT_THEME = R.style.Dialog;
 	public static final int DEFAULT_LAYOUT = R.layout.dialog_holo;
 	public static final int DEFAULT_BUTTON = R.layout.btn_dialog;
-	
 
-	public IcsDialog(Context context) {
+	public HoloDialog(Context context) {
 		this(context, DEFAULT_LAYOUT);
 	}
 
@@ -37,13 +37,13 @@ public class IcsDialog extends Dialog {
 	 * Allows you to specify a custom layout The custom layout must include ids
 	 * title_text, list, and button_container
 	 **/
-	public IcsDialog(Context context, int layoutResourceId) {
+	public HoloDialog(Context context, int layoutResourceId) {
 		this(context, layoutResourceId, DEFAULT_THEME);
 
 	}
 
 	/** **/
-	public IcsDialog(Context context, int layoutResourceId, int theme) {
+	public HoloDialog(Context context, int layoutResourceId, int theme) {
 		super(context, theme);
 		this.mContext = context;
 		this.setContentView(layoutResourceId);
@@ -53,7 +53,7 @@ public class IcsDialog extends Dialog {
 		content = (FrameLayout) findViewById(R.id.dialog_content);
 		title = (TextView) findViewById(R.id.title_text);
 		buttonContainer = (LinearLayout) findViewById(R.id.button_container);
-		
+
 		btnLayoutResId = DEFAULT_BUTTON;
 	}
 
@@ -71,39 +71,39 @@ public class IcsDialog extends Dialog {
 	/** Adds a text button to the bottom of the screen (ordered left to right) **/
 	public void addButton(String text, View.OnClickListener listener) {
 		buttonContainer.setVisibility(View.VISIBLE);
-		FontButton button = (FontButton) LayoutInflater.from(mContext).inflate(btnLayoutResId, buttonContainer,
-				false);
+		FontButton button = (FontButton) LayoutInflater.from(mContext)
+																										.inflate(btnLayoutResId, buttonContainer, false);
 		button.setText(text);
 		button.setOnClickListener(listener);
 		buttonContainer.addView(button);
 
 		View divider = new View(mContext, null);
-		LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(1,
-				LinearLayout.LayoutParams.FILL_PARENT);
+		LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(1, LinearLayout.LayoutParams.FILL_PARENT);
 		divider.setLayoutParams(dividerParams);
 		divider.setBackgroundResource(R.color.grey_40);
 		buttonContainer.addView(divider);
 	}
-	
+
 	public void displayText(String toDisplay) {
-		FontText display = (FontText) LayoutInflater.from(mContext).inflate(R.layout.dialog_text, content, false);
+		FontText display = (FontText) LayoutInflater.from(mContext)
+																								.inflate(R.layout.dialog_text, content, false);
 		display.setText(toDisplay);
 		setContentView(display);
 	}
-	
+
 	public void clearButtons() {
 		buttonContainer.removeAllViews();
 		buttonContainer.setVisibility(View.GONE);
 	}
-	
+
 	public void setButtonLayoutResId(int layoutResId) {
 		btnLayoutResId = layoutResId;
 	}
-	
+
 	public void setContentView(View contentView) {
 		content.addView(contentView);
 	}
-	
+
 	public void clearContentView() {
 		content.removeAllViews();
 	}

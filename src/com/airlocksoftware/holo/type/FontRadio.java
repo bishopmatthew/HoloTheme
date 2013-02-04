@@ -9,6 +9,7 @@ import android.widget.RadioButton;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.utils.Utils;
 
+/** A RadioButton that allows you to use different fonts & apply an app-wide scaling factor. **/
 public class FontRadio extends RadioButton {
 
 	Context mContext;

@@ -12,6 +12,7 @@ import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.grid.FixedGridAdapter;
 import com.airlocksoftware.holo.type.FontText;
 
+/** Extends FixedGridAdapter to display a monthly calendar in MonthView. **/
 public class MonthAdapter extends FixedGridAdapter<CalendarDay> {
 
 	// DATA

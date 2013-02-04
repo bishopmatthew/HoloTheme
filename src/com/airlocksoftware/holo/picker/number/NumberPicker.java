@@ -155,7 +155,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 		mCurrent = a.getInt(R.styleable.numberpicker_defaultValue, DEFAULT_VALUE);
 		mCurrent = Math.max(mStart, Math.min(mCurrent, mEnd));
 		mText.setText("" + mCurrent);
-		
+
 		this.setMinimumWidth(DEFAULT_MIN_WIDTH);
 	}
 
@@ -180,9 +180,9 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	 * will be automatically set to the start.
 	 * 
 	 * @param start
-	 *            the start of the range (inclusive)
+	 *          the start of the range (inclusive)
 	 * @param end
-	 *            the end of the range (inclusive)
+	 *          the end of the range (inclusive)
 	 */
 	public void setRange(int start, int end) {
 		mStart = start;
@@ -190,12 +190,12 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 		mCurrent = start;
 		updateView();
 	}
-	
+
 	public void setMinValue(int start) {
 		mStart = start;
 		updateView();
 	}
-	
+
 	public void setMaxValue(int end) {
 		mEnd = end;
 		updateView();
@@ -205,7 +205,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	 * Specify if numbers should wrap after the edge has been reached.
 	 * 
 	 * @param wrap
-	 *            values
+	 *          values
 	 */
 	public void setWrap(boolean wrap) {
 		mWrap = wrap;
@@ -217,11 +217,11 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	 * used to display to the user.
 	 * 
 	 * @param start
-	 *            the start of the range (inclusive)
+	 *          the start of the range (inclusive)
 	 * @param end
-	 *            the end of the range (inclusive)
+	 *          the end of the range (inclusive)
 	 * @param displayedValues
-	 *            the values displayed to the user.
+	 *          the values displayed to the user.
 	 */
 	public void setRange(int start, int end, String[] displayedValues) {
 		mDisplayedValues = displayedValues;
@@ -230,15 +230,14 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 		mCurrent = start;
 		updateView();
 	}
-	
+
 	public void setDisplayedValues(String[] displayedValues) {
 		mDisplayedValues = displayedValues;
 		updateView();
 	}
 
 	public void setValue(int current) {
-		if (mEnd < current)
-			throw new IllegalArgumentException("Current value cannot be greater than the range end.");
+		if (mEnd < current) throw new IllegalArgumentException("Current value cannot be greater than the range end.");
 
 		mCurrent = current;
 		updateView();
@@ -249,7 +248,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 		updateView();
 		notifyChange();
 	}
-	
+
 	public void setCurrent(int current) {
 		mCurrent = current;
 		updateView();
@@ -265,8 +264,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 
 	public void onClick(View v) {
 		validateInput(mText);
-		if (!mText.hasFocus())
-			mText.requestFocus();
+		if (!mText.hasFocus()) mText.requestFocus();
 
 		// now perform the increment/decrement
 		if (R.id.increment == v.getId()) {
@@ -289,7 +287,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 		updateView();
 		notifyChange();
 	}
-	
+
 	public int getWrappedNumber(int toWrap) {
 		if (toWrap > mEnd) {
 			toWrap = mWrap ? mStart : mEnd;
@@ -321,7 +319,8 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 			mText.setText(mDisplayedValues[mCurrent - mStart]);
 			mTextBelow.setText(mDisplayedValues[getWrappedNumber(mCurrent - 1) - mStart]);
 		}
-		mText.setSelection(mText.getText().length());
+		mText.setSelection(mText.getText()
+														.length());
 	}
 
 	private void validateCurrentView(CharSequence str) {
@@ -361,8 +360,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	}
 
 	/**
-	 * We start the long click here but rely on the {@link NumberPickerButton}
-	 * to inform us when the long click has ended.
+	 * We start the long click here but rely on the {@link NumberPickerButton} to inform us when the long click has ended.
 	 */
 	public boolean onLongClick(View v) {
 
@@ -402,9 +400,9 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 				return mNumberInputFilter.filter(source, start, end, dest, dstart, dend);
 			}
 			CharSequence filtered = String.valueOf(source.subSequence(start, end));
-			String result = String.valueOf(dest.subSequence(0, dstart)) + filtered
-					+ dest.subSequence(dend, dest.length());
-			String str = String.valueOf(result).toLowerCase();
+			String result = String.valueOf(dest.subSequence(0, dstart)) + filtered + dest.subSequence(dend, dest.length());
+			String str = String.valueOf(result)
+													.toLowerCase();
 			for (String val : mDisplayedValues) {
 				val = val.toLowerCase();
 				if (val.startsWith(str)) {
@@ -436,8 +434,7 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 				filtered = source.subSequence(start, end);
 			}
 
-			String result = String.valueOf(dest.subSequence(0, dstart)) + filtered
-					+ dest.subSequence(dend, dest.length());
+			String result = String.valueOf(dest.subSequence(0, dstart)) + filtered + dest.subSequence(dend, dest.length());
 
 			if ("".equals(result)) {
 				return result;
@@ -465,7 +462,8 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 
 				/* Don't force the user to type in jan when ja will do */
 				str = str.toLowerCase();
-				if (mDisplayedValues[i].toLowerCase().startsWith(str)) {
+				if (mDisplayedValues[i].toLowerCase()
+																.startsWith(str)) {
 					return mStart + i;
 				}
 			}
@@ -490,14 +488,14 @@ public class NumberPicker extends LinearLayout implements OnClickListener, OnFoc
 	public int getCurrent() {
 		return mCurrent;
 	}
-	
+
 	/**
 	 * @return the Max value.
 	 */
 	public int getMax() {
 		return mEnd;
 	}
-	
+
 	/**
 	 * @return the Min value.
 	 */

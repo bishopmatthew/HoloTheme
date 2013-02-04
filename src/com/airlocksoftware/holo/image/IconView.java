@@ -1,5 +1,9 @@
 package com.airlocksoftware.holo.image;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -13,9 +17,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.airlocksoftware.holo.R;
@@ -160,8 +164,6 @@ public class IconView extends ImageView {
 		return this;
 	}
 
-	public int drawCount = 0;
-
 	// PRIVATE METHODS
 	private void generateDrawables() {
 		if (mSourceBitmap != null && !mWaitForBuild) {
@@ -185,7 +187,6 @@ public class IconView extends ImageView {
 				Bitmap b = generateBitmap(mSourceBitmap, color, shadowColor, mShadowRadius, mShadowDx, mShadowDy);
 				BitmapDrawable bd = new BitmapDrawable(getResources(), b);
 				icons.addState(stateSet, bd);
-
 			}
 			this.setImageDrawable(icons);
 		}

@@ -8,9 +8,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.airlocksoftware.holo.R;
-import com.airlocksoftware.holo.dialog.IcsDialog;
+import com.airlocksoftware.holo.dialog.HoloDialog;
 
-public class DatePickerDialog extends IcsDialog {
+/** A HoloDialog that holds a DatePicker.**/
+public class DatePickerDialog extends HoloDialog {
 	
 	private Date mDate;
 	DatePicker mDatePicker;

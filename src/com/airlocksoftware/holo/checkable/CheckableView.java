@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 
 import com.airlocksoftware.holo.R;
 
+/** A FrameLayout extended to support being checked. **/
 public class CheckableView extends FrameLayout implements Checkable {
 
 	// STATE

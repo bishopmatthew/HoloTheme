@@ -10,6 +10,10 @@ import android.widget.TextView;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.utils.Utils;
 
+/**
+ * A TextView that allows you to use different fonts & apply an app-wide scaling factor. Also has preliminary support
+ * for using a ColorStateList to change the text shadow.
+ **/
 public class FontText extends TextView {
 
 	Context mContext;

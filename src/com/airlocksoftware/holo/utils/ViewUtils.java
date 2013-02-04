@@ -42,6 +42,26 @@ public class ViewUtils {
 		return (View[]) arr.toArray();
 	}
 
+	/** Does a depth first search and returns an array with itself and all child views & viewgroups. **/
+	public static View[] allChildViewsAndViewGroups(ViewGroup parent) {
+		List<View> arr = new ArrayList<View>();
+		arr.add(parent);
+
+		int childCount = parent.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			View child = parent.getChildAt(i);
+			if (child instanceof ViewGroup) {
+				View[] childArr = ViewUtils.allChildViewsAndViewGroups((ViewGroup) child);
+				arr.addAll(Arrays.asList(childArr));
+			} else {
+				arr.add(child);
+			}
+		}
+		View[] views = arr.toArray(new View[1]);
+//		return (View[]) arr.toArray();
+		return views;
+	}
+
 	/** Mutates the state of background BitmapDrawables so that TileMode.REPEAT works properly **/
 	public static void fixBackgroundRepeat(View view) {
 		Drawable bg = view.getBackground();

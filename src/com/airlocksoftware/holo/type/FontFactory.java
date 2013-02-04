@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 
+/** Loads & caches typefaces used by the various Font_____ classes. **/
 public class FontFactory {
 
 	static Typeface robotoRg;
@@ -12,14 +13,14 @@ public class FontFactory {
 	static Typeface robotoBd;
 	static Typeface robotoTh;
 	static Typeface robotoLt;
-	
+
 	public static final int ROBOTO_RG = 0;
 	public static final int ROBOTO_BD_CD = 1;
 	public static final int ROBOTO_CD = 2;
 	public static final int ROBOTO_BD = 3;
 	public static final int ROBOTO_TH = 4;
 	public static final int ROBOTO_LT = 5;
-	
+
 	// CONSTANTS
 	public static final String PREFS_NAME = "holobootstrap_fontprefs";
 	public static final String TEXT_SCALING_FACTOR = "FontFactory.textScalingFactor";
@@ -78,20 +79,19 @@ public class FontFactory {
 			font = robotoRg;
 			break;
 		}
-		
-		if (font == null) throw new RuntimeException(
-				"Error: you must copy any fonts used to the assets/fonts directory");
+
+		if (font == null) throw new RuntimeException("Error: you must copy any fonts used to the assets/fonts directory");
 		return font;
 	}
-	
+
 	public static void saveTextScaleFactor(Context context, float scaleFactor) {
 		SharedPreferences mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 		SharedPreferences.Editor mEditor = mPrefs.edit();
 		mEditor.putFloat(TEXT_SCALING_FACTOR, scaleFactor);
 		mEditor.commit();
 	}
-	
-	public static float getTextScaleFactor(Context context) {	
+
+	public static float getTextScaleFactor(Context context) {
 		SharedPreferences mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 		return mPrefs.getFloat(TEXT_SCALING_FACTOR, 1.0f);
 	}

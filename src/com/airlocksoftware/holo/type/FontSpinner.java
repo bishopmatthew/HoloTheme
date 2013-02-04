@@ -10,17 +10,18 @@ import android.widget.ListView;
 
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.adapters.SpinnerArrayAdapter;
-import com.airlocksoftware.holo.dialog.IcsDialog;
+import com.airlocksoftware.holo.dialog.HoloDialog;
 import com.airlocksoftware.holo.utils.Utils;
 
+/** An Spinner that allows you to use different fonts & apply an app-wide scaling factor. **/
 public class FontSpinner extends FrameLayout {
 
 	Context mContext;
 
 	FontText mText;
-	
+
 	SpinnerArrayAdapter<?> mAdapter;
-	IcsDialog mDialog;
+	HoloDialog mDialog;
 
 	String mPrompt;
 	String mDialogTitle;
@@ -69,9 +70,10 @@ public class FontSpinner extends FrameLayout {
 
 	private void showDialog() {
 		if (mDialog == null) {
-			mDialog = new IcsDialog(mContext);
+			mDialog = new HoloDialog(mContext);
 
-			ListView list = (ListView) LayoutInflater.from(mContext).inflate(R.layout.dialog_spinner, null);
+			ListView list = (ListView) LayoutInflater.from(mContext)
+																								.inflate(R.layout.dialog_spinner, null);
 			list.setAdapter(mAdapter);
 			mDialog.setContentView(list);
 
@@ -93,12 +95,12 @@ public class FontSpinner extends FrameLayout {
 	public void setAdapter(SpinnerArrayAdapter<?> adapter) {
 		mAdapter = adapter;
 	}
-	
+
 	public void setText(String text) {
 		mText.setText(text);
 	}
 
-	public IcsDialog getDialog() {
+	public HoloDialog getDialog() {
 		return mDialog;
 	}
 }

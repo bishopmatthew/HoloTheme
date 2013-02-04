@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+/** An Adapter for FixedGridView. **/
 public abstract class FixedGridAdapter<T> extends ArrayAdapter<T> {
 
 	// CONSTANTS

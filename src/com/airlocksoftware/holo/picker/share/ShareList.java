@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.airlocksoftware.holo.R;
 
-/** Displays a styleable list of **/
+/** Displays a list of ShareItems **/
 public class ShareList extends ListView {
 
 	Context mContext;
@@ -43,7 +43,8 @@ public class ShareList extends ListView {
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				View v = convertView;
-				if (v == null) v = LayoutInflater.from(mContext).inflate(DEFAULT_LAYOUT, parent, false);
+				if (v == null) v = LayoutInflater.from(mContext)
+																					.inflate(DEFAULT_LAYOUT, parent, false);
 
 				ShareItem item = this.getItem(position);
 				TextView txt = (TextView) v.findViewById(R.id.txt);

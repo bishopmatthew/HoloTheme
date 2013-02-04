@@ -3,6 +3,7 @@ package com.airlocksoftware.holo.calendar;
 import java.util.Calendar;
 import java.util.Date;
 
+/** Basic model for a day in the MonthView. **/
 public class CalendarDay {
 	
 	public Date mDate;

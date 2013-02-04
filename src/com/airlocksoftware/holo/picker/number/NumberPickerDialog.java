@@ -24,38 +24,39 @@ import android.view.View;
 
 import com.airlocksoftware.holo.R;
 
+/** A dialog for displaying NumberPickers. **/
 public class NumberPickerDialog extends AlertDialog implements OnClickListener {
-    private OnNumberSetListener mListener;
-    private NumberPicker mNumberPicker;
+	private OnNumberSetListener mListener;
+	private NumberPicker mNumberPicker;
 
-    private int mInitialValue;
+	private int mInitialValue;
 
-    public NumberPickerDialog(Context context, int theme, int initialValue) {
-        super(context, theme);
-        mInitialValue = initialValue;
+	public NumberPickerDialog(Context context, int theme, int initialValue) {
+		super(context, theme);
+		mInitialValue = initialValue;
 
-        setButton(BUTTON_POSITIVE, context.getString(android.R.string.ok), this);
-        setButton(BUTTON_NEGATIVE, context.getString(android.R.string.cancel), (OnClickListener) null);
+		setButton(BUTTON_POSITIVE, context.getString(android.R.string.ok), this);
+		setButton(BUTTON_NEGATIVE, context.getString(android.R.string.cancel), (OnClickListener) null);
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.dialog_number_picker, null);
-        setView(view);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = inflater.inflate(R.layout.dialog_number_picker, null);
+		setView(view);
 
-        mNumberPicker = (NumberPicker) view.findViewById(R.id.num_picker);
-        mNumberPicker.setValue(mInitialValue);
-    }
+		mNumberPicker = (NumberPicker) view.findViewById(R.id.num_picker);
+		mNumberPicker.setValue(mInitialValue);
+	}
 
-    public void setOnNumberSetListener(OnNumberSetListener listener) {
-        mListener = listener;
-    }
+	public void setOnNumberSetListener(OnNumberSetListener listener) {
+		mListener = listener;
+	}
 
-    public void onClick(DialogInterface dialog, int which) {
-        if (mListener != null) {
-            mListener.onNumberSet(mNumberPicker.getCurrent());
-        }
-    }
+	public void onClick(DialogInterface dialog, int which) {
+		if (mListener != null) {
+			mListener.onNumberSet(mNumberPicker.getCurrent());
+		}
+	}
 
-    public interface OnNumberSetListener {
-        public void onNumberSet(int selectedNumber);
-    }
+	public interface OnNumberSetListener {
+		public void onNumberSet(int selectedNumber);
+	}
 }

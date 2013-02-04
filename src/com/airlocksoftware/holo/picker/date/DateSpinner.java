@@ -15,6 +15,7 @@ import com.airlocksoftware.holo.picker.date.DatePickerDialog.OnDateChangedListen
 import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.Utils;
 
+/** Spinner for displaying a date. On click, opens a DatePickerDialog to change the date. **/
 public class DateSpinner extends FrameLayout {
 
 	protected Context mContext;
@@ -44,8 +45,8 @@ public class DateSpinner extends FrameLayout {
 	public void showDialog() {
 		if (dialog == null) {
 			Calendar cal = Calendar.getInstance();
-			dialog = new DatePickerDialog(mContext, onDateChangedListener, cal.get(Calendar.YEAR),
-					cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+			dialog = new DatePickerDialog(mContext, onDateChangedListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+					cal.get(Calendar.DAY_OF_MONTH));
 		}
 		dialog.show();
 	}

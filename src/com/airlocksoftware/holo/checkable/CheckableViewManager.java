@@ -7,7 +7,10 @@ import com.airlocksoftware.holo.checkable.CheckableViewGroup.OnCheckedViewChange
 
 import android.view.View;
 
-/** Allows you to register CheckableViews as children, and then manage them like they were in a CheckableViewGroup **/
+/**
+ * Allows you to register CheckableViews as children, and then manage them like they were in a CheckableViewGroup even
+ * if they are in different views.
+ **/
 public class CheckableViewManager {
 
 	// STATE
@@ -16,7 +19,7 @@ public class CheckableViewManager {
 	private OnCheckedViewChangedListener mOnCheckedChangedListener;
 	public boolean mProtectFromCheckedChange;
 	public int mCheckedId;
-	
+
 	private static final int NO_CHECKED_ID = -1;
 
 	// CONSTRUCTOR
@@ -36,8 +39,8 @@ public class CheckableViewManager {
 	public void deregister(CheckableView child) {
 		mChildren.remove(child);
 		child.setOnCheckedChangeListener(null);
-		
-		if(child.getId() == mCheckedId) mCheckedId = NO_CHECKED_ID;
+
+		if (child.getId() == mCheckedId) mCheckedId = NO_CHECKED_ID;
 	}
 
 	public void deregisterAll() {
