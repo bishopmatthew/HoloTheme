@@ -9,15 +9,15 @@ import android.widget.AutoCompleteTextView;
 import com.airlocksoftware.holo.R;
 import com.airlocksoftware.holo.utils.Utils;
 
+/** An AutoCompleteTextView that allows you to use different fonts & apply an app-wide scaling factor. **/
 public class FontAutoComplete extends AutoCompleteTextView {
 
 	Context mContext;
-	
+
 	private boolean mTextScalingEnabled;
 	private float mTextScalingFactor;
-	
-	private static final int DEFAULT_STYLE = R.style.FontAutoComplete;
 
+	private static final int DEFAULT_STYLE = R.style.FontAutoComplete;
 
 	public FontAutoComplete(Context context, AttributeSet attrs) {
 		this(context, attrs, DEFAULT_STYLE);
@@ -34,7 +34,7 @@ public class FontAutoComplete extends AutoCompleteTextView {
 
 		int font = a.getInt(R.styleable.FontText_font, 0);
 		setFont(font);
-		
+
 		// text scaling
 		mTextScalingEnabled = a.getBoolean(R.styleable.FontText_textScalingEnabled, true);
 		if (mTextScalingEnabled) {
