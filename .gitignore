@@ -22,3 +22,9 @@ local.properties
 
 # psds used in this project
 psds/
+
+# IntelliJ project files
+HoloTheme.iml
+
+# old code
+unused/
