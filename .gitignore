@@ -28,3 +28,6 @@ HoloTheme.iml
 
 # old code
 unused/
+
+# Exclude libraries that can be imported by the end user
+libs/
