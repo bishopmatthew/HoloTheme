@@ -59,7 +59,7 @@ public class MonthAdapter extends FixedGridAdapter<CalendarDay> {
 		view.setText(Integer.toString(item.getIntegerDay()));
 		view.setEnabled(!item.getIsEmpty());
 		if(!item.isCurrentMonth()) {
-			view.setTextColor(mContext.getResources().getColor(R.color.grey_40));
+			view.setTextColor(mContext.getResources().getColor(R.color.gray_40));
 		}
 		return view;
 	}

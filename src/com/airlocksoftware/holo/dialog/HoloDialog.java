@@ -80,7 +80,7 @@ public class HoloDialog extends Dialog {
 		View divider = new View(mContext, null);
 		LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(1, LinearLayout.LayoutParams.FILL_PARENT);
 		divider.setLayoutParams(dividerParams);
-		divider.setBackgroundResource(R.color.grey_40);
+		divider.setBackgroundResource(R.color.gray_40);
 		buttonContainer.addView(divider);
 	}
 

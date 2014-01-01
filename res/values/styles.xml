@@ -24,7 +24,7 @@
 
     <style name="FontText.ActionBarButton">
         <item name="android:gravity">left|center_vertical</item>
-        <item name="android:textColor">@color/grey_90</item>
+        <item name="android:textColor">@color/gray_90</item>
         <item name="android:textSize">18sp</item>
         <item name="font">roboto_bd_cd</item>
     </style>
@@ -42,7 +42,7 @@
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
         <item name="android:layout_marginTop">24dp</item>
-        <item name="android:textColor">@color/grey_40</item>
+        <item name="android:textColor">@color/gray_40</item>
         <item name="android:textSize">24sp</item>
         <item name="android:background">@drawable/bg_subtitle_underline</item>
         <item name="font">roboto_bd</item>
@@ -56,7 +56,7 @@
     </style>
 
     <style name="FontText.Spinner.Dropdown">
-        <item name="android:textColor">@color/grey_80</item>
+        <item name="android:textColor">@color/gray_80</item>
         <item name="android:textSize">25sp</item>
     </style>
 
@@ -126,11 +126,11 @@
     </style>
 
     <style name="FontButton.Dialog.HoloDark">
-        <item name="android:textColor">@color/grey_80</item>
+        <item name="android:textColor">@color/gray_80</item>
     </style>
 
     <style name="FontButton.Dialog.HoloLight">
-        <item name="android:textColor">@color/grey_40</item>
+        <item name="android:textColor">@color/gray_40</item>
     </style>
 
     <!-- ICON VIEW -->
@@ -200,11 +200,11 @@
         <item name="android:layout_height">2px</item>
     </style>
 
-    <style name="Divider.Grey">
-        <item name="android:background">@color/grey_60</item>
+    <style name="Divider.Gray">
+        <item name="android:background">@color/gray_60</item>
     </style>
 
-    <style name="Divider.Grey.1px">
+    <style name="Divider.Gray.1px">
         <item name="android:layout_height">1px</item>
     </style>
 
@@ -215,7 +215,7 @@
     </style>
 
     <style name="TableRow.Title">
-        <item name="android:background">@color/grey_90</item>
+        <item name="android:background">@color/gray_90</item>
     </style>
 
     <!-- RADIO BUTTON -->
@@ -241,7 +241,7 @@
         <item name="android:gravity">center</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/grey_60</item>
+        <item name="android:textColor">@color/gray_60</item>
     </style>
 
     <style name="NumberPickerUpButton" parent="@android:style/Widget.ImageButton">

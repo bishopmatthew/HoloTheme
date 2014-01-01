@@ -15,6 +15,6 @@
 
     <View
        android:layout_below="@+id/text"
-       style="@style/Divider.Grey.1px" />
+       style="@style/Divider.Gray.1px" />
 
 </RelativeLayout>

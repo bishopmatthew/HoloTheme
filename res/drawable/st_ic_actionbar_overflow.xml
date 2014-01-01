@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_pressed="true" android:color="@color/black"/> <!-- pressed -->
-    <item android:state_enabled="false" android:color="@color/grey_50"/> <!-- disabled -->
+    <item android:state_enabled="false" android:color="@color/gray_50"/> <!-- disabled -->
     <item android:color="@color/white"/> <!-- default -->
 
 </selector>

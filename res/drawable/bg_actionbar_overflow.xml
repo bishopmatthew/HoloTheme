@@ -7,7 +7,7 @@
     </item>
     <item>
         <shape android:shape="rectangle" >
-            <solid android:color="@color/grey_15" />
+            <solid android:color="@color/gray_15" />
 
             <padding
                 android:bottom="2dp"
@@ -17,7 +17,7 @@
 
             <stroke
                 android:width="2dp"
-                android:color="@color/grey_20" />
+                android:color="@color/gray_20" />
         </shape>
     </item>
     <item

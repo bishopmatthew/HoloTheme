@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="grey_90">#E5E5E5</color>
-    <color name="grey_80">#cccccc</color>
-    <color name="grey_75">#BFBFBF</color>
-    <color name="grey_70">#B2B2B2</color>
-    <color name="grey_60">#999999</color>
-    <color name="grey_50">#808080</color>
-    <color name="grey_45">#727272</color>
-    <color name="grey_40">#666666</color>
-    <color name="grey_30">#4C4C4C</color>
-    <color name="grey_25">#3F3F3F</color>
-    <color name="grey_20">#333333</color>
-    <color name="grey_15">#262626</color>
-    <color name="grey_10">#1a1a1a</color>
+    <color name="gray_90">#E5E5E5</color>
+    <color name="gray_80">#cccccc</color>
+    <color name="gray_75">#BFBFBF</color>
+    <color name="gray_70">#B2B2B2</color>
+    <color name="gray_60">#999999</color>
+    <color name="gray_50">#808080</color>
+    <color name="gray_45">#727272</color>
+    <color name="gray_40">#666666</color>
+    <color name="gray_30">#4C4C4C</color>
+    <color name="gray_25">#3F3F3F</color>
+    <color name="gray_20">#333333</color>
+    <color name="gray_15">#262626</color>
+    <color name="gray_10">#1a1a1a</color>
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
@@ -24,15 +24,15 @@
     <color name="tab_top">@color/bright_accent</color>
     <color name="tab_bg_check_off">@color/background_default</color>
     <color name="tab_bg_check_on">@color/background_highlight</color>
-    <color name="textColorPrimary">@color/grey_90</color>
+    <color name="textColorPrimary">@color/gray_90</color>
     <color name="textColorHighlight">@color/white</color>
-    <color name="textColorHint">@color/grey_60</color>
+    <color name="textColorHint">@color/gray_60</color>
     <color name="textColorLink">@color/bright_accent</color>
-    <color name="ab_top">@color/grey_40</color>
-    <color name="ab_bottom">@color/grey_20</color>
+    <color name="ab_top">@color/gray_40</color>
+    <color name="ab_bottom">@color/gray_20</color>
     <color name="ab_underline">@color/bright_accent</color>
-    <color name="background_default">@color/grey_20</color>
-    <color name="background_highlight">@color/grey_30</color>
+    <color name="background_default">@color/gray_20</color>
+    <color name="background_highlight">@color/gray_30</color>
     <color name="bright_accent">@color/holo_blue_light</color>
 
     <!-- FROM ANDROID SDK SOURCE -->

@@ -9,17 +9,6 @@
     <!-- Tries to mimick the android.Holo.Light them -->
     <style name="Theme.HoloBootstrap.Light"></style>
     <!-- Tries to mimick the android.Holo.Dark them -->
-    <style name="Theme.HoloBootstrap.Dark" />
-
-    <!-- Unused -->
-    <style name="Theme" parent="android:Theme.NoTitleBar"></style>
-
-    <!-- The base theme for Holo.Light, Holo.Dark, or any subclasses -->
-    <style name="Theme.HoloBootstrap"></style>
-
-    <!-- Tries to mimick the android.Holo.Light them -->
-    <style name="Theme.HoloBootstrap.Light"></style>
-    <!-- Tries to mimick the android.Holo.Dark them -->
     <style name="Theme.HoloBootstrap.Dark">
 
         <!-- DEFAULT WIDGETS -->
@@ -48,7 +37,7 @@
 
         <!-- ACTIONBAR ACTIVITY -->
         <item name="bgActionBarActivityFrame">@color/background_default</item>
-        
+
         <!-- ACTIONBAR VIEW -->
         <item name="actionBarBg">@drawable/bg_actionbar</item>
         <item name="actionBarTitleTextStyle">@style/FontText.ActionBarTitle</item>

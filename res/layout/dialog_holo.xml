@@ -35,13 +35,13 @@
         android:id="@+id/dialog_content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey_20" />
+        android:background="@color/gray_20" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="fill_parent"
         android:layout_height="1px"
-        android:background="@color/grey_40" />
+        android:background="@color/gray_40" />
 
     <LinearLayout
         android:id="@+id/button_container"
