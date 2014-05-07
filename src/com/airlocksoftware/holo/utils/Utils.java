@@ -58,7 +58,7 @@ public class Utils {
 																				.getDisplayMetrics().density);
 	}
 
-	public static int dpToPixels(Context context, float dp) {
+	public static int dpToPx(Context context, float dp) {
 		return (int) Math.ceil(dp * context.getResources()
 																				.getDisplayMetrics().density);
 	}

@@ -1,9 +1,5 @@
 package com.airlocksoftware.holo.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -11,6 +7,10 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /** A collection of static methods useful when working with Views. **/
 public class ViewUtils {
@@ -100,4 +100,7 @@ public class ViewUtils {
 		return show ? View.VISIBLE : View.GONE;
 	}
 
+  public static boolean visToBool(int visibility) {
+    return visibility == View.VISIBLE;
+  }
 }

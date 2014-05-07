@@ -70,7 +70,7 @@ public class TwoPaneController implements ActionBarController {
 
 		ACTIONBAR_HEIGHT = mContext.getResources()
 																.getDimensionPixelSize(R.dimen.actionbar_height);
-		this.setLeftPaneWidth(Utils.dpToPixels(context, LEFT_PANE_DEFAULT_SIZE));
+		this.setLeftPaneWidth(Utils.dpToPx(context, LEFT_PANE_DEFAULT_SIZE));
 
 		inflateLayout(LayoutInflater.from(mContext));
 	}
