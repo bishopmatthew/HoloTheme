@@ -12,8 +12,8 @@ public class WebViewPager extends DisableableViewPager {
 
 	@Override
 	protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-		if (v instanceof WebViewPagerCompat) {
-			return ((WebViewPagerCompat) v).canScrollHor(-dx);
+		if (v instanceof ObservableWebView) {
+			return ((ObservableWebView) v).canScrollHor(-dx);
 		} else {
 			return super.canScroll(v, checkV, dx, x, y);
 		}

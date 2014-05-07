@@ -1,11 +1,10 @@
 package com.airlocksoftware.holo.checkable;
 
+import android.view.View;
+import android.widget.Checkable;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.airlocksoftware.holo.checkable.CheckableViewGroup.OnCheckedViewChangedListener;
-
-import android.view.View;
 
 /**
  * Allows you to register CheckableViews as children, and then manage them like they were in a CheckableViewGroup even

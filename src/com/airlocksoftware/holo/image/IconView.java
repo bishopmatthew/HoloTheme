@@ -1,12 +1,9 @@
 package com.airlocksoftware.holo.image;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,9 +14,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
+import android.widget.Checkable;
 import android.widget.ImageView;
 
 import com.airlocksoftware.holo.R;
@@ -30,27 +27,29 @@ import com.airlocksoftware.holo.R;
  * - Add a drop shadow from ColorStateList / Color. Unfortunately, because blurring isn't supported,
  * you can't have a blurred drop shadow with hardware acceleration. It still works with hard shadow edges, though.
  * **/
-public class IconView extends ImageView {
+public class IconView extends ImageView implements Checkable {
 
 	private Context mContext;
 
 	private Bitmap mSourceBitmap;
 	private ColorStateList mColors, mShadowColors;
-	private int mColor = Color.TRANSPARENT, mShadowColor = Color.TRANSPARENT;
+	private int mColor = NO_COLOR, mShadowColor = NO_COLOR;
 	private float mShadowRadius = 0.0f, mShadowDx = 0.0f, mShadowDy = 0.0f;
 
 	private boolean mWaitForBuild = false;
 
+  private static final int NO_COLOR = -1;
 	private static final boolean HONEYCOMB_OR_GREATER = android.os.Build.VERSION.SDK_INT >= 11;
 	private static final String TAG = IconView.class.getSimpleName();
 
 	// CONSTANTS
+  private static final int[] ENABLED_STATE = new int[] { android.R.attr.state_enabled };
 	private static final int[][] COLOR_STATES = { new int[] { -android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_checked, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_focused, android.R.attr.state_enabled },
 			new int[] { android.R.attr.state_selected, android.R.attr.state_enabled },
-			new int[] { android.R.attr.state_enabled } };
+			ENABLED_STATE };
 
 	public IconView(Context context) {
 		this(context, null);
@@ -82,7 +81,8 @@ public class IconView extends ImageView {
 				mShadowRadius = a.getDimension(attr, 0.0f);
 				break;
 			case R.styleable.IconView_icon_src:
-				mSourceBitmap = BitmapFactory.decodeResource(getResources(), a.getResourceId(attr, 0));
+        int resId = a.getResourceId(attr, 0);
+        mSourceBitmap = BitmapFactory.decodeResource(getResources(), resId);
 				break;
 			}
 		}
@@ -167,32 +167,78 @@ public class IconView extends ImageView {
 	// PRIVATE METHODS
 	private void generateDrawables() {
 		if (mSourceBitmap != null && !mWaitForBuild) {
-			StateListDrawable icons = new StateListDrawable();
+      StateListDrawable icons = new StateListDrawable();
 
-			for (int[] stateSet : COLOR_STATES) {
-				int color, shadowColor;
+      for (int[] stateSet : COLOR_STATES) {
+        int color = NO_COLOR, shadowColor = NO_COLOR;
 
-				if (mColors != null) {
-					color = mColors.getColorForState(stateSet, mColors.getDefaultColor());
-				} else {
-					color = mColor;
-				}
+        if (mColors != null) {
+          int defaultColor = mColors.getDefaultColor();
+          color = mColors.getColorForState(stateSet, defaultColor);
+        } else {
+          color = mColor;
+        }
 
-				if (mShadowColors != null) {
-					shadowColor = mShadowColors.getColorForState(stateSet, mShadowColors.getDefaultColor());
-				} else {
-					shadowColor = mShadowColor;
-				}
+        if (mShadowColors != null) {
+          int defaultColor = mShadowColors.getDefaultColor();
+          shadowColor = mShadowColors.getColorForState(stateSet, defaultColor);
+        } else {
+          shadowColor = mShadowColor;
+        }
 
-				Bitmap b = generateBitmap(mSourceBitmap, color, shadowColor, mShadowRadius, mShadowDx, mShadowDy);
-				BitmapDrawable bd = new BitmapDrawable(getResources(), b);
-				icons.addState(stateSet, bd);
-			}
+        Bitmap b = generateBitmap(mSourceBitmap, color, shadowColor, mShadowRadius, mShadowDx, mShadowDy);
+        BitmapDrawable bd = new BitmapDrawable(getResources(), b);
+        icons.addState(stateSet, bd);
+      }
 			this.setImageDrawable(icons);
 		}
 	}
 
-	public static Bitmap generateBitmap(Bitmap source, int iconColor) {
+  /** Generates a StateListDrawable with the supplied colors, shadows, etc, from the source bitmap using a Porter-Duff
+   * color filter. **/
+  public static StateListDrawable genDrawable(Context context, int colorsResId, int bitmapResId) {
+    ColorStateList colors = context.getResources().getColorStateList(colorsResId);
+    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResId);
+    return genStateListDrawable(context, colors, null, 0,0,0, bitmap);
+  }
+
+  /** Generates a StateListDrawable with the supplied colors, shadows, etc, from the source bitmap using a Porter-Duff
+   * color filter. **/
+  public static StateListDrawable genDrawable(Context context, ColorStateList colors, Bitmap bitmap) {
+    return genStateListDrawable(context, colors, null, 0,0,0, bitmap);
+  }
+
+  /** Generates a StateListDrawable with the supplied colors, shadows, etc, from the source bitmap using a Porter-Duff
+   * color filter. **/
+  public static StateListDrawable genStateListDrawable(Context context, ColorStateList colors, ColorStateList shadow,
+                                                        float shadowDx, float shadowDy, float shadowRadius,
+                                                        Bitmap bitmap) {
+    StateListDrawable icons = new StateListDrawable();
+    Resources res = context.getResources();
+
+    for (int[] stateSet : COLOR_STATES) {
+      int color, shadowColor;
+
+      if (colors != null) {
+        color = colors.getColorForState(stateSet, colors.getDefaultColor());
+      } else {
+        color = Color.TRANSPARENT;
+      }
+
+      if (shadow != null) {
+        shadowColor = shadow.getColorForState(stateSet, shadow.getDefaultColor());
+      } else {
+        shadowColor = Color.TRANSPARENT;
+      }
+
+      Bitmap b = generateBitmap(bitmap, color, shadowColor, shadowRadius, shadowDx, shadowDy);
+      BitmapDrawable bd = new BitmapDrawable(res, b);
+      icons.addState(stateSet, bd);
+    }
+    return icons;
+  }
+
+  public static Bitmap generateBitmap(Bitmap source, int iconColor) {
 		return generateBitmap(source, iconColor, Color.TRANSPARENT, 0.0f, 0.0f, 0.0f);
 	}
 
@@ -214,7 +260,7 @@ public class IconView extends ImageView {
 
 		// draw shadow, if there is one. On non-hardware accelerated version it uses setShadowLayer to acheive blur effect
 		// on hardware accelerated devices it can't blur the shadow
-		if (shadowColor != Color.TRANSPARENT) {
+		if (shadowColor != NO_COLOR) {
 			Paint shadow = new Paint();
 			if (HONEYCOMB_OR_GREATER && canvas.isHardwareAccelerated()) {
 				ColorFilter filter = new PorterDuffColorFilter(shadowColor, PorterDuff.Mode.MULTIPLY);
@@ -230,7 +276,7 @@ public class IconView extends ImageView {
 
 		// draw the icon in the specified color
 		Paint icon = new Paint();
-		if (iconColor != Color.TRANSPARENT) {
+		if (iconColor != NO_COLOR) {
 			ColorFilter filter = new PorterDuffColorFilter(iconColor, PorterDuff.Mode.MULTIPLY);
 			icon.setColorFilter(filter);
 		}
@@ -240,4 +286,15 @@ public class IconView extends ImageView {
 		return result;
 	}
 
+  @Override public void setChecked(boolean checked) {
+
+  }
+
+  @Override public boolean isChecked() {
+    return false;
+  }
+
+  @Override public void toggle() {
+
+  }
 }

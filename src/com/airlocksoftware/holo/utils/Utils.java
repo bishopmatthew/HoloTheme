@@ -1,14 +1,15 @@
 package com.airlocksoftware.holo.utils;
 
-import java.util.Date;
-import java.util.regex.Pattern;
-
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
+
+import java.util.Date;
+import java.util.regex.Pattern;
 
 /** A collection of static methods useful for working with Android applications. **/
 public class Utils {
@@ -35,6 +36,14 @@ public class Utils {
 																		.getDisplayMetrics();
 		return new Point(metrics.widthPixels, metrics.heightPixels);
 	}
+
+  public static int getScreenWidth(Context context) {
+    return getScreenSize(context).x;
+  }
+
+  public static int getScreenHeight(Context context) {
+    return getScreenSize(context).y;
+  }
 
 	/** Returns a point representing the xy coordinates of the (I think it's top-left) corner of the view **/
 	public static Point getWindowLocation(Context context, View v) {
@@ -80,5 +89,17 @@ public class Utils {
 						.resolveAttribute(attrId, tv, true);
 		return tv.resourceId;
 	}
+
+  public static int getThemedColor(Context context, int attrId) {
+    TypedValue typedValue = new TypedValue();
+    context.getTheme().resolveAttribute(attrId, typedValue, true);
+    int color = typedValue.data;
+    return color;
+  }
+
+  public static ColorStateList getThemedColorStateList(Context context, int attrId) {
+    int resId = getThemedResourceId(context, attrId);
+    return context.getResources().getColorStateList(resId);
+  }
 
 }

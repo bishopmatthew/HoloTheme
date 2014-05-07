@@ -137,7 +137,6 @@ public class CheckableViewGroup extends LinearLayout {
 	 * 
 	 * @param id the unique id of the radio button to select in this group
 	 * 
-	 * @see #getCheckedRadioButtonId()
 	 * @see #clearCheck()
 	 */
 	public void check(int id) {
@@ -194,12 +193,8 @@ public class CheckableViewGroup extends LinearLayout {
 	/**
 	 * <p>
 	 * Clears the selection. When the selection is cleared, no radio button in
-	 * this group is selected and {@link #getCheckedRadioButtonId()} returns
-	 * null.
+	 * this group is selected.
 	 * </p>
-	 * 
-	 * @see #check(int)
-	 * @see #getCheckedRadioButtonId()
 	 */
 	public void clearCheck() {
 		check(-1);
