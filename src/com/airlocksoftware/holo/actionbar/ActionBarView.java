@@ -140,7 +140,7 @@ public class ActionBarView extends RelativeLayout {
 	/** Determines where in the ActionBar various views should go. Gives priority to HIGH Priority buttons,
 	 * then the title, then LOW Priority buttons. If the title won't fit, force it to by cutting off excess.
 	 * If any buttons won't fit, move them to the OverflowMenu. **/
-	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		if (mLayoutFinished && mNeedsLayout) {
 			mController.onMeasure(mControllerContainer.getMeasuredWidth(), mControllerContainer.getMeasuredHeight());
