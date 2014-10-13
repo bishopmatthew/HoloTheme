@@ -38,7 +38,7 @@ public class IconView extends ImageView implements Checkable {
 
 	private boolean mWaitForBuild = false;
 
-  private static final int NO_COLOR = -1;
+  private static final int NO_COLOR = Color.TRANSPARENT;
 	private static final boolean HONEYCOMB_OR_GREATER = android.os.Build.VERSION.SDK_INT >= 11;
 	private static final String TAG = IconView.class.getSimpleName();
 
@@ -238,6 +238,11 @@ public class IconView extends ImageView implements Checkable {
     return icons;
   }
 
+  public static Bitmap generateBitmap(Context context, int iconColor, int bitmapResId) {
+    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResId);
+    return generateBitmap(bitmap, iconColor);
+  }
+
   public static Bitmap generateBitmap(Bitmap source, int iconColor) {
 		return generateBitmap(source, iconColor, Color.TRANSPARENT, 0.0f, 0.0f, 0.0f);
 	}
@@ -258,18 +263,16 @@ public class IconView extends ImageView implements Checkable {
 				Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(result);
 
-		// draw shadow, if there is one. On non-hardware accelerated version it uses setShadowLayer to acheive blur effect
+		// draw shadow, if there is one. On non-hardware accelerated version it uses setShadowLayer to achieve blur effect
 		// on hardware accelerated devices it can't blur the shadow
 		if (shadowColor != NO_COLOR) {
 			Paint shadow = new Paint();
 			if (HONEYCOMB_OR_GREATER && canvas.isHardwareAccelerated()) {
-				ColorFilter filter = new PorterDuffColorFilter(shadowColor, PorterDuff.Mode.MULTIPLY);
-				shadow.setColorFilter(filter);
+				shadow.setColorFilter(makeColorFilter(shadowColor));
 				canvas.drawBitmap(source, dx, dy, shadow);
 			} else {
 				shadow.setShadowLayer(radius, dx, dy, shadowColor);
-				ColorFilter filter = new PorterDuffColorFilter(shadowColor, PorterDuff.Mode.MULTIPLY);
-				shadow.setColorFilter(filter);
+				shadow.setColorFilter(makeColorFilter(shadowColor));
 				canvas.drawBitmap(source, 0, 0, shadow);
 			}
 		}
@@ -277,14 +280,21 @@ public class IconView extends ImageView implements Checkable {
 		// draw the icon in the specified color
 		Paint icon = new Paint();
 		if (iconColor != NO_COLOR) {
-			ColorFilter filter = new PorterDuffColorFilter(iconColor, PorterDuff.Mode.MULTIPLY);
-			icon.setColorFilter(filter);
-		}
+      icon.setColorFilter(makeColorFilter(iconColor));
+		  canvas.drawBitmap(source, 0, 0, icon);
+    }
 
-		canvas.drawBitmap(source, 0, 0, icon);
 
 		return result;
 	}
+
+  private static PorterDuffColorFilter makeColorFilter(int iconColor) {
+//    if(iconColor == Color.WHITE) {
+//      return new PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_ATOP);
+//    } else {
+      return new PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN);
+//    }
+  }
 
   @Override public void setChecked(boolean checked) {
 
