@@ -1,5 +1,6 @@
 package com.airlocksoftware.holo.utils;
 
+import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -96,11 +97,66 @@ public class ViewUtils {
 	}
 
 	/** Converts a boolean for visibility into View.VISIBLE or View.GONE **/
-	public static int boolToVis(boolean show) {
-		return show ? View.VISIBLE : View.GONE;
+	public static int boolToVis(boolean visible) {
+		return visible ? View.VISIBLE : View.GONE;
 	}
+
+  public static int boolToVisOrInvis(boolean visible) {
+    return visible ? View.VISIBLE : View.INVISIBLE;
+  }
+
 
   public static boolean visToBool(int visibility) {
     return visibility == View.VISIBLE;
+  }
+
+
+  /** Gets the view's LayoutParams and sets it's width & height. Accepts either
+   * LayoutParams.MATCH_PARENT / WRAP_CONTENT or pixel values*/
+  public static void setViewDimens(View view, int width, int height) {
+    android.view.ViewGroup.LayoutParams params = view.getLayoutParams();
+    params.width = width;
+    params.height = height;
+    view.setLayoutParams(params);
+  }
+
+  /** Gets the view's LayoutParams and sets it's width & height. Accepts either
+   * LayoutParams.MATCH_PARENT / WRAP_CONTENT or pixel values*/
+  public static void setSquareViewDimens(View view, int edgeLength) {
+    setViewDimens(view, edgeLength, edgeLength);
+  }
+
+  /** Convenience version of setViewMargins(View view, int left, int top, int right, int bottom) */
+  public static void setViewMargins(View view, int margin) {
+    setViewMargins(view, margin, margin, margin, margin);
+  }
+
+  /** Convenience version of setViewMargins(View view, int left, int top, int right, int bottom) */
+  public static void setViewMargins(View view, int vertical, int horizontal) {
+    setViewMargins(view, horizontal, vertical, horizontal, vertical);
+  }
+
+  /** Sets the margins for a view in a ViewGroup of type LinearLayout, RelativeLayout, or FrameLayout */
+  public static void setViewMargins(View view, int left, int top, int right, int bottom) {
+    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+    params.setMargins(left, top, right, bottom);
+  }
+
+  public static RectF getViewBounds(View view) {
+    int location[] = new int[2];
+    view.getLocationOnScreen(location);
+    int viewX = location[0];
+    int viewY = location[1];
+
+    return new RectF(viewX, viewY, viewX + view.getWidth(), viewY + view.getHeight());
+  }
+
+  public static boolean isPointInsideRect(float x, float y, RectF rect) {
+    return x > rect.left && x < rect.right && y > rect.top && y < rect.bottom;
+  }
+
+  public static boolean isPointInsideView(float x, float y, View view){
+    RectF bounds = getViewBounds(view);
+    return isPointInsideRect(x, y, bounds);
   }
 }
