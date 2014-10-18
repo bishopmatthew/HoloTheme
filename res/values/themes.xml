@@ -64,9 +64,6 @@
         <item name="overflowMenuLayoutResId">@layout/vw_overflow_item</item>
         <item name="overflowMenuTextStyle">@style/FontText.OverflowMenu</item>
         <item name="overflowMenuLayoutBackground">@drawable/bg_actionbar_overflow</item>
-
-        <!-- SUBTITLE -->
-        <item name="subtitleTextStyle">@style/FontText.Subtitle</item>
     </style>
 
 </resources>

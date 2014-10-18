@@ -202,8 +202,6 @@
         <attr name="overflowMenuLayoutResId" format="reference" />
         <attr name="overflowMenuLayoutBackground" format="reference" />
 
-        <!-- SUBTITLE -->
-        <attr name="subtitleTextStyle" format="reference" />
     </declare-styleable>
 
 </resources>
